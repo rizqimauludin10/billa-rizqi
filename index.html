@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Invitation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- =============================
+         BACKGROUND VIDEO (HIDDEN AWALNYA)
+         ============================= -->
+    <video id="bgVideo" muted loop playsinline>
+      <source src="assets/video.mp4" type="video/mp4" />
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- =============================
+     COVER SECTION (PAKAI FOTO)
+     ============================= -->
+    <section id="cover">
+      <div class="cover-overlay"></div>
+
+      <!-- LOGO -->
+      <div class="logo-wrapper">
+        <img src="assets/logo-new.png" alt="Logo Inisial" class="logo" />
+      </div>
+
+      <!-- NAMA PASANGAN -->
+      <div class="couple-wrapper">
+        <h1 class="couple-name">Billa & Rizqi</h1>
+      </div>
+
+      <!-- NAMA TAMU -->
+      <div class="guest-wrapper">
+        <p class="guest">
+          Kepada Yth.<br />
+          <span id="guestName">Nabilla Eko Putri</span>
+        </p>
+      </div>
+
+      <!-- TOMBOL -->
+      <div class="button-wrapper">
+        <button id="openBtn">
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M4 6H20V18H4V6Z" stroke="white" stroke-width="1.5" />
+              <path d="M4 7L12 13L20 7" stroke="white" stroke-width="1.5" />
+            </svg>
+          </span>
+          <span class="text">Buka Undangan</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =============================
+         MAIN CONTENT
+         ============================= -->
+    <main id="mainContent">
+      <section id="quoteSection">
+        <div class="container">
+          <!-- HEADER WEDDING -->
+          <div class="wedding-header">
+            <p class="wedding-label">The Wedding Of</p>
+            <h2 class="wedding-couple">Billa & Rizqi</h2>
+            <p class="wedding-date">Let's Celebrate Together</p>
+          </div>
+
+          <!-- QUOTE -->
+          <div class="quote-wrapper">
+            <p class="quote-text">
+              "A successful marriage requires falling in love many times, always
+              with the same person"
+            </p>
+            <p class="quote-source">-Mignon McLaughlin-</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bride Section -->
+      <section id="brideSection">
+        <div class="bride-wrapper">
+          <div class="bride-photo">
+            <img
+              src="assets/foto/bride/2.jpg"
+              class="bride-slide active"
+              alt="Bride Photo"
+            />
+            <img
+              src="assets/foto/bride/1.jpg"
+              class="bride-slide"
+              alt="Bride Photo"
+            />
+            <img
+              src="assets/foto/bride/3.jpg"
+              class="bride-slide"
+              alt="Bride Photo"
+            />
+
+            <!-- Overlay Title -->
+            <div class="bride-vertical">
+              <span class="bride-the">The</span>
+              <span class="bride-word">Bride</span>
+            </div>
+          </div>
+
+          <div class="bride-info">
+            <h3>Nabilla Eko Putri, S.M.</h3>
+            <p>Putri dari</p>
+            <p>Bapak Eko Suyono (Alm) & Ibu Sri Latri P</p>
+            <div class="bride-instagram">
+              <a href="https://instagram.com/n.biyya" target="_blank">
+                @n.biyya
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Bride Section -->
+
+      <!-- Groom Section -->
+      <section id="groomSection">
+        <div class="groom-wrapper">
+          <div class="groom-photo">
+            <img
+              src="assets/foto/groom/1.jpg"
+              class="groom-slide active"
+              alt="Groom Photo"
+            />
+            <img
+              src="assets/foto/groom/2.jpg"
+              class="groom-slide"
+              alt="Groom Photo"
+            />
+            <img
+              src="assets/foto/groom/3.jpg"
+              class="groom-slide"
+              alt="Groom Photo"
+            />
+
+            <!-- Overlay Title -->
+            <div class="groom-vertical">
+              <span class="groom-the">The</span>
+              <span class="groom-word">Groom</span>
+            </div>
+          </div>
+
+          <div class="groom-info">
+            <h3>Rizqi Mauludin, A.Md.Kom</h3>
+            <p>Putra dari</p>
+            <p>Bapak Juni Siswanto & Ibu Asmawati</p>
+
+            <div class="groom-instagram">
+              <a href="https://instagram.com/rizqimauludin_" target="_blank">
+                @rizqimauludin_
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================OUR JOURNEY SECTION - REDESIGN====================== -->
+      <section id="journeySection">
+        <div class="container">
+          <h2 class="section-title journey-title">
+            <span class="journey-our">Our</span>
+            <span class="journey-word">Journey</span>
+          </h2>
+
+          <!-- ===== STORY LIST =====
+        Setiap story-item punya class "odd" atau "even"
+        odd  = foto di KIRI, teks di KANAN
+        even = foto di KANAN, teks di KIRI===== -->
+          <div class="story-list">
+            <!-- STORY 1 — foto kiri (odd) -->
+            <div class="story-item odd">
+              <!-- Foto + tahun overlay -->
+              <div class="story-photo">
+                <img src="assets/foto/journey/2.jpg" alt="First Meet" />
+                <!-- Tahun tampil di atas foto pojok kanan bawah -->
+                <div class="story-year">2018</div>
+              </div>
+
+              <!-- Info: judul + deskripsi -->
+              <div class="story-info">
+                <div class="story-title">First Meet</div>
+                <!-- Garis dekoratif di bawah judul -->
+                <div class="story-sep"></div>
+                <div class="story-desc">
+                  Kami pertama kali dipertemukan tanpa rencana, namun sejak saat
+                  itu perjalanan ini dimulai.
+                </div>
+              </div>
+            </div>
+
+            <!-- STORY 2 — foto kanan (even) -->
+            <div class="story-item even">
+              <!-- Foto + tahun overlay -->
+              <div class="story-photo">
+                <img src="assets/foto/journey/1.jpg" alt="Growing Together" />
+                <!-- Tahun tampil di atas foto pojok kiri bawah -->
+                <div class="story-year">2021</div>
+              </div>
+
+              <!-- Info: judul + deskripsi (rata kanan karena even) -->
+              <div class="story-info">
+                <div class="story-title">Growing Together</div>
+                <div class="story-sep"></div>
+                <div class="story-desc">
+                  Belajar memahami, bertumbuh bersama, dan menguatkan satu sama
+                  lain.
+                </div>
+              </div>
+            </div>
+
+            <!-- STORY 3 — foto kiri (odd) -->
+            <div class="story-item odd">
+              <!-- Foto + tahun overlay -->
+              <div class="story-photo">
+                <img src="assets/foto/journey/3.jpg" alt="The Proposal" />
+                <!-- Tahun tampil di atas foto pojok kanan bawah -->
+                <div class="story-year">2026</div>
+              </div>
+
+              <!-- Info: judul + deskripsi -->
+              <div class="story-info">
+                <div class="story-title">The Proposal</div>
+                <div class="story-sep"></div>
+                <div class="story-desc">
+                  Sebuah langkah yang membawa kami menuju janji suci selamanya.
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end .story-list -->
+        </div>
+      </section>
+
+      <!-- ==============EVENT SECTION - FINAL v2============== -->
+      <section id="eventSection">
+        <div class="container">
+          <!-- Section Title -->
+          <div class="event-section-title">
+            <span class="event-title-the">The</span>
+            <span class="event-title-word">Day</span>
+            <div class="event-title-underline"></div>
+          </div>
+
+          <!-- Label kecil -->
+          <p class="event-label">Save the Date</p>
+
+          <!-- Tanggal Hero -->
+          <div class="event-date-hero">15</div>
+          <p class="event-month-year">Oktober &nbsp;·&nbsp; 2026</p>
+
+          <!-- ===== COUNTDOWN =====
+         Diletakkan di antara tanggal & divider
+         Compact & transparan, tidak ganggu video
+    ===== -->
+          <!-- <div class="countdown-wrapper">
+            <p class="countdown-label">Menuju Hari Istimewa</p>
+            <div class="countdown-grid">
+              <div class="countdown-item">
+                <div class="countdown-num" id="cdDays">--</div>
+                <div class="countdown-accent"></div>
+                <div class="countdown-unit">Hari</div>
+              </div>
+
+              <div class="countdown-item">
+                <div class="countdown-num" id="cdHours">--</div>
+                <div class="countdown-accent"></div>
+                <div class="countdown-unit">Jam</div>
+              </div>
+
+              <div class="countdown-item">
+                <div class="countdown-num" id="cdMinutes">--</div>
+                <div class="countdown-accent"></div>
+                <div class="countdown-unit">Menit</div>
+              </div>
+
+              <div class="countdown-item">
+                <div class="countdown-num" id="cdSeconds">--</div>
+                <div class="countdown-accent"></div>
+                <div class="countdown-unit">Detik</div>
+              </div>
+            </div>
+          </div> -->
+          <!-- end .countdown-wrapper -->
+
+          <!-- Divider dekoratif -->
+          <div class="event-divider">
+            <div class="event-divider-line"></div>
+            <div class="event-divider-diamond"></div>
+            <div class="event-divider-line"></div>
+          </div>
+
+          <!-- Dua card acara -->
+          <div class="event-cards">
+            <div class="event-card akad">
+              <i class="bi bi-heart-fill event-card-icon"></i>
+              <div class="event-card-title">Akad Nikah</div>
+              <div class="event-card-subtitle">The ceremony</div>
+              <div class="event-card-sep"></div>
+              <div class="event-card-time">08.00 WIB</div>
+            </div>
+
+            <div class="event-card resepsi">
+              <i class="bi bi-stars event-card-icon"></i>
+              <div class="event-card-title">Resepsi</div>
+              <div class="event-card-subtitle">The reception</div>
+              <div class="event-card-sep"></div>
+              <div class="event-card-time">11.00 – 14.00</div>
+            </div>
+          </div>
+
+          <!-- Lokasi bersama -->
+          <div class="event-location">
+            <div class="event-location-name">
+              Stay.vie Hotel, Lantai 7 (Rooftop)
+            </div>
+            <div class="event-location-detail">Surabaya</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- THE VENUE SECTION -->
+      <section id="venueSection">
+        <div class="container">
+          <div class="venue-title">
+            <span class="venue-title-the">The</span>
+            <span class="venue-title-word">Venue</span>
+            <div class="venue-title-underline"></div>
+          </div>
+
+          <div class="venue-maps-wrap">
+            <!-- Google Maps embed -->
+            <iframe
+              class="venue-maps-frame"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4034.8923093583508!2d112.7426748751182!3d-7.286762871618077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fbd8060433b7%3A0xd9094060346a6f0!2sStay.vie%20Dinoyo%20Prime%20Hotel%20%26%20Co-Living%20-%20Surabaya!5e1!3m2!1sid!2sid!4v1773999286641!5m2!1sid!2sid"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            >
+            </iframe>
+
+            <!-- Overlay gradient bawah -->
+            <div class="venue-maps-gradient"></div>
+
+            <!-- Nama hotel overlay di atas gradient -->
+            <div class="venue-maps-overlay">
+              <div class="venue-name">Stay.vie Hotel</div>
+              <div class="venue-detail">Lantai 7 (Rooftop) · Surabaya</div>
+            </div>
+          </div>
+          <!-- end .venue-maps-wrap -->
+
+          <!-- ===== FOOTER =====
+         Tombol buka di Google Maps
+    ===== -->
+          <div class="venue-footer">
+            <button
+              class="venue-btn"
+              onclick="
+                window.open(
+                  'https://maps.google.com/?q=Stay.vie+Dinoyo+Prime+Hotel+Surabaya',
+                  '_blank',
+                )
+              "
+            >
+              <i class="bi bi-geo-alt-fill"></i>
+              Buka di Google Maps
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================RSVP SECTION========================== -->
+      <section id="rsvpSection">
+        <div class="container">
+          <div class="rsvp-title">
+            <span class="rsvp-title-the">The</span>
+            <span class="rsvp-title-word">RSVP</span>
+            <div class="rsvp-title-underline"></div>
+          </div>
+
+          <div class="rsvp-avatar">
+            <div class="rsvp-avatar-img">💍</div>
+            <div class="rsvp-avatar-info">
+              <div class="rsvp-avatar-name">Billa & Rizqi</div>
+              <div class="rsvp-avatar-status">
+                <div class="rsvp-status-dot"></div>
+                Menunggu konfirmasimu
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== CHAT BOX ===== -->
+          <div class="rsvp-chat-box">
+            <!-- Area pesan — diisi dinamis oleh JS -->
+            <div class="rsvp-messages" id="rsvpMessages"></div>
+
+            <!-- Input area -->
+            <div class="rsvp-input-area" id="rsvpInputArea">
+              <input
+                class="rsvp-input"
+                type="text"
+                id="rsvpInput"
+                placeholder="Ketik di sini..."
+                autocomplete="off"
+              />
+              <button class="rsvp-send-btn" id="rsvpSendBtn">
+                <i class="bi bi-send-fill"></i>
+              </button>
+            </div>
+          </div>
+          <!-- end .rsvp-chat-box -->
+
+          <!-- Catatan deadline konfirmasi -->
+          <p class="rsvp-note">Konfirmasi kehadiran sebelum 1 Oktober 2026</p>
+        </div>
+      </section>
+
+      <section id="wishesSection">
+        <div class="container">
+          <!-- ===== TITLE =====
+         Konsisten sama section lain
+         "The" pakai Sloop, "Wishes" pakai Noto Serif
+    ===== -->
+          <div class="wishes-title">
+            <span class="wishes-title-the">The</span>
+            <span class="wishes-title-word">Wishes</span>
+            <div class="wishes-title-underline"></div>
+          </div>
+
+          <!-- ===== LOADING STATE =====
+         Tampil saat data sedang di-fetch dari Sheets
+    ===== -->
+          <div class="wishes-loading" id="wishesLoading">
+            <p>Memuat ucapan...</p>
+          </div>
+
+          <!-- ===== MASONRY GRID =====
+         Card ucapan dirender oleh JS
+    ===== -->
+          <div class="wishes-masonry" id="wishesMasonry"></div>
+
+          <!-- ===== TOMBOL LOAD MORE =====
+         Tampil kalau masih ada ucapan yang belum diload
+         Disembunyikan oleh JS kalau semua sudah tampil
+    ===== -->
+          <button class="wishes-load-more" id="wishesLoadMore">
+            Lihat Lebih Banyak
+          </button>
+
+          <!-- ===== EMPTY STATE =====
+         Tampil kalau belum ada ucapan sama sekali
+    ===== -->
+          <div class="wishes-empty" id="wishesEmpty">
+            <p>Belum ada ucapan. Jadilah yang pertama! 🤍</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallerySection">
+        <div class="gallery-inner">
+          <!-- ===== TITLE ===== -->
+          <div class="gallery-title">
+            <span class="gallery-title-the">The</span>
+            <span class="gallery-title-word">Memories</span>
+            <div class="gallery-title-underline"></div>
+          </div>
+
+          <!-- ===== EDITORIAL GRID =====
+         Baris 1 : 2 kolom (foto besar kiri + foto kecil kanan)
+         Baris 2 : 3 kolom (tiga foto sejajar)
+         Baris 3 : 2 kolom (foto kecil kiri + foto besar kanan)
+         Layout mirror baris 1 & 3 — simetris & editorial
+    ===== -->
+          <div class="editorial-grid" id="editorialGrid">
+            <!-- BARIS 1 — besar kiri, kecil kanan -->
+            <div class="editorial-row row-a">
+              <div class="editorial-item large" data-index="0">
+                <img src="assets/foto/gallery/a.jpg" alt="Gallery 1" />
+                <div class="editorial-overlay"></div>
+                <div class="editorial-hint">⤢</div>
+              </div>
+              <div class="editorial-item small" data-index="1">
+                <img src="assets/foto/gallery/b.jpg" alt="Gallery 2" />
+                <div class="editorial-overlay"></div>
+                <div class="editorial-hint">⤢</div>
+              </div>
+            </div>
+
+            <!-- BARIS 2 — 3 kolom sejajar -->
+            <div class="editorial-row row-b">
+              <div class="editorial-item" data-index="2">
+                <img src="assets/foto/gallery/c.jpg" alt="Gallery 3" />
+                <div class="editorial-overlay"></div>
+                <div class="editorial-hint">⤢</div>
+              </div>
+              <div class="editorial-item" data-index="3">
+                <img src="assets/foto/gallery/d.jpg" alt="Gallery 4" />
+                <div class="editorial-overlay"></div>
+                <div class="editorial-hint">⤢</div>
+              </div>
+              <div class="editorial-item" data-index="4">
+                <img src="assets/foto/gallery/e.jpg" alt="Gallery 5" />
+                <div class="editorial-overlay"></div>
+                <div class="editorial-hint">⤢</div>
+              </div>
+            </div>
+
+            <!-- BARIS 3 — kecil kiri, besar kanan (mirror baris 1) -->
+            <div class="editorial-row row-c">
+              <div class="editorial-item small" data-index="5">
+                <img src="assets/foto/gallery/f.jpg" alt="Gallery 6" />
+                <div class="editorial-overlay"></div>
+                <div class="editorial-hint">⤢</div>
+              </div>
+              <div class="editorial-item large" data-index="6">
+                <img src="assets/foto/gallery/g.jpg" alt="Gallery 7" />
+                <div class="editorial-overlay"></div>
+                <div class="editorial-hint">⤢</div>
+              </div>
+            </div>
+          </div>
+          <!-- end .editorial-grid -->
+        </div>
+      </section>
+
+      <!-- ===== LIGHTBOX ===== -->
+      <div class="gallery-lightbox" id="galleryLightbox">
+        <button class="lb-close" id="lbClose">✕</button>
+        <button class="lb-prev" id="lbPrev">‹</button>
+        <img class="lb-img" id="lbImg" src="" alt="" />
+        <button class="lb-next" id="lbNext">›</button>
+        <div class="lb-counter" id="lbCounter"></div>
+      </div>
+
+      <!-- ===== CLOSING SECTION ===== -->
+      <section id="closingSection">
+        <div class="closing-inner">
+          <!-- Logo inisial -->
+          <div class="closing-logo">
+            <img
+              src="assets/logo-new.png"
+              alt="Logo Billa & Rizqi"
+              class="closing-logo-img"
+            />
+          </div>
+
+          <!-- Divider atas -->
+          <div class="closing-divider">
+            <div class="closing-divider-line"></div>
+            <div class="closing-divider-diamond"></div>
+            <div class="closing-divider-line"></div>
+          </div>
+
+          <!-- Nama pasangan -->
+          <div class="closing-names">
+            Billa
+            <span class="closing-names-and">&</span>
+            Rizqi
+          </div>
+
+          <!-- Pesan penutup -->
+          <p class="closing-message">
+            Merupakan suatu kebahagiaan dan kehormatan bagi kami apabila
+            Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada
+            kami.
+          </p>
+
+          <!-- Divider bawah -->
+          <div class="closing-divider">
+            <div class="closing-divider-line"></div>
+            <div class="closing-divider-diamond"></div>
+            <div class="closing-divider-line"></div>
+          </div>
+
+          <!-- Tanggal -->
+          <div class="closing-date">15 Oktober 2026</div>
+
+          <!-- Hashtag -->
+          <div class="closing-hashtag">#BillaMeetRizqi</div>
+        </div>
+      </section>
+
+      <!-- ===== FOOTER ===== -->
+      <footer id="siteFooter">
+        <div class="footer-heart">♥</div>
+        <div class="footer-made">
+          Made with love by <span class="footer-highlight">The Groom</span>
+        </div>
+        <div class="footer-name">Rizqi Mauludin</div>
+      </footer>
+    </main>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

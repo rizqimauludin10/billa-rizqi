@@ -1,0 +1,2681 @@
+/* =============================
+   CUSTOM FONT - PRESTIGE SIGNATURE
+   ============================= */
+
+@font-face {
+  font-family: "PrestigeSignature";
+  src: url("../assets/fonts/Prestige-Signature-Script.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ThePrestige";
+  src: url("../assets/fonts/ThePrestige.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sloop";
+  src: url("../assets/fonts/Sloop.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* =============================
+   RESET
+   ============================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Serif", serif;
+  color: white;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* =============================
+   BACKGROUND VIDEO
+   ============================= */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -3;
+  display: none;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+#bgVideo.show-video {
+  display: block;
+  opacity: 1;
+}
+
+.video-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* =============================
+   COVER SECTION
+   ============================= */
+
+#cover {
+  height: 100vh;
+  background: url("../assets/cover.jpg") center center / cover no-repeat;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  transition:
+    opacity 1.2s ease,
+    transform 1.2s ease;
+}
+
+#cover.fade-out {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.cover-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  top: 0;
+  left: 0;
+}
+
+/* =============================
+   LOGO
+   ============================= */
+.logo-wrapper {
+  position: absolute;
+  top: 5vh;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  z-index: 2;
+  opacity: 0;
+}
+
+.logo {
+  width: 140px;
+  height: auto;
+}
+
+/* =============================
+   NAMA PASANGAN
+   ============================= */
+.couple-wrapper {
+  position: absolute;
+  top: 64vh;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  width: 100%;
+  z-index: 2;
+  opacity: 0;
+}
+
+.couple-name {
+  font-family: "Playfair Display", serif;
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* =============================
+   TEKS TAMU
+   ============================= */
+.guest-wrapper {
+  position: absolute;
+  top: 73vh;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  width: 100%;
+  z-index: 2;
+  opacity: 0;
+}
+
+.guest {
+  font-size: 16px;
+  font-weight: 200;
+  letter-spacing: 0.5px;
+  line-height: 1.9;
+}
+
+#guestName {
+  font-weight: 100;
+}
+
+/* =============================
+   TOMBOL
+   FIX: Gabung jadi satu declaration
+   ============================= */
+.button-wrapper {
+  position: absolute;
+  top: 85vh;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  z-index: 2;
+  opacity: 0;
+}
+
+#openBtn {
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  color: white;
+  padding: 12px 22px;
+  font-size: 13px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(3px);
+  animation: softPulse 2.5s infinite; /* FIX: digabung di sini */
+}
+
+#openBtn:active {
+  transform: scale(0.96);
+  opacity: 0.8;
+}
+
+@media (max-width: 360px) {
+  #openBtn {
+    font-size: 14px;
+    padding: 14px 32px;
+  }
+}
+
+/* =============================
+   COVER ENTRANCE ANIMATION
+   ============================= */
+
+.cover-show {
+  opacity: 1 !important;
+  transform: translate(-50%, 0) !important;
+  transition: all 0.8s ease !important;
+}
+
+.logo-wrapper.cover-show {
+  transition-delay: 0.2s !important;
+}
+.couple-wrapper.cover-show {
+  transition-delay: 0.4s !important;
+}
+.guest-wrapper.cover-show {
+  transition-delay: 0.6s !important;
+}
+.button-wrapper.cover-show {
+  transition-delay: 0.8s !important;
+}
+
+/* =============================
+   PULSE ANIMATION
+   ============================= */
+
+@keyframes softPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(242, 234, 208, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
+}
+
+/* =============================
+   MAIN CONTENT
+   FIX: Gabungin jadi satu declaration, hapus konflik
+   ============================= */
+#mainContent {
+  display: none;
+  padding: 10px 10px;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+#mainContent.show-content {
+  display: block;
+  opacity: 1;
+}
+
+/* =============================
+   QUOTE SECTION
+   ============================= */
+
+#quoteSection {
+  min-height: 100vh;
+  position: relative;
+  padding: 30px 5px 80px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#quoteSection .container {
+  position: relative;
+  z-index: 3;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 75vh;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s ease;
+}
+
+#quoteSection .container.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wedding-header {
+  margin-bottom: 150px;
+}
+
+.wedding-label {
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.wedding-couple {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.wedding-date {
+  font-size: 14px;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+.quote-wrapper {
+  margin-top: 160px;
+}
+
+.quote-text {
+  font-family: "PrestigeSignature", cursive;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.5;
+  font-style: normal;
+  opacity: 1;
+  transform: rotate(-10deg);
+  letter-spacing: 2px;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.quote-source {
+  font-family: "PrestigeSignature", cursive;
+  margin-top: 10px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  transform: rotate(-10deg);
+  opacity: 0.8;
+}
+
+/* =============================
+   OUR JOURNEY SECTION - REDESIGN
+   Hapus semua CSS #journeySection, .story-list,
+   .story-item, .story-photo, .story-card, .story-year
+   yang lama, ganti dengan ini semua
+============================= */
+
+/* ===== SECTION WRAPPER ===== */
+#journeySection {
+  min-height: 100vh;
+  padding: 80px 0; /* padding 0 kiri-kanan biar foto bisa full width */
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    rgba(14, 14, 14, 0.95),
+    rgba(28, 28, 28, 0.95)
+  );
+}
+
+/* Container tetap ada tapi tanpa padding samping
+   biar story-item bisa full width */
+#journeySection .container {
+  max-width: 480px;
+  margin: auto;
+  position: relative;
+}
+
+/* ===== TITLE =====
+   Animasi fade-up saat scroll masuk viewport
+===== */
+.journey-title {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 0 25px; /* padding kiri-kanan khusus title */
+}
+
+/* "Our" — font Sloop script, warna merah
+   state awal: invisible + geser ke bawah */
+.journey-our {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  margin-right: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* "Journey" — Noto Serif uppercase
+   state awal: invisible + geser ke bawah */
+.journey-word {
+  font-family: "Noto Serif", serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Saat title masuk viewport (.show ditambahkan oleh JS) */
+.journey-title.show .journey-our {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s ease;
+}
+
+/* Sedikit delay untuk "Journey" biar efek stagger */
+.journey-title.show .journey-word {
+  opacity: 0.85;
+  transform: translateY(0);
+  transition: all 0.8s ease 0.2s;
+}
+
+/* ===== STORY LIST =====
+   Wrapper semua story item
+===== */
+.story-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* rapat tanpa gap biar terlihat connected */
+}
+
+/* ===== STORY ITEM =====
+   Layout grid 2 kolom: foto + info
+   State awal: invisible untuk animasi scroll
+===== */
+.story-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 320px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s ease;
+}
+
+/* Saat item masuk viewport */
+.story-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delay bertahap per item biar efek stagger */
+.story-item:nth-child(1) {
+  transition-delay: 0s;
+}
+.story-item:nth-child(2) {
+  transition-delay: 0.15s;
+}
+.story-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+/* ===== POSISI FOTO & INFO =====
+   odd  = foto kiri (order 1), info kanan (order 2)
+   even = foto kanan (order 2), info kiri (order 1)
+===== */
+.story-item.odd .story-photo {
+  order: 1;
+}
+.story-item.odd .story-info {
+  order: 2;
+}
+
+.story-item.even .story-photo {
+  order: 2;
+}
+.story-item.even .story-info {
+  order: 1;
+}
+
+/* ===== FOTO =====
+   Full height, object-fit cover
+===== */
+.story-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.story-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(15%);
+  transition: transform 0.8s ease;
+  display: block;
+}
+
+/* Zoom halus saat hover */
+.story-item:hover .story-photo img {
+  transform: scale(1.04);
+}
+
+/* Overlay gelap subtle di atas foto */
+.story-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* ===== TAHUN =====
+   Overlaid di atas foto
+   odd  = pojok kanan bawah
+   even = pojok kiri bawah
+===== */
+.story-year {
+  position: absolute;
+  z-index: 2;
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: white;
+  opacity: 0.9;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  bottom: 16px;
+}
+
+.story-item.odd .story-year {
+  right: 16px;
+  text-align: right;
+}
+
+.story-item.even .story-year {
+  left: 16px;
+  text-align: left;
+}
+
+/* ===== INFO =====
+   Panel teks di samping foto
+===== */
+.story-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 0.5px solid rgba(255, 255, 255, 0.07);
+  position: relative;
+}
+
+/* Aksen garis vertikal berwarna di sisi dalam
+   odd  = garis di sisi KIRI info (dekat foto)
+   even = garis di sisi KANAN info (dekat foto) */
+.story-item.odd .story-info::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 1.5px;
+  background: linear-gradient(to bottom, transparent, #ab1b4d, transparent);
+}
+
+.story-item.even .story-info::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 1.5px;
+  background: linear-gradient(to bottom, transparent, #ab1b4d, transparent);
+}
+
+/* ===== JUDUL STORY ===== */
+.story-title {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  line-height: 1.3;
+  color: white;
+}
+
+/* ===== GARIS DEKORATIF DI BAWAH JUDUL ===== */
+.story-sep {
+  width: 24px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.6);
+  margin-bottom: 14px;
+}
+
+/* even: garis rata kanan biar simetris */
+.story-item.even .story-sep {
+  margin-left: auto;
+}
+
+/* ===== DESKRIPSI ===== */
+.story-desc {
+  font-size: 12px;
+  line-height: 1.9;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* even: teks rata kanan biar mirror sama posisi foto */
+.story-item.even .story-info {
+  text-align: right;
+}
+
+/* =============================
+   BRIDE SECTION
+   ============================= */
+
+#brideSection {
+  min-height: 100vh;
+  padding: 50px 15px;
+  background: linear-gradient(
+    to bottom,
+    rgba(22, 22, 22, 0.316),
+    rgba(30, 30, 30, 0.545)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(80px);
+  filter: blur(12px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 2.2s ease;
+}
+
+#brideSection.show {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.bride-wrapper {
+  max-width: 520px;
+  width: 100%;
+}
+
+.bride-photo {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  max-height: 750px;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  transform: scale(1.12);
+  transition: transform 3.5s ease-out;
+}
+
+#brideSection.show .bride-photo {
+  transform: scale(1);
+}
+
+.bride-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.bride-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.bride-vertical {
+  position: absolute;
+  top: 100px;
+  left: 0px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  z-index: 3;
+  display: flex;
+  gap: 6px;
+}
+
+.bride-the {
+  font-family: "Sloop", cursive;
+  font-size: 58px;
+  color: #ab1b4d;
+}
+
+.bride-word {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.bride-info {
+  text-align: left;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1.8s ease 0.6s;
+}
+
+#brideSection.show .bride-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bride-info h3 {
+  font-family: "Noto Serif", serif;
+  font-size: 20px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+.bride-info h3::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.8);
+  margin-top: 10px;
+}
+
+.bride-info p {
+  font-size: 14px;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.bride-instagram {
+  margin-top: 15px;
+}
+
+.bride-instagram a {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.4s ease;
+}
+
+.bride-instagram a:hover {
+  background: white;
+  color: black;
+}
+
+/* =============================
+   GROOM SECTION
+   ============================= */
+
+#groomSection {
+  min-height: 100vh;
+  padding: 50px 15px;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 18, 18, 0.5),
+    rgba(25, 25, 25, 0.7)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(80px);
+  filter: blur(12px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 2.2s ease;
+}
+
+#groomSection.show {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.groom-wrapper {
+  max-width: 520px;
+  width: 100%;
+}
+
+.groom-photo {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  max-height: 750px;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  transform: scale(1.12);
+  transition: transform 3.5s ease-out;
+}
+
+#groomSection.show .groom-photo {
+  transform: scale(1);
+}
+
+.groom-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.groom-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.groom-vertical {
+  position: absolute;
+  top: 100px;
+  right: 0px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  z-index: 3;
+  display: flex;
+  gap: 6px;
+}
+
+.groom-the {
+  font-family: "Sloop", cursive;
+  font-size: 58px;
+  color: #d4af37;
+}
+
+.groom-word {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* FIX: Tambahin entrance animation untuk groom-info */
+.groom-info {
+  text-align: right;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1.8s ease 0.6s;
+}
+
+#groomSection.show .groom-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.groom-info h3 {
+  font-family: "Noto Serif", serif;
+  font-size: 20px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  display: inline-block;
+}
+
+.groom-info h3::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.8);
+  margin-top: 10px;
+  margin-left: auto;
+}
+
+.groom-info p {
+  font-size: 14px;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.groom-instagram {
+  margin-top: 15px;
+}
+
+.groom-instagram a {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.4s ease;
+}
+
+.groom-instagram a:hover {
+  background: white;
+  color: black;
+}
+
+/* =============================
+   EVENT SECTION - FINAL v2
+============================= */
+
+#eventSection {
+  min-height: 100vh;
+  padding: 40px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 20, 20, 0.95),
+    rgba(35, 35, 35, 0.95)
+  );
+}
+
+#eventSection .container {
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+
+/* ===== Section Title — The Day ===== */
+.event-section-title {
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+#eventSection.show .event-section-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.event-title-the {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.event-title-word {
+  font-family: "Noto Serif", serif;
+  font-size: 35px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  vertical-align: middle;
+}
+
+.event-title-underline {
+  width: 36px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.6);
+  margin: 8px auto 0;
+}
+
+/* ===== Label ===== */
+.event-label {
+  font-size: 12px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  opacity: 0;
+  margin-bottom: 20px;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+#eventSection.show .event-label {
+  opacity: 0.35;
+  transform: translateY(0);
+}
+
+/* ===== Tanggal Hero ===== */
+.event-date-hero {
+  font-family: "Playfair Display", serif;
+  font-size: 96px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -3px;
+  color: white;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 1s ease 0.1s,
+    transform 1s ease 0.1s;
+}
+
+#eventSection.show .event-date-hero {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.event-month-year {
+  font-size: 14px;
+  letter-spacing: 7px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease 0.2s,
+    transform 0.8s ease 0.2s;
+}
+
+#eventSection.show .event-month-year {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+.countdown-wrapper {
+  text-align: center;
+  margin-bottom: 44px; /* sama kayak event-month-year margin-bottom */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease 0.25s,
+    transform 0.8s ease 0.25s;
+}
+
+#eventSection.show .countdown-wrapper {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Label kecil di atas grid */
+.countdown-label {
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  opacity: 0.3;
+  margin-bottom: 16px;
+}
+
+/* ===== GRID 4 KOLOM ===== */
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  /* Sangat subtle — video tetap keliatan di belakang */
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* ===== ITEM (tiap satuan waktu) ===== */
+.countdown-item {
+  padding: 18px 8px 14px;
+  /* Transparan — tidak nutup video */
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== ANGKA ===== */
+.countdown-num {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: white;
+}
+
+/* ===== GARIS AKSEN MERAH ===== */
+.countdown-accent {
+  width: 16px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.5);
+}
+
+/* ===== SATUAN WAKTU ===== */
+.countdown-unit {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.35;
+}
+
+/* ===== UPDATE: hapus margin-bottom dari event-month-year =====
+   Karena sekarang countdown yang handle spacing ke bawah
+===== */
+.event-month-year {
+  margin-bottom: 28px; /* dikurangi dari 44px, countdown yang handle sisanya */
+}
+
+/* ===== Divider dekoratif ===== */
+.event-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto 44px;
+  max-width: 220px;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.3s;
+}
+
+#eventSection.show .event-divider {
+  opacity: 1;
+}
+
+.event-divider-line {
+  flex: 1;
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.event-divider-diamond {
+  width: 5px;
+  height: 5px;
+  border: 0.5px solid rgba(171, 27, 77, 0.8);
+  background: rgba(171, 27, 77, 0.3);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ===== Cards wrapper ===== */
+.event-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 1s ease 0.4s,
+    transform 1s ease 0.4s;
+}
+
+#eventSection.show .event-cards {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Individual card ===== */
+.event-card {
+  position: relative;
+  padding: 32px 18px 28px;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px 2px 0 0;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease;
+  text-align: center;
+}
+
+.event-card:hover {
+  border-color: rgba(171, 27, 77, 0.4);
+  background: rgba(171, 27, 77, 0.04);
+}
+
+/* Aksen garis atas berwarna */
+.event-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+}
+
+.event-card.akad::before {
+  background: linear-gradient(to right, transparent, #ab1b4d, transparent);
+}
+
+.event-card.resepsi::before {
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+}
+
+/* Icon card */
+.event-card-icon {
+  font-size: 24px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.event-card.akad .event-card-icon {
+  color: #ab1b4d;
+}
+
+.event-card.resepsi .event-card-icon {
+  color: #d4af37;
+}
+
+/* ===== Nama acara — FOCAL POINT ===== */
+.event-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  line-height: 1.2;
+  color: white;
+}
+
+/* Subtitle italic */
+.event-card-subtitle {
+  font-size: 11px;
+  font-style: italic;
+  opacity: 0.3;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+/* Garis pemisah dalam card */
+.event-card-sep {
+  width: 24px;
+  height: 0.5px;
+  margin: 0 auto 18px;
+}
+
+.event-card.akad .event-card-sep {
+  background: rgba(171, 27, 77, 0.6);
+}
+
+.event-card.resepsi .event-card-sep {
+  background: rgba(212, 175, 55, 0.6);
+}
+
+/* Waktu */
+.event-card-time {
+  font-size: 16px;
+  letter-spacing: 2px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.event-card.akad .event-card-time {
+  color: #ab1b4d;
+}
+
+.event-card.resepsi .event-card-time {
+  color: #d4af37;
+}
+
+/* Lokasi */
+.event-card-place {
+  font-size: 12px;
+  line-height: 1.9;
+  opacity: 0.4;
+  font-style: italic;
+}
+
+/* ===== Lokasi bersama ===== */
+.event-location {
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+  padding: 20px 18px;
+  background: rgba(255, 255, 255, 0.015);
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 1s ease 0.55s,
+    transform 1s ease 0.55s;
+}
+
+#eventSection.show .event-location {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.event-location-name {
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.event-location-detail {
+  font-size: 14px;
+  opacity: 0.6;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Tombol Lokasi ===== */
+.event-maps-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 30px;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  font-family: "Noto Serif", serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  background: transparent;
+  border-radius: 2px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s ease 0.6s,
+    transform 0.8s ease 0.6s,
+    border-color 0.4s ease,
+    color 0.4s ease;
+}
+
+.event-maps-btn i {
+  font-size: 15px;
+  transition: transform 0.3s ease;
+}
+
+#eventSection.show .event-maps-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.event-maps-btn:hover {
+  border-color: rgba(171, 27, 77, 0.5);
+  color: white;
+}
+
+.event-maps-btn:hover i {
+  transform: scale(1.15);
+}
+
+.event-maps-btn:active {
+  transform: scale(0.97);
+}
+
+/* =============================
+   RSVP SECTION
+   Tambahkan CSS ini di style.css lo
+============================= */
+
+/* ===== SECTION WRAPPER ===== */
+#rsvpSection {
+  min-height: 100vh;
+  padding: 40px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 15, 15, 0.92),
+    rgba(25, 25, 25, 0.96)
+  );
+}
+
+#rsvpSection .container {
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+
+  /* Animasi masuk saat scroll */
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#rsvpSection.show .container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== TITLE =====
+   "The" pakai Sloop merah, "RSVP" pakai Noto Serif
+===== */
+.rsvp-title {
+  text-align: center;
+}
+
+.rsvp-title-the {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.rsvp-title-word {
+  font-family: "Noto Serif", serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  vertical-align: middle;
+}
+
+.rsvp-title-underline {
+  width: 36px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.6);
+  margin: 8px auto 0;
+}
+
+/* ===== AVATAR PENGANTIN =====
+   Tampil di atas chat box, berasa personal
+===== */
+.rsvp-avatar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.rsvp-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(171, 27, 77, 0.15);
+  border: 0.5px solid rgba(171, 27, 77, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.rsvp-avatar-name {
+  font-family: "Playfair Display", serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+
+.rsvp-avatar-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  opacity: 0.4;
+  font-style: italic;
+}
+
+/* Dot hijau — status online */
+.rsvp-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4caf50;
+  flex-shrink: 0;
+  /* Animasi pulse subtle */
+  animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ===== CHAT BOX ===== */
+.rsvp-chat-box {
+  width: 100%;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ===== AREA PESAN ===== */
+.rsvp-messages {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 300px;
+  max-height: 420px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.01);
+  /* Smooth scroll saat pesan baru muncul */
+  scroll-behavior: smooth;
+}
+
+/* Sembunyikan scrollbar tapi tetap bisa scroll */
+.rsvp-messages::-webkit-scrollbar {
+  width: 0;
+}
+
+/* ===== BUBBLE DARI PENGANTIN (kiri) ===== */
+.rsvp-bubble-left {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  max-width: 88%;
+  /* Animasi muncul */
+  animation: bubbleIn 0.4s ease both;
+}
+
+.rsvp-bubble-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(171, 27, 77, 0.15);
+  border: 0.5px solid rgba(171, 27, 77, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.rsvp-bubble {
+  padding: 10px 14px;
+  border-radius: 12px 12px 12px 2px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  line-height: 1.7;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== BUBBLE DARI TAMU (kanan) ===== */
+.rsvp-bubble-right {
+  align-self: flex-end;
+  max-width: 80%;
+  animation: bubbleIn 0.4s ease both;
+}
+
+.rsvp-bubble-right .rsvp-bubble {
+  border-radius: 12px 12px 2px 12px;
+  background: rgba(171, 27, 77, 0.15);
+  border-color: rgba(171, 27, 77, 0.25);
+  color: white;
+}
+
+/* ===== PILIHAN JAWABAN (tombol bubble) ===== */
+.rsvp-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 32px; /* sejajar sama bubble kiri */
+  animation: bubbleIn 0.4s ease 0.2s both;
+}
+
+.rsvp-choice-btn {
+  padding: 8px 16px;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  font-family: "Noto Serif", serif;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+}
+
+.rsvp-choice-btn:hover {
+  border-color: rgba(171, 27, 77, 0.5);
+  background: rgba(171, 27, 77, 0.08);
+  color: white;
+}
+
+.rsvp-choice-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== TYPING INDICATOR ===== */
+.rsvp-typing {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  animation: bubbleIn 0.3s ease both;
+}
+
+.rsvp-typing-dots {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px 12px 12px 2px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.rsvp-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: typingBlink 1.4s infinite;
+}
+
+.rsvp-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.rsvp-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBlink {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+/* ===== INPUT AREA ===== */
+.rsvp-input-area {
+  padding: 12px 16px;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Input teks */
+.rsvp-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 9px 16px;
+  color: white;
+  font-size: 12px;
+  font-family: "Noto Serif", serif;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.rsvp-input:focus {
+  border-color: rgba(171, 27, 77, 0.4);
+}
+
+.rsvp-input::placeholder {
+  opacity: 0.3;
+  font-style: italic;
+}
+
+/* Input disabled saat proses loading */
+.rsvp-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Tombol kirim */
+.rsvp-send-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ab1b4d;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.rsvp-send-btn:hover {
+  background: #8f1640;
+  transform: scale(1.05);
+}
+
+.rsvp-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== INPUT AREA HIDDEN =====
+   Disembunyikan saat tidak butuh input teks
+   (misal saat pilihan tombol atau setelah selesai)
+===== */
+.rsvp-input-area.hidden {
+  display: none;
+}
+
+/* ===== CATATAN DEADLINE ===== */
+.rsvp-note {
+  font-size: 10px;
+  opacity: 0.25;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* ===== ANIMASI BUBBLE MASUK ===== */
+@keyframes bubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== PESAN SUKSES ===== */
+.rsvp-success {
+  text-align: center;
+  padding: 20px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: bubbleIn 0.6s ease both;
+}
+
+.rsvp-success-icon {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.rsvp-success-title {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.rsvp-success-desc {
+  font-size: 12px;
+  opacity: 0.45;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+/* =============================
+   THE VENUE SECTION
+   Tambahkan di style.css lo
+============================= */
+
+/* ===== SECTION WRAPPER ===== */
+#venueSection {
+  /* min-height: 100vh; */
+  padding: 80px 25px;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 18, 18, 0.95),
+    rgba(30, 30, 30, 0.95)
+  );
+}
+
+#venueSection .container {
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+
+  /* Animasi masuk saat scroll */
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#venueSection.show .container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== TITLE =====
+   "The" pakai Sloop merah, "Venue" pakai Noto Serif
+===== */
+.venue-title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.venue-title-the {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.venue-title-word {
+  font-family: "Noto Serif", serif;
+  font-size: 35px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  vertical-align: middle;
+}
+
+.venue-title-underline {
+  width: 36px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.6);
+  margin: 8px auto 0;
+}
+
+/* ===== MAPS WRAPPER =====
+   Posisi relative untuk overlay di dalamnya
+===== */
+.venue-maps-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+  overflow: hidden;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-bottom: none;
+}
+
+/* ===== IFRAME MAPS ===== */
+.venue-maps-frame {
+  width: 100%;
+  height: 300px;
+  display: block;
+  border: none;
+  /* Filter dark biar blend sama dark theme website */
+  filter: grayscale(20%) invert(90%) hue-rotate(180deg);
+}
+
+/* ===== GRADIENT OVERLAY =====
+   Gradient gelap di bawah maps
+   biar nama hotel overlay keliatan
+===== */
+.venue-maps-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to top, rgba(15, 15, 15, 0.95), transparent);
+  pointer-events: none;
+}
+
+/* ===== NAMA HOTEL OVERLAY =====
+   Tampil di atas gradient bawah maps
+===== */
+.venue-maps-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.venue-name {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.venue-detail {
+  font-size: 11px;
+  opacity: 0.55;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FOOTER =====
+   Nyambung di bawah maps dengan border
+===== */
+.venue-footer {
+  width: 100%;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+/* ===== TOMBOL ===== */
+.venue-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 30px;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  font-family: "Noto Serif", serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  background: transparent;
+  border-radius: 2px;
+  transition:
+    border-color 0.4s ease,
+    color 0.4s ease;
+}
+
+.venue-btn i {
+  font-size: 15px;
+  transition: transform 0.3s ease;
+}
+
+.venue-btn:hover {
+  border-color: rgba(171, 27, 77, 0.5);
+  color: white;
+}
+
+.venue-btn:hover i {
+  transform: scale(1.15);
+}
+
+.venue-btn:active {
+  transform: scale(0.97);
+}
+
+/* =============================
+   THE WISHES SECTION
+   Tambahkan di style.css lo
+============================= */
+
+/* ===== SECTION WRAPPER ===== */
+#wishesSection {
+  padding: 80px 25px;
+  background: linear-gradient(
+    to bottom,
+    rgba(14, 14, 14, 0.95),
+    rgba(25, 25, 25, 0.95)
+  );
+}
+
+#wishesSection .container {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+
+  /* Animasi masuk saat scroll */
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#wishesSection.show .container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== TITLE ===== */
+.wishes-title {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.wishes-title-the {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.wishes-title-word {
+  font-family: "Noto Serif", serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  vertical-align: middle;
+}
+
+.wishes-title-underline {
+  width: 36px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.6);
+  margin: 8px auto 0;
+}
+
+/* ===== LOADING STATE ===== */
+.wishes-loading {
+  font-size: 12px;
+  opacity: 0.3;
+  font-style: italic;
+  letter-spacing: 1px;
+  padding: 40px 0;
+}
+
+/* Sembunyikan saat sudah selesai load */
+.wishes-loading.hidden {
+  display: none;
+}
+
+/* ===== MASONRY GRID ===== */
+.wishes-masonry {
+  columns: 2;
+  column-gap: 10px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+/* ===== CARD UCAPAN ===== */
+.wishes-card {
+  break-inside: avoid;
+  margin-bottom: 10px;
+  padding: 16px 14px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.02);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease;
+
+  /* Animasi card masuk */
+  animation: cardIn 0.5s ease both;
+}
+
+.wishes-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Garis aksen merah di atas card */
+.wishes-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, #ab1b4d, transparent);
+}
+
+/* Quote mark dekoratif */
+.wishes-card-quote {
+  font-family: "Playfair Display", serif;
+  font-size: 40px;
+  color: rgba(171, 27, 77, 0.15);
+  line-height: 0.5;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Nama tamu */
+.wishes-card-name {
+  font-family: "Playfair Display", serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  color: white;
+}
+
+/* ===== BADGE STATUS ===== */
+.wishes-card-status {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 1px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+/* Hadir — merah */
+.wishes-card-status.hadir {
+  color: rgba(171, 27, 77, 0.9);
+  border: 0.5px solid rgba(171, 27, 77, 0.3);
+  background: rgba(171, 27, 77, 0.08);
+}
+
+/* Berhalangan — gold */
+.wishes-card-status.tidak {
+  color: rgba(212, 175, 55, 0.9);
+  border: 0.5px solid rgba(212, 175, 55, 0.3);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+/* Teks ucapan */
+.wishes-card-text {
+  font-size: 12px;
+  line-height: 1.8;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* ===== TOMBOL LOAD MORE ===== */
+.wishes-load-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 30px;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  font-family: "Noto Serif", serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  background: transparent;
+  border-radius: 2px;
+  transition:
+    border-color 0.4s ease,
+    color 0.4s ease,
+    opacity 0.4s ease;
+  margin-top: 8px;
+}
+
+.wishes-load-more:hover {
+  border-color: rgba(171, 27, 77, 0.5);
+  color: white;
+}
+
+.wishes-load-more:active {
+  transform: scale(0.97);
+}
+
+/* Sembunyikan tombol kalau semua sudah tampil */
+.wishes-load-more.hidden {
+  display: none;
+}
+
+/* ===== EMPTY STATE ===== */
+.wishes-empty {
+  font-size: 12px;
+  opacity: 0.3;
+  font-style: italic;
+  letter-spacing: 1px;
+  padding: 40px 0;
+}
+
+.wishes-empty.hidden {
+  display: none;
+}
+
+/* ===== ANIMASI CARD MASUK ===== */
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#gallerySection {
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+/* Grain texture — berasa vintage & film */
+#gallerySection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Inner wrapper */
+.gallery-inner {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0 80px;
+}
+
+/* ===== TITLE ===== */
+.gallery-title {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 0 25px;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+#gallerySection.show .gallery-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-title-the {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.gallery-title-word {
+  font-family: "Noto Serif", serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  vertical-align: middle;
+}
+
+.gallery-title-underline {
+  width: 36px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.6);
+  margin: 8px auto 0;
+}
+
+/* ===== EDITORIAL GRID ===== */
+.editorial-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 1s ease 0.2s,
+    transform 1s ease 0.2s;
+}
+
+#gallerySection.show .editorial-grid {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== BARIS ===== */
+.editorial-row {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+}
+
+/* Baris 1: 2fr 1fr — besar kiri, kecil kanan */
+.editorial-row.row-a {
+  grid-template-columns: 2fr 1fr;
+}
+
+/* Baris 2: 3 kolom sama rata */
+.editorial-row.row-b {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* Baris 3: 1fr 2fr — kecil kiri, besar kanan (mirror baris 1) */
+.editorial-row.row-c {
+  grid-template-columns: 1fr 2fr;
+}
+
+/* ===== ITEM FOTO ===== */
+.editorial-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  /* Tinggi default untuk baris tengah */
+  height: 120px;
+}
+
+/* Foto di baris 1 & 3 lebih tinggi */
+.editorial-row.row-a .editorial-item,
+.editorial-row.row-c .editorial-item {
+  height: 180px;
+}
+
+.editorial-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(15%);
+  transition:
+    transform 0.6s ease,
+    filter 0.4s ease;
+  display: block;
+}
+
+/* Zoom & full color saat hover */
+.editorial-item:hover img {
+  transform: scale(1.06);
+  filter: grayscale(0%);
+}
+
+/* ===== OVERLAY AKSEN MERAH ===== */
+.editorial-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(171, 27, 77, 0.12);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.editorial-item:hover .editorial-overlay {
+  opacity: 1;
+}
+
+/* Garis aksen merah di bawah — muncul saat hover */
+.editorial-item::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ab1b4d;
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  z-index: 2;
+}
+
+.editorial-item:hover::before {
+  transform: scaleX(1);
+}
+
+/* ===== ICON EXPAND ===== */
+.editorial-hint {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  background: rgba(171, 27, 77, 0.85);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+.editorial-item:hover .editorial-hint {
+  opacity: 1;
+}
+
+/* ===== LIGHTBOX ===== */
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.96);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.gallery-lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Foto fullscreen */
+.lb-img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+  animation: lbIn 0.35s ease both;
+}
+
+/* Tombol close */
+.lb-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 26px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  background: none;
+  border: none;
+  color: white;
+  line-height: 1;
+}
+.lb-close:hover {
+  opacity: 1;
+}
+
+/* Tombol prev & next */
+.lb-prev,
+.lb-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.07);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.lb-prev {
+  left: 16px;
+}
+.lb-next {
+  right: 16px;
+}
+
+.lb-prev:hover,
+.lb-next:hover {
+  background: rgba(171, 27, 77, 0.3);
+  border-color: rgba(171, 27, 77, 0.5);
+}
+
+/* Counter */
+.lb-counter {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 3px;
+  opacity: 0.35;
+  font-family: "Noto Serif", serif;
+}
+
+/* ===== ANIMASI ===== */
+@keyframes lbIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== CLOSING SECTION ===== */
+#closingSection {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 32px;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.97),
+    rgba(20, 20, 20, 0.97)
+  );
+}
+
+/* ===== INNER WRAPPER ===== */
+.closing-inner {
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+
+  /* Animasi masuk saat scroll */
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#closingSection.show .closing-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== LOGO INISIAL ===== */
+/* ===== LOGO ===== */
+.closing-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(171, 27, 77, 0.4);
+  background: rgba(171, 27, 77, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.closing-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ===== DIVIDER ===== */
+.closing-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.closing-divider-line {
+  flex: 1;
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.closing-divider-diamond {
+  width: 5px;
+  height: 5px;
+  border: 0.5px solid rgba(171, 27, 77, 0.7);
+  background: rgba(171, 27, 77, 0.25);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ===== NAMA PASANGAN ===== */
+.closing-names {
+  font-family: "Playfair Display", serif;
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  color: white;
+}
+
+/* "&" di tengah — italic & lebih kecil */
+.closing-names-and {
+  display: block;
+  font-family: "Sloop", cursive;
+  font-size: 36px;
+  color: #ab1b4d;
+  letter-spacing: 3px;
+  margin: 4px 0;
+}
+
+/* ===== PESAN PENUTUP ===== */
+.closing-message {
+  font-size: 14px;
+  line-height: 2;
+  opacity: 0.7;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  max-width: 320px;
+}
+
+/* ===== TANGGAL ===== */
+.closing-date {
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ===== HASHTAG ===== */
+.closing-hashtag {
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-style: italic;
+  color: #ab1b4d;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+/* ===== FOOTER ===== */
+#siteFooter {
+  padding: 24px;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+  background: rgb(0 0 0 / 88%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Animasi heartbeat */
+.footer-heart {
+  font-size: 16px;
+  color: #ab1b4d;
+  animation: heartbeat 1.5s ease-in-out infinite;
+  margin-bottom: 2px;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+/* Teks "Made with love by" */
+.footer-made {
+  font-size: 12px;
+  opacity: 0.8;
+  letter-spacing: 1.5px;
+  font-style: italic;
+}
+
+/* Highlight "The Groom" */
+.footer-highlight {
+  color: #ab1b4d;
+  opacity: 1;
+  font-style: normal;
+}
+
+/* Nama groom */
+.footer-name {
+  font-family: "Playfair Display", serif;
+  font-size: 14px;
+  font-style: italic;
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
