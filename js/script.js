@@ -437,7 +437,7 @@ function initWishes() {
 
   if (!masonry || !loadMore || !loading || !empty) return;
 
-  const PER_PAGE = 6;
+  const PER_PAGE = 5;
   let allWishes = [];
   let currentIndex = 0;
 
@@ -594,4 +594,87 @@ function initGallery() {
       else prevPhoto();
     }
   });
+}
+
+initMusicPlayer();
+
+function initMusicPlayer() {
+  const music = document.getElementById("bgMusic");
+  const player = document.getElementById("musicPlayer");
+  const btn = document.getElementById("musicBtn");
+  const icon = document.getElementById("musicIcon");
+
+  if (!music || !player || !btn || !icon) return;
+
+  let isPlaying = false;
+  let fadeInterval = null;
+
+  // ===== TAMPILKAN PLAYER SETELAH COVER DIBUKA =====
+  // Player muncul bersamaan dengan mainContent
+  // Observe mainContent, saat show-content ditambahkan
+  // player jadi visible
+  const openBtnEl = document.getElementById("openBtn");
+  if (openBtnEl) {
+    openBtnEl.addEventListener("click", () => {
+      // Delay sedikit biar muncul setelah transisi cover selesai
+      setTimeout(() => {
+        player.classList.add("visible");
+        // Auto play musik saat undangan dibuka
+        // dengan efek fade in volume
+        playWithFade();
+      }, 1400);
+    });
+  }
+
+  // ===== TOGGLE PLAY / PAUSE =====
+  btn.addEventListener("click", () => {
+    if (isPlaying) {
+      pauseWithFade();
+    } else {
+      playWithFade();
+    }
+  });
+
+  // ===== PLAY DENGAN FADE IN =====
+  function playWithFade() {
+    clearInterval(fadeInterval);
+
+    music.volume = 0;
+    music.play().catch(() => {});
+
+    isPlaying = true;
+    player.classList.add("playing");
+    icon.className = "bi bi-pause-fill";
+
+    // Naikkan volume pelan dari 0 ke 0.7
+    // setiap 100ms naik 0.05
+    fadeInterval = setInterval(() => {
+      if (music.volume < 0.65) {
+        music.volume = Math.min(music.volume + 0.05, 0.7);
+      } else {
+        music.volume = 0.7;
+        clearInterval(fadeInterval);
+      }
+    }, 100);
+  }
+
+  // ===== PAUSE DENGAN FADE OUT =====
+  function pauseWithFade() {
+    clearInterval(fadeInterval);
+
+    // Turunkan volume pelan dari current ke 0
+    fadeInterval = setInterval(() => {
+      if (music.volume > 0.05) {
+        music.volume = Math.max(music.volume - 0.05, 0);
+      } else {
+        music.volume = 0;
+        music.pause();
+        clearInterval(fadeInterval);
+
+        isPlaying = false;
+        player.classList.remove("playing");
+        icon.className = "bi bi-music-note-beamed";
+      }
+    }, 100);
+  }
 }

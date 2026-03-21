@@ -197,11 +197,30 @@
           </div>
 
           <div class="bride-info">
-            <h3>Nabilla Eko Putri, S.M.</h3>
-            <p>Putri dari</p>
-            <p>Bapak Eko Suyono (Alm) & Ibu Sri Latri P</p>
+            <!-- Nama — focal point -->
+            <div class="bride-name-wrap">
+              <div class="bride-name">Nabilla Eko Putri, S.M.</div>
+              <div class="bride-name-sep"></div>
+            </div>
+
+            <!-- Info orang tua -->
+            <div class="bride-parents">
+              <div class="bride-parents-label">Putri dari</div>
+              <div class="bride-parents-name">
+                Bapak Eko Suyono (Alm)<br />& Ibu Sri Latri P
+              </div>
+            </div>
+
+            <!-- Instagram -->
             <div class="bride-instagram">
-              <a href="https://instagram.com/n.biyya" target="_blank">
+              <div class="bride-instagram-icon">
+                <i class="bi bi-instagram"></i>
+              </div>
+              <a
+                href="https://instagram.com/n.biyya"
+                target="_blank"
+                class="bride-instagram-handle"
+              >
                 @n.biyya
               </a>
             </div>
@@ -238,12 +257,30 @@
           </div>
 
           <div class="groom-info">
-            <h3>Rizqi Mauludin, A.Md.Kom</h3>
-            <p>Putra dari</p>
-            <p>Bapak Juni Siswanto & Ibu Asmawati</p>
+            <!-- Nama — focal point -->
+            <div class="groom-name-wrap">
+              <div class="groom-name">Rizqi Mauludin, A.Md.Kom</div>
+              <div class="groom-name-sep"></div>
+            </div>
 
+            <!-- Info orang tua -->
+            <div class="groom-parents">
+              <div class="groom-parents-label">Putra dari</div>
+              <div class="groom-parents-name">
+                Bapak Juni Siswanto<br />& Ibu Asmawati
+              </div>
+            </div>
+
+            <!-- Instagram -->
             <div class="groom-instagram">
-              <a href="https://instagram.com/rizqimauludin_" target="_blank">
+              <div class="groom-instagram-icon">
+                <i class="bi bi-instagram"></i>
+              </div>
+              <a
+                href="https://instagram.com/rizqimauludin_"
+                target="_blank"
+                class="groom-instagram-handle"
+              >
                 @rizqimauludin_
               </a>
             </div>
@@ -485,12 +522,7 @@
             <div class="gallery-title-underline"></div>
           </div>
 
-          <!-- ===== EDITORIAL GRID =====
-         Baris 1 : 2 kolom (foto besar kiri + foto kecil kanan)
-         Baris 2 : 3 kolom (tiga foto sejajar)
-         Baris 3 : 2 kolom (foto kecil kiri + foto besar kanan)
-         Layout mirror baris 1 & 3 — simetris & editorial
-    ===== -->
+          <!-- ===== EDITORIAL GRID ===== -->
           <div class="editorial-grid" id="editorialGrid">
             <!-- BARIS 1 — besar kiri, kecil kanan -->
             <div class="editorial-row row-a">
@@ -610,6 +642,28 @@
       </footer>
     </main>
 
+    <audio id="bgMusic" loop>
+      <source src="assets/music/music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Music Player UI — Fixed pojok kanan bawah -->
+    <div class="music-player" id="musicPlayer">
+      <!-- Label "Now Playing" — muncul saat musik on -->
+      <div class="music-label">Now Playing</div>
+
+      <!-- Equalizer bars — animasi saat musik on -->
+      <div class="music-bars">
+        <div class="music-bar"></div>
+        <div class="music-bar"></div>
+        <div class="music-bar"></div>
+        <div class="music-bar"></div>
+      </div>
+
+      <!-- Tombol play/pause -->
+      <button class="music-btn" id="musicBtn" aria-label="Toggle Music">
+        <i class="bi bi-music-note-beamed" id="musicIcon"></i>
+      </button>
+    </div>
     <script src="js/script.js"></script>
   </body>
 </html>
