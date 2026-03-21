@@ -39,28 +39,15 @@ footer {
     top: 82vh;
   }
 
-  /* ===== QUOTE ===== */
+  /* ===== QUOTE =====
+     Font size dipertahankan sesuai desain asli
+     Hanya spacing yang disesuaikan biar tidak terlalu jauh
+  ===== */
   .wedding-header {
     margin-bottom: 80px;
   }
-  .wedding-couple {
-    font-size: 32px;
-  }
-  .wedding-label {
-    font-size: 11px;
-    letter-spacing: 3px;
-  }
   .quote-wrapper {
     margin-top: 80px;
-  }
-  .quote-text {
-    font-size: 20px;
-    transform: rotate(-5deg);
-    letter-spacing: 1px;
-  }
-  .quote-source {
-    font-size: 15px;
-    transform: rotate(-5deg);
   }
 
   /* ===== BRIDE & GROOM ===== */
@@ -79,48 +66,9 @@ footer {
   }
 
   /* ===== OUR JOURNEY =====
-     FIX UTAMA: Alternating jadi single column
-     Foto atas, teks bawah
+     Layout kiri-kanan dipertahankan di semua device
+     Hanya font title yang dikecilkan
   ===== */
-  .story-item {
-    grid-template-columns: 1fr !important;
-    min-height: unset !important;
-  }
-
-  /* Reset order — foto selalu di atas */
-  .story-item.odd .story-photo,
-  .story-item.even .story-photo {
-    order: 1 !important;
-  }
-  .story-item.odd .story-info,
-  .story-item.even .story-info {
-    order: 2 !important;
-  }
-
-  /* Info rata kiri semua */
-  .story-item.even .story-info {
-    text-align: left !important;
-  }
-  .story-item.even .story-sep {
-    margin-left: 0 !important;
-  }
-
-  /* Aksen garis semua di kiri */
-  .story-item.odd .story-info::before,
-  .story-item.even .story-info::before {
-    left: 0 !important;
-    right: auto !important;
-    top: 15% !important;
-    bottom: 15% !important;
-  }
-
-  /* Tahun semua pojok kanan bawah */
-  .story-item.even .story-year {
-    left: auto !important;
-    right: 16px !important;
-    text-align: right !important;
-  }
-
   .journey-our {
     font-size: 40px;
   }
