@@ -623,18 +623,15 @@ body {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transform: translateY(80px);
-  filter: blur(12px);
+  transform: translateY(30px);
   transition:
-    opacity 1.8s ease,
-    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 2.2s ease;
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 #brideSection.show {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 .bride-wrapper {
@@ -650,8 +647,8 @@ body {
   overflow: hidden;
   border-radius: 6px;
   margin-bottom: 20px;
-  transform: scale(1.12);
-  transition: transform 3.5s ease-out;
+  transform: scale(1);
+  transition: none;
 }
 
 #brideSection.show .bride-photo {
@@ -703,9 +700,16 @@ body {
 
 .bride-info {
   text-align: left;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+
+  /* Animasi masuk */
   opacity: 0;
-  transform: translateY(50px);
-  transition: all 1.8s ease 0.6s;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease 0.2s,
+    transform 0.8s ease 0.2s;
 }
 
 #brideSection.show .bride-info {
@@ -713,49 +717,102 @@ body {
   transform: translateY(0);
 }
 
-.bride-info h3 {
-  font-family: "Noto Serif", serif;
-  font-size: 20px;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
+/* Nama — focal point */
+.bride-name-wrap {
+  padding: 20px 20px 16px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
   position: relative;
-  display: inline-block;
 }
 
-.bride-info h3::after {
+/* Aksen garis merah di kiri */
+.bride-name-wrap::before {
   content: "";
-  display: block;
-  width: 60px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.8);
-  margin-top: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #ab1b4d, transparent);
 }
 
-.bride-info p {
-  font-size: 14px;
+.bride-name {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: 1px;
-  opacity: 0.8;
+  color: white;
+  margin-bottom: 4px;
+}
+
+/* Garis dekoratif di bawah nama */
+.bride-name-sep {
+  width: 28px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.6);
+  margin-top: 8px;
+}
+
+/* Info orang tua */
+.bride-parents {
+  padding: 14px 20px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.bride-parents-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.3;
   margin-bottom: 6px;
 }
 
-.bride-instagram {
-  margin-top: 15px;
+.bride-parents-name {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.65;
+  font-style: italic;
 }
 
-.bride-instagram a {
-  display: inline-block;
-  padding: 6px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+/* Instagram */
+.bride-instagram {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0; /* reset margin lama */
+}
+
+.bride-instagram-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.bride-instagram:hover .bride-instagram-icon {
+  background: rgba(171, 27, 77, 0.2);
+  border-color: rgba(171, 27, 77, 0.4);
+}
+
+.bride-instagram-handle {
   font-size: 12px;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
+  opacity: 0.6;
   text-decoration: none;
   color: white;
-  transition: all 0.4s ease;
+  transition: opacity 0.3s ease;
 }
 
-.bride-instagram a:hover {
-  background: white;
-  color: black;
+.bride-instagram-handle:hover {
+  opacity: 1;
 }
 
 /* =============================
@@ -774,18 +831,15 @@ body {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transform: translateY(80px);
-  filter: blur(12px);
+  transform: translateY(30px);
   transition:
-    opacity 1.8s ease,
-    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 2.2s ease;
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 #groomSection.show {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 .groom-wrapper {
@@ -801,8 +855,8 @@ body {
   overflow: hidden;
   border-radius: 6px;
   margin-bottom: 20px;
-  transform: scale(1.12);
-  transition: transform 3.5s ease-out;
+  transform: scale(1);
+  transition: none;
 }
 
 #groomSection.show .groom-photo {
@@ -854,9 +908,16 @@ body {
 /* FIX: Tambahin entrance animation untuk groom-info */
 .groom-info {
   text-align: right;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+
+  /* Animasi masuk */
   opacity: 0;
-  transform: translateY(50px);
-  transition: all 1.8s ease 0.6s;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease 0.2s,
+    transform 0.8s ease 0.2s;
 }
 
 #groomSection.show .groom-info {
@@ -864,49 +925,105 @@ body {
   transform: translateY(0);
 }
 
-.groom-info h3 {
-  font-family: "Noto Serif", serif;
-  font-size: 20px;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
-  display: inline-block;
+/* Nama — focal point */
+.groom-name-wrap {
+  padding: 20px 20px 16px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+  position: relative;
 }
 
-.groom-info h3::after {
+/* Aksen garis gold di kanan (mirror dari bride) */
+.groom-name-wrap::before {
   content: "";
-  display: block;
-  width: 60px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.8);
-  margin-top: 10px;
-  margin-left: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #d4af37, transparent);
 }
 
-.groom-info p {
-  font-size: 14px;
+.groom-name {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: 1px;
-  opacity: 0.8;
+  color: white;
+  margin-bottom: 4px;
+}
+
+/* Garis dekoratif di bawah nama — rata kanan */
+.groom-name-sep {
+  width: 28px;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.6);
+  margin-top: 8px;
+  margin-left: auto; /* rata kanan */
+}
+
+/* Info orang tua */
+.groom-parents {
+  padding: 14px 20px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.groom-parents-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.3;
   margin-bottom: 6px;
 }
 
-.groom-instagram {
-  margin-top: 15px;
+.groom-parents-name {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.65;
+  font-style: italic;
 }
 
-.groom-instagram a {
-  display: inline-block;
-  padding: 6px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+/* Instagram — mirror ke kanan */
+.groom-instagram {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: row; /* icon tetap di kiri */
+  justify-content: flex-end; /* dorong ke kanan */
+  gap: 10px;
+  margin-top: 0;
+}
+
+.groom-instagram-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.groom-instagram:hover .groom-instagram-icon {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.groom-instagram-handle {
   font-size: 12px;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
+  opacity: 0.6;
   text-decoration: none;
   color: white;
-  transition: all 0.4s ease;
+  transition: opacity 0.3s ease;
 }
 
-.groom-instagram a:hover {
-  background: white;
-  color: black;
+.groom-instagram-handle:hover {
+  opacity: 1;
 }
 
 /* =============================
@@ -2678,4 +2795,183 @@ body {
   font-style: italic;
   opacity: 0.9;
   letter-spacing: 1px;
+}
+
+/* =============================
+   MUSIC PLAYER
+   Tambahkan di style.css lo
+============================= */
+
+/* ===== WRAPPER — Fixed pojok kanan bawah ===== */
+.music-player {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  z-index: 9998; /* di bawah lightbox (9999) */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+
+  /* Tersembunyi dulu sebelum cover dibuka */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+/* Muncul setelah cover dibuka */
+.music-player.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ===== LABEL "Now Playing" ===== */
+.music-label {
+  font-family: "Noto Serif", serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+
+  /* Tersembunyi saat musik off */
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+/* Muncul saat musik on */
+.music-player.playing .music-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== EQUALIZER BARS ===== */
+.music-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+  padding-right: 2px;
+
+  /* Tersembunyi saat musik off */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Muncul saat musik on */
+.music-player.playing .music-bars {
+  opacity: 1;
+}
+
+.music-bar {
+  width: 3px;
+  height: 4px;
+  background: #ab1b4d;
+  border-radius: 2px;
+}
+
+/* Animasi bar saat playing */
+.music-player.playing .music-bar:nth-child(1) {
+  animation: barAnim 0.9s ease infinite;
+}
+.music-player.playing .music-bar:nth-child(2) {
+  animation: barAnim 0.9s ease infinite 0.2s;
+}
+.music-player.playing .music-bar:nth-child(3) {
+  animation: barAnim 0.9s ease infinite 0.4s;
+}
+.music-player.playing .music-bar:nth-child(4) {
+  animation: barAnim 0.9s ease infinite 0.15s;
+}
+
+@keyframes barAnim {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 14px;
+  }
+}
+
+/* ===== TOMBOL PLAY/PAUSE ===== */
+.music-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.music-btn:hover {
+  border-color: rgba(171, 27, 77, 0.6);
+  color: white;
+  background: rgba(171, 27, 77, 0.15);
+}
+
+.music-btn:active {
+  transform: scale(0.95);
+}
+
+/* ===== RIPPLE ANIMATION saat playing ===== */
+.music-btn::before,
+.music-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(171, 27, 77, 0.4);
+  opacity: 0;
+}
+
+.music-player.playing .music-btn::before {
+  animation: ripple 2s ease-out infinite;
+}
+
+.music-player.playing .music-btn::after {
+  animation: ripple 2s ease-out infinite 0.7s;
+}
+
+/* Tombol berubah warna saat playing */
+.music-player.playing .music-btn {
+  border-color: rgba(171, 27, 77, 0.5);
+  color: white;
+  background: rgba(171, 27, 77, 0.12);
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* ===== RESPONSIVE — Geser sedikit di HP kecil ===== */
+@media (max-width: 480px) {
+  .music-player {
+    bottom: 20px;
+    right: 16px;
+  }
+
+  .music-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
 }
