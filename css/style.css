@@ -74,7 +74,7 @@ body {
 
 #cover {
   height: 100vh;
-  background: url("../assets/cover_new.JPG") center center / cover no-repeat;
+  background: url("../assets/cover_3.JPG") center center / cover no-repeat;
   position: relative;
   text-align: center;
   overflow: hidden;
@@ -1027,6 +1027,226 @@ body {
 }
 
 /* =============================
+   COUNTDOWN SECTION
+   Tambahkan di style.css lo
+============================= */
+
+/* ===== SECTION WRAPPER ===== */
+#countdownSection {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 32px;
+  overflow: hidden;
+}
+
+/* ===== BACKGROUND FOTO PREWED =====
+   GANTI URL DI BAWAH INI
+   dengan path foto prewed lo
+===== */
+.countdown-bg {
+  position: absolute;
+  inset: 0;
+  /* =============================================
+     GANTI BAGIAN INI dengan path foto lo:
+     background: url("../assets/foto/NAMA_FOTO.jpg") center center / cover no-repeat;
+     ============================================= */
+  background: url("../assets/cover_3.JPG") center center / cover no-repeat;
+  z-index: 0;
+}
+
+/* ===== OVERLAY GELAP =====
+   Biar teks tetap terbaca di atas foto
+   Naikkan angka rgba terakhir (0.55) kalau
+   foto terlalu terang & teks susah dibaca
+===== */
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
+
+/* ===== KONTEN ===== */
+.countdown-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+
+  /* Animasi masuk saat scroll */
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#countdownSection.show .countdown-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== TITLE ===== */
+.countdown-title {
+  text-align: center;
+}
+
+.countdown-title-the {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.countdown-title-word {
+  font-family: "Noto Serif", serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  vertical-align: middle;
+}
+
+.countdown-title-underline {
+  width: 36px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.7);
+  margin: 8px auto 0;
+}
+
+/* ===== GRID COUNTDOWN ===== */
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* ===== ITEM ===== */
+.countdown-item {
+  padding: 24px 8px 18px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ===== ANGKA ===== */
+.countdown-num {
+  font-family: "Playfair Display", serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: white;
+}
+
+/* ===== AKSEN MERAH ===== */
+.countdown-accent {
+  width: 20px;
+  height: 1px;
+  background: rgba(171, 27, 77, 0.7);
+}
+
+/* ===== SATUAN ===== */
+.countdown-unit {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+/* ===== DIVIDER ===== */
+.countdown-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.countdown-divider-line {
+  flex: 1;
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.countdown-divider-diamond {
+  width: 5px;
+  height: 5px;
+  border: 0.5px solid rgba(171, 27, 77, 0.8);
+  background: rgba(171, 27, 77, 0.3);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ===== PESAN ===== */
+.countdown-message {
+  font-size: 14px;
+  line-height: 2;
+  opacity: 0.8;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  max-width: 400px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  #countdownSection {
+    padding: 60px 24px;
+  }
+  .countdown-num {
+    font-size: 30px;
+  }
+  .countdown-grid {
+    max-width: 300px;
+  }
+  .countdown-item {
+    padding: 18px 6px 14px;
+  }
+  .countdown-title-the {
+    font-size: 40px;
+  }
+  .countdown-title-word {
+    font-size: 20px;
+  }
+  .countdown-message {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .countdown-num {
+    font-size: 26px;
+  }
+  .countdown-grid {
+    max-width: 260px;
+  }
+  .countdown-item {
+    padding: 14px 4px 10px;
+  }
+}
+
+/* =============================
    EVENT SECTION - FINAL v2
 ============================= */
 
@@ -1144,81 +1364,6 @@ body {
 #eventSection.show .event-month-year {
   opacity: 0.8;
   transform: translateY(0);
-}
-
-.countdown-wrapper {
-  text-align: center;
-  margin-bottom: 44px; /* sama kayak event-month-year margin-bottom */
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.8s ease 0.25s,
-    transform 0.8s ease 0.25s;
-}
-
-#eventSection.show .countdown-wrapper {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Label kecil di atas grid */
-.countdown-label {
-  font-size: 10px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  opacity: 0.3;
-  margin-bottom: 16px;
-}
-
-/* ===== GRID 4 KOLOM ===== */
-.countdown-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  /* Sangat subtle — video tetap keliatan di belakang */
-  background: rgba(255, 255, 255, 0.06);
-  border: 0.5px solid rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
-  overflow: hidden;
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-/* ===== ITEM (tiap satuan waktu) ===== */
-.countdown-item {
-  padding: 18px 8px 14px;
-  /* Transparan — tidak nutup video */
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(4px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-/* ===== ANGKA ===== */
-.countdown-num {
-  font-family: "Playfair Display", serif;
-  font-size: 32px;
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -1px;
-  color: white;
-}
-
-/* ===== GARIS AKSEN MERAH ===== */
-.countdown-accent {
-  width: 16px;
-  height: 1px;
-  background: rgba(171, 27, 77, 0.5);
-}
-
-/* ===== SATUAN WAKTU ===== */
-.countdown-unit {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  opacity: 0.35;
 }
 
 /* ===== UPDATE: hapus margin-bottom dari event-month-year =====

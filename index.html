@@ -288,6 +288,73 @@
         </div>
       </section>
 
+      <!-- =============================
+     COUNTDOWN SECTION
+     Tambahkan di #mainContent
+     sesuai urutan section lo
+
+     PENTING: Ganti url foto background di CSS
+     .countdown-bg { background: url("../assets/foto/NAMA_FOTO.jpg") }
+============================= -->
+      <section id="countdownSection">
+        <!-- Background foto prewed -->
+        <div class="countdown-bg"></div>
+
+        <!-- Overlay gelap di atas foto -->
+        <div class="countdown-overlay"></div>
+
+        <div class="countdown-inner">
+          <!-- ===== TITLE ===== -->
+          <div class="countdown-title">
+            <span class="countdown-title-the">The</span>
+            <span class="countdown-title-word">Countdown</span>
+            <div class="countdown-title-underline"></div>
+          </div>
+
+          <!-- ===== GRID HITUNG MUNDUR ===== -->
+          <div class="countdown-grid">
+            <div class="countdown-item">
+              <div class="countdown-num" id="cdDays">--</div>
+              <div class="countdown-accent"></div>
+              <div class="countdown-unit">Days</div>
+            </div>
+
+            <div class="countdown-item">
+              <div class="countdown-num" id="cdHours">--</div>
+              <div class="countdown-accent"></div>
+              <div class="countdown-unit">Hours</div>
+            </div>
+
+            <div class="countdown-item">
+              <div class="countdown-num" id="cdMinutes">--</div>
+              <div class="countdown-accent"></div>
+              <div class="countdown-unit">Minutes</div>
+            </div>
+
+            <div class="countdown-item">
+              <div class="countdown-num" id="cdSeconds">--</div>
+              <div class="countdown-accent"></div>
+              <div class="countdown-unit">Seconds</div>
+            </div>
+          </div>
+
+          <!-- ===== DIVIDER ===== -->
+          <div class="countdown-divider">
+            <div class="countdown-divider-line"></div>
+            <div class="countdown-divider-diamond"></div>
+            <div class="countdown-divider-line"></div>
+          </div>
+
+          <!-- ===== PESAN ===== -->
+          <p class="countdown-message">
+            "We are stepping into a new chapter of our lives, and it would mean
+            so much to have our family and friends be part of our happiness.
+            Through this invitation, we warmly invite you to join us in
+            celebrating our wedding day."
+          </p>
+        </div>
+      </section>
+
       <!-- ==============EVENT SECTION - FINAL v2============== -->
       <section id="eventSection">
         <div class="container">
@@ -304,40 +371,6 @@
           <!-- Tanggal Hero -->
           <div class="event-date-hero">15</div>
           <p class="event-month-year">Oktober &nbsp;·&nbsp; 2026</p>
-
-          <!-- ===== COUNTDOWN =====
-         Diletakkan di antara tanggal & divider
-         Compact & transparan, tidak ganggu video
-    ===== -->
-          <!-- <div class="countdown-wrapper">
-            <p class="countdown-label">Menuju Hari Istimewa</p>
-            <div class="countdown-grid">
-              <div class="countdown-item">
-                <div class="countdown-num" id="cdDays">--</div>
-                <div class="countdown-accent"></div>
-                <div class="countdown-unit">Hari</div>
-              </div>
-
-              <div class="countdown-item">
-                <div class="countdown-num" id="cdHours">--</div>
-                <div class="countdown-accent"></div>
-                <div class="countdown-unit">Jam</div>
-              </div>
-
-              <div class="countdown-item">
-                <div class="countdown-num" id="cdMinutes">--</div>
-                <div class="countdown-accent"></div>
-                <div class="countdown-unit">Menit</div>
-              </div>
-
-              <div class="countdown-item">
-                <div class="countdown-num" id="cdSeconds">--</div>
-                <div class="countdown-accent"></div>
-                <div class="countdown-unit">Detik</div>
-              </div>
-            </div>
-          </div> -->
-          <!-- end .countdown-wrapper -->
 
           <!-- Divider dekoratif -->
           <div class="event-divider">
@@ -643,7 +676,7 @@
     </main>
 
     <audio id="bgMusic" loop>
-      <source src="assets/music/music.mp3" type="audio/mpeg" />
+      <source src="assets/music/new_music.mp3" type="audio/mpeg" />
     </audio>
 
     <!-- Music Player UI — Fixed pojok kanan bawah -->
