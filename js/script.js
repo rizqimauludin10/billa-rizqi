@@ -135,33 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
   startSlider(".groom-slide", 4500);
 
   /* =============================
-     COUNTDOWN TIMER
-     Uncomment kalau countdown diaktifkan di HTML
-  ============================= */
-  // const weddingDate = new Date("2026-10-15T08:00:00+07:00");
-  //
-  // function updateCountdown() {
-  //   const diff = weddingDate - new Date();
-  //   if (diff <= 0) {
-  //     ["cdDays","cdHours","cdMinutes","cdSeconds"].forEach(id => {
-  //       const el = document.getElementById(id);
-  //       if (el) el.textContent = "00";
-  //     });
-  //     return;
-  //   }
-  //   const days    = Math.floor(diff / 86400000);
-  //   const hours   = Math.floor((diff % 86400000) / 3600000);
-  //   const minutes = Math.floor((diff % 3600000) / 60000);
-  //   const seconds = Math.floor((diff % 60000) / 1000);
-  //   const pad = n => String(n).padStart(2, "0");
-  //   const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = pad(val); };
-  //   set("cdDays", days); set("cdHours", hours);
-  //   set("cdMinutes", minutes); set("cdSeconds", seconds);
-  // }
-  // updateCountdown();
-  // setInterval(updateCountdown, 1000);
-
-  /* =============================
      RSVP CHAT
   ============================= */
   initRSVP();
@@ -175,6 +148,37 @@ document.addEventListener("DOMContentLoaded", function () {
      GALLERY
   ============================= */
   initGallery();
+
+  /* =============================
+     COUNTDOWN TIMER   ← TAMBAH DI SINI
+  ============================= */
+  const countdownSection = document.getElementById("countdownSection");
+  if (countdownSection) observer.observe(countdownSection);
+
+  const weddingDate = new Date("2026-10-15T08:00:00+07:00");
+
+  function updateCountdown() {
+    const diff = weddingDate - new Date();
+    if (diff <= 0) {
+      ["cdDays", "cdHours", "cdMinutes", "cdSeconds"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = "00";
+      });
+      return;
+    }
+    const pad = (n) => String(Math.floor(n)).padStart(2, "0");
+    const setEl = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = pad(val);
+    };
+    setEl("cdDays", Math.floor(diff / 86400000));
+    setEl("cdHours", Math.floor((diff % 86400000) / 3600000));
+    setEl("cdMinutes", Math.floor((diff % 3600000) / 60000));
+    setEl("cdSeconds", Math.floor((diff % 60000) / 1000));
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 }); // end DOMContentLoaded
 
 /* =============================
