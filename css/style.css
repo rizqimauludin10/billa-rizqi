@@ -63,7 +63,7 @@ body {
 .video-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.4);
   z-index: -2;
   pointer-events: none;
 }
@@ -356,8 +356,8 @@ body {
   position: relative;
   background: linear-gradient(
     to bottom,
-    rgba(14, 14, 14, 0.95),
-    rgba(28, 28, 28, 0.95)
+    rgba(14, 14, 14, 0.35),
+    rgba(28, 28, 28, 0.35)
   );
 }
 
@@ -616,8 +616,8 @@ body {
   padding: 50px 15px;
   background: linear-gradient(
     to bottom,
-    rgba(22, 22, 22, 0.316),
-    rgba(30, 30, 30, 0.545)
+    rgba(22, 22, 22, 0.25),
+    rgba(30, 30, 30, 0.35)
   );
   display: flex;
   align-items: center;
@@ -824,8 +824,8 @@ body {
   padding: 50px 15px;
   background: linear-gradient(
     to bottom,
-    rgba(18, 18, 18, 0.5),
-    rgba(25, 25, 25, 0.7)
+    rgba(18, 18, 18, 0.25),
+    rgba(25, 25, 25, 0.35)
   );
   display: flex;
   align-items: center;
@@ -1258,8 +1258,8 @@ body {
   justify-content: center;
   background: linear-gradient(
     to bottom,
-    rgba(20, 20, 20, 0.95),
-    rgba(35, 35, 35, 0.95)
+    rgba(20, 20, 20, 0.35),
+    rgba(35, 35, 35, 0.35)
   );
 }
 
@@ -1629,8 +1629,8 @@ body {
   justify-content: center;
   background: linear-gradient(
     to bottom,
-    rgba(15, 15, 15, 0.92),
-    rgba(25, 25, 25, 0.96)
+    rgba(15, 15, 15, 0.35),
+    rgba(25, 25, 25, 0.4)
   );
 }
 
@@ -2046,8 +2046,8 @@ body {
   justify-content: center;
   background: linear-gradient(
     to bottom,
-    rgba(18, 18, 18, 0.95),
-    rgba(30, 30, 30, 0.95)
+    rgba(18, 18, 18, 0.35),
+    rgba(30, 30, 30, 0.35)
   );
 }
 
@@ -2237,8 +2237,8 @@ body {
   padding: 80px 25px;
   background: linear-gradient(
     to bottom,
-    rgba(14, 14, 14, 0.95),
-    rgba(25, 25, 25, 0.95)
+    rgba(14, 14, 14, 0.35),
+    rgba(25, 25, 25, 0.35)
   );
 }
 
@@ -2463,7 +2463,7 @@ body {
 #gallerySection {
   position: relative;
   overflow: hidden;
-  background: #0a0a0a;
+  background: rgba(10, 10, 10, 0.3);
 }
 
 /* Grain texture — berasa vintage & film */
