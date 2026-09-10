@@ -677,11 +677,13 @@ function initMusicPlayer() {
     player.classList.add("playing");
     icon.className = "bi bi-pause-fill";
 
+    let steps = 0;
     fadeInterval = setInterval(() => {
+      steps++;
       if (music.volume < 0.65) {
         music.volume = Math.min(music.volume + 0.05, 0.7);
-      } else {
-        music.volume = 0.7;
+      }
+      if (music.volume >= 0.65 || steps >= 14) {
         clearInterval(fadeInterval);
       }
     }, 100);
@@ -691,10 +693,13 @@ function initMusicPlayer() {
   function pauseWithFade() {
     clearInterval(fadeInterval);
 
+    let steps = 0;
     fadeInterval = setInterval(() => {
+      steps++;
       if (music.volume > 0.05) {
         music.volume = Math.max(music.volume - 0.05, 0);
-      } else {
+      }
+      if (music.volume <= 0.05 || steps >= 14) {
         music.volume = 0;
         music.pause();
         clearInterval(fadeInterval);
