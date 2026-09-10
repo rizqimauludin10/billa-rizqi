@@ -61,63 +61,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* =============================
      INTERSECTION OBSERVER
-     Semua scroll animation dalam satu observer
+     Semua scroll animation dalam satu observer.
+
+     CLEANUP: sebelumnya tiap section didaftarkan lewat
+     "if (x) observer.observe(x)" satu-satu (9 baris berulang) —
+     digabung jadi satu array + loop biar lebih ringkas dan gampang
+     nambah section baru nanti.
+
+     PERFORMANCE: setelah sebuah elemen kelihatan & dikasih class
+     "show", elemen itu di-unobserve. Animasi ini kan cuma sekali
+     jalan (muncul saat pertama masuk viewport, gak pernah balik ke
+     kondisi awal), jadi gak perlu terus dipantau observer selama
+     sisa hidup halaman — mengurangi kerja observer tiap kali user
+     scroll di halaman yang panjang ini.
   ============================= */
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("show");
+          observer.unobserve(entry.target);
         }
       });
     },
     { threshold: 0.15 },
   );
 
-  // Quote section
-  const quoteContainer = document.querySelector("#quoteSection .container");
-  if (quoteContainer) observer.observe(quoteContainer);
+  const revealTargets = [
+    document.querySelector("#quoteSection .container"),
+    document.querySelector(".journey-title"),
+    ...document.querySelectorAll(".story-item"),
+    document.getElementById("brideSection"),
+    document.getElementById("groomSection"),
+    document.getElementById("countdownSection"),
+    document.getElementById("eventSection"),
+    // Akad & Resepsi sekarang "halaman" sendiri-sendiri — masing²
+    // di-observe terpisah biar fade-in-nya jalan pas user scroll
+    // ke tiap halaman, bukan sekaligus pas judul "The Event" muncul.
+    ...document.querySelectorAll(".event-page"),
+    document.getElementById("venueSection"),
+    document.getElementById("rsvpSection"),
+    document.getElementById("wishesSection"),
+    document.getElementById("thanksSection"),
+    document.getElementById("gallerySection"),
+    document.getElementById("closingSection"),
+  ].filter(Boolean); // buang null kalau ada elemen yang gak ketemu
 
-  // Journey title & story items
-  const journeyTitle = document.querySelector(".journey-title");
-  if (journeyTitle) observer.observe(journeyTitle);
-  document
-    .querySelectorAll(".story-item")
-    .forEach((item) => observer.observe(item));
-
-  // Bride & Groom
-  const brideSection = document.getElementById("brideSection");
-  const groomSection = document.getElementById("groomSection");
-  if (brideSection) observer.observe(brideSection);
-  if (groomSection) observer.observe(groomSection);
-
-  // Event section
-  const eventSection = document.getElementById("eventSection");
-  if (eventSection) observer.observe(eventSection);
-
-  // Venue section
-  const venueSection = document.getElementById("venueSection");
-  if (venueSection) observer.observe(venueSection);
-
-  // RSVP section
-  const rsvpSection = document.getElementById("rsvpSection");
-  if (rsvpSection) observer.observe(rsvpSection);
-
-  // Wishes section
-  const wishesSection = document.getElementById("wishesSection");
-  if (wishesSection) observer.observe(wishesSection);
-
-  // Gallery section
-  const gallerySection = document.getElementById("gallerySection");
-  if (gallerySection) observer.observe(gallerySection);
-
-  // Closing section
-  const closingSection = document.getElementById("closingSection");
-  if (closingSection) observer.observe(closingSection);
+  revealTargets.forEach((el) => observer.observe(el));
 
   /* =============================
      SLIDER — Bride & Groom
      Reusable function
+
+     PERFORMANCE: skip kerja kalau tab lagi di-background
+     (document.hidden). Sebelumnya interval ini terus jalan ganti
+     slide walau user pindah tab / minimize browser — buang-buang
+     CPU & baterai buat animasi yang gak keliatan siapa-siapa.
   ============================= */
   function startSlider(selector, interval) {
     const slides = document.querySelectorAll(selector);
@@ -125,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let index = 0;
 
     setInterval(() => {
+      if (document.hidden) return;
       slides[index].classList.remove("active");
       index = (index + 1) % slides.length;
       slides[index].classList.add("active");
@@ -133,6 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   startSlider(".bride-slide", 4000);
   startSlider(".groom-slide", 4500);
+  // Interval lebih panjang (6 detik) dari Bride/Groom (4-4.5 detik),
+  // digabung sama transisi 3 detik di CSS — hasilnya slideshow yang
+  // beneran berasa pelan & tenang, bukan buru-buru gonta-ganti foto.
+  startSlider(".thanks-slide", 6000);
 
   /* =============================
      RSVP CHAT
@@ -150,11 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
   initGallery();
 
   /* =============================
-     COUNTDOWN TIMER   ← TAMBAH DI SINI
+     COUNTDOWN TIMER
   ============================= */
-  const countdownSection = document.getElementById("countdownSection");
-  if (countdownSection) observer.observe(countdownSection);
-
   const weddingDate = new Date("2026-10-15T08:00:00+07:00");
 
   function updateCountdown() {
@@ -178,7 +179,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   updateCountdown();
-  setInterval(updateCountdown, 1000);
+
+  // PERFORMANCE: skip tick countdown kalau tab di-background,
+  // lalu refresh sekali begitu tab aktif lagi biar angkanya gak
+  // basi pas user balik.
+  setInterval(() => {
+    if (!document.hidden) updateCountdown();
+  }, 1000);
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) updateCountdown();
+  });
 }); // end DOMContentLoaded
 
 /* =============================
@@ -448,9 +459,18 @@ function initWishes() {
   loadMore.classList.add("hidden");
   empty.classList.add("hidden");
 
-  fetch(APPS_SCRIPT_URL)
+  // FIX: Google Apps Script kadang butuh beberapa detik buat "bangun"
+  // (cold start) kalau lama gak dipanggil. AbortController di sini
+  // kasih batas waktu tunggu 10 detik — kalau kelewat, tampilkan
+  // pesan yang jujur ("lagi lama dimuat") bukan pesan "belum ada
+  // ucapan" yang bisa bikin tamu salah paham ucapannya hilang.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  fetch(APPS_SCRIPT_URL, { signal: controller.signal })
     .then((res) => res.json())
     .then((data) => {
+      clearTimeout(timeoutId);
       loading.classList.add("hidden");
       allWishes = data.filter((row) => row.ucapan && row.ucapan.trim() !== "");
       if (allWishes.length === 0) {
@@ -460,9 +480,17 @@ function initWishes() {
       renderWishes();
       updateLoadMoreBtn();
     })
-    .catch(() => {
+    .catch((err) => {
+      clearTimeout(timeoutId);
       loading.classList.add("hidden");
       empty.classList.remove("hidden");
+      const emptyText = empty.querySelector("p");
+      if (emptyText) {
+        emptyText.textContent =
+          err.name === "AbortError"
+            ? "Ucapan agak lama dimuat. Coba refresh halaman ya 🤍"
+            : "Belum ada ucapan. Jadilah yang pertama! 🤍";
+      }
     });
 
   function renderWishes() {
@@ -475,9 +503,10 @@ function initWishes() {
       const statusClass = isHadir ? "hadir" : "tidak";
       const statusText = isHadir ? "Hadir" : "Berhalangan";
       card.innerHTML = `
-        <span class="wishes-card-quote">"</span>
-        <div class="wishes-card-name">${escapeHTML(wish.nama)}</div>
-        <span class="wishes-card-status ${statusClass}">${statusText}</span>
+        <div class="wishes-card-header">
+          <div class="wishes-card-name">${escapeHTML(wish.nama)}</div>
+          <span class="wishes-card-status ${statusClass}">${statusText}</span>
+        </div>
         <div class="wishes-card-text">${escapeHTML(wish.ucapan)}</div>
       `;
       masonry.appendChild(card);
@@ -523,6 +552,10 @@ function initGallery() {
 
   if (!items.length || !lightbox) return;
 
+  // NOTE: .src di sini selalu ngasih URL absolut yang udah di-resolve,
+  // gak peduli foto grid-nya udah kebuka (loading="lazy") atau belum —
+  // jadi aman dipakai buat lightbox tanpa mesti nunggu foto grid
+  // ke-load duluan.
   const srcs = Array.from(items)
     .sort((a, b) => parseInt(a.dataset.index) - parseInt(b.dataset.index))
     .map((item) => item.querySelector("img").src);
@@ -578,7 +611,7 @@ function initGallery() {
     if (e.key === "Escape") closeLightbox();
   });
 
-  // FIX: Swipe support untuk mobile
+  // Swipe support untuk mobile
   let touchStartX = 0;
   let touchEndX = 0;
 
@@ -614,17 +647,11 @@ function initMusicPlayer() {
   let fadeInterval = null;
 
   // ===== TAMPILKAN PLAYER SETELAH COVER DIBUKA =====
-  // Player muncul bersamaan dengan mainContent
-  // Observe mainContent, saat show-content ditambahkan
-  // player jadi visible
   const openBtnEl = document.getElementById("openBtn");
   if (openBtnEl) {
     openBtnEl.addEventListener("click", () => {
-      // Delay sedikit biar muncul setelah transisi cover selesai
       setTimeout(() => {
         player.classList.add("visible");
-        // Auto play musik saat undangan dibuka
-        // dengan efek fade in volume
         playWithFade();
       }, 1400);
     });
@@ -650,8 +677,6 @@ function initMusicPlayer() {
     player.classList.add("playing");
     icon.className = "bi bi-pause-fill";
 
-    // Naikkan volume pelan dari 0 ke 0.7
-    // setiap 100ms naik 0.05
     fadeInterval = setInterval(() => {
       if (music.volume < 0.65) {
         music.volume = Math.min(music.volume + 0.05, 0.7);
@@ -666,7 +691,6 @@ function initMusicPlayer() {
   function pauseWithFade() {
     clearInterval(fadeInterval);
 
-    // Turunkan volume pelan dari current ke 0
     fadeInterval = setInterval(() => {
       if (music.volume > 0.05) {
         music.volume = Math.max(music.volume - 0.05, 0);
@@ -681,4 +705,24 @@ function initMusicPlayer() {
       }
     }, 100);
   }
+}
+
+// ===== SIMPAN KE KALENDER (EVENT SECTION) =====
+const addToCalendarBtn = document.getElementById("addToCalendarBtn");
+if (addToCalendarBtn) {
+  addToCalendarBtn.addEventListener("click", () => {
+    const title = encodeURIComponent("The Wedding of Billa & Rizqi");
+    const details = encodeURIComponent(
+      "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di perayaan pernikahan Billa & Rizqi.\n\n- Akad Nikah: 08.00 WIB\n- Resepsi Nikah: 11.00 - 14.00 WIB",
+    );
+    const location = encodeURIComponent(
+      "Stay.vie Hotel, Lantai 7 (Rooftop), Surabaya",
+    );
+    // 15 Oktober 2026 jam 08:00 WIB - 14:00 WIB (01:00 - 07:00 UTC)
+    const dates = "20261015T010000Z/20261015T070000Z";
+
+    const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+
+    window.open(gcalUrl, "_blank");
+  });
 }

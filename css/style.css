@@ -1,5 +1,13 @@
 /* =============================
-   CUSTOM FONT - PRESTIGE SIGNATURE
+   CUSTOM FONT
+   CLEANUP: "ThePrestige" dihapus — font ini di-load tapi gak pernah
+   dipanggil di manapun dalam CSS (cek: gak ada satupun elemen pakai
+   font-family: "ThePrestige"). File font itu tetap didownload browser
+   walau gak kepake, jadi menghapusnya = bandwidth & request lebih hemat.
+   font-display: swap ditambahkan di kedua font di bawah — ini bikin
+   teks tetap tampil pakai fallback font selama custom font masih
+   didownload, jadi gak ada teks invisible (FOIT) yang bikin halaman
+   berasa nge-freeze pas awal buka.
    ============================= */
 
 @font-face {
@@ -7,13 +15,7 @@
   src: url("../assets/fonts/Prestige-Signature-Script.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
-
-@font-face {
-  font-family: "ThePrestige";
-  src: url("../assets/fonts/ThePrestige.otf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -21,6 +23,7 @@
   src: url("../assets/fonts/Sloop.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 /* =============================
@@ -36,6 +39,9 @@ body {
   font-family: "Noto Serif", serif;
   color: white;
   overflow-x: hidden;
+  /* Sengaja hidden: scroll di-lock sebelum tombol "Buka Undangan"
+     diklik. Di-unlock lewat JS (document.body.style.overflowY =
+     "auto") saat cover dibuka. Jangan dihapus. */
   overflow-y: hidden;
 }
 
@@ -161,7 +167,6 @@ body {
 
 /* =============================
    TOMBOL
-   FIX: Gabung jadi satu declaration
    ============================= */
 .button-wrapper {
   position: absolute;
@@ -187,7 +192,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(3px);
-  animation: softPulse 2.5s infinite; /* FIX: digabung di sini */
+  animation: softPulse 2.5s infinite;
 }
 
 #openBtn:active {
@@ -243,7 +248,6 @@ body {
 
 /* =============================
    MAIN CONTENT
-   FIX: Gabungin jadi satu declaration, hapus konflik
    ============================= */
 #mainContent {
   display: none;
@@ -343,16 +347,12 @@ body {
 }
 
 /* =============================
-   OUR JOURNEY SECTION - REDESIGN
-   Hapus semua CSS #journeySection, .story-list,
-   .story-item, .story-photo, .story-card, .story-year
-   yang lama, ganti dengan ini semua
-============================= */
+   OUR JOURNEY SECTION
+   ============================= */
 
-/* ===== SECTION WRAPPER ===== */
 #journeySection {
   min-height: 100vh;
-  padding: 80px 0; /* padding 0 kiri-kanan biar foto bisa full width */
+  padding: 80px 0;
   position: relative;
   background: linear-gradient(
     to bottom,
@@ -361,25 +361,18 @@ body {
   );
 }
 
-/* Container tetap ada tapi tanpa padding samping
-   biar story-item bisa full width */
 #journeySection .container {
   max-width: 480px;
   margin: auto;
   position: relative;
 }
 
-/* ===== TITLE =====
-   Animasi fade-up saat scroll masuk viewport
-===== */
 .journey-title {
   text-align: center;
   margin-bottom: 50px;
-  padding: 0 25px; /* padding kiri-kanan khusus title */
+  padding: 0 25px;
 }
 
-/* "Our" — font Sloop script, warna merah
-   state awal: invisible + geser ke bawah */
 .journey-our {
   font-family: "Sloop", cursive;
   font-size: 52px;
@@ -392,8 +385,6 @@ body {
   transform: translateY(20px);
 }
 
-/* "Journey" — Noto Serif uppercase
-   state awal: invisible + geser ke bawah */
 .journey-word {
   font-family: "Noto Serif", serif;
   font-size: 24px;
@@ -404,33 +395,24 @@ body {
   transform: translateY(20px);
 }
 
-/* Saat title masuk viewport (.show ditambahkan oleh JS) */
 .journey-title.show .journey-our {
   opacity: 1;
   transform: translateY(0);
   transition: all 0.8s ease;
 }
 
-/* Sedikit delay untuk "Journey" biar efek stagger */
 .journey-title.show .journey-word {
   opacity: 0.85;
   transform: translateY(0);
   transition: all 0.8s ease 0.2s;
 }
 
-/* ===== STORY LIST =====
-   Wrapper semua story item
-===== */
 .story-list {
   display: flex;
   flex-direction: column;
-  gap: 0; /* rapat tanpa gap biar terlihat connected */
+  gap: 0;
 }
 
-/* ===== STORY ITEM =====
-   Layout grid 2 kolom: foto + info
-   State awal: invisible untuk animasi scroll
-===== */
 .story-item {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -440,13 +422,11 @@ body {
   transition: all 1s ease;
 }
 
-/* Saat item masuk viewport */
 .story-item.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Delay bertahap per item biar efek stagger */
 .story-item:nth-child(1) {
   transition-delay: 0s;
 }
@@ -457,10 +437,6 @@ body {
   transition-delay: 0.3s;
 }
 
-/* ===== POSISI FOTO & INFO =====
-   odd  = foto kiri (order 1), info kanan (order 2)
-   even = foto kanan (order 2), info kiri (order 1)
-===== */
 .story-item.odd .story-photo {
   order: 1;
 }
@@ -475,9 +451,6 @@ body {
   order: 1;
 }
 
-/* ===== FOTO =====
-   Full height, object-fit cover
-===== */
 .story-photo {
   position: relative;
   overflow: hidden;
@@ -492,12 +465,10 @@ body {
   display: block;
 }
 
-/* Zoom halus saat hover */
 .story-item:hover .story-photo img {
   transform: scale(1.04);
 }
 
-/* Overlay gelap subtle di atas foto */
 .story-photo::after {
   content: "";
   position: absolute;
@@ -506,11 +477,6 @@ body {
   pointer-events: none;
 }
 
-/* ===== TAHUN =====
-   Overlaid di atas foto
-   odd  = pojok kanan bawah
-   even = pojok kiri bawah
-===== */
 .story-year {
   position: absolute;
   z-index: 2;
@@ -534,9 +500,6 @@ body {
   text-align: left;
 }
 
-/* ===== INFO =====
-   Panel teks di samping foto
-===== */
 .story-info {
   display: flex;
   flex-direction: column;
@@ -547,9 +510,6 @@ body {
   position: relative;
 }
 
-/* Aksen garis vertikal berwarna di sisi dalam
-   odd  = garis di sisi KIRI info (dekat foto)
-   even = garis di sisi KANAN info (dekat foto) */
 .story-item.odd .story-info::before {
   content: "";
   position: absolute;
@@ -570,7 +530,6 @@ body {
   background: linear-gradient(to bottom, transparent, #ab1b4d, transparent);
 }
 
-/* ===== JUDUL STORY ===== */
 .story-title {
   font-family: "Playfair Display", serif;
   font-size: 18px;
@@ -581,7 +540,6 @@ body {
   color: white;
 }
 
-/* ===== GARIS DEKORATIF DI BAWAH JUDUL ===== */
 .story-sep {
   width: 24px;
   height: 1px;
@@ -589,12 +547,10 @@ body {
   margin-bottom: 14px;
 }
 
-/* even: garis rata kanan biar simetris */
 .story-item.even .story-sep {
   margin-left: auto;
 }
 
-/* ===== DESKRIPSI ===== */
 .story-desc {
   font-size: 12px;
   line-height: 1.9;
@@ -602,7 +558,6 @@ body {
   font-style: italic;
 }
 
-/* even: teks rata kanan biar mirror sama posisi foto */
 .story-item.even .story-info {
   text-align: right;
 }
@@ -647,12 +602,6 @@ body {
   overflow: hidden;
   border-radius: 6px;
   margin-bottom: 20px;
-  transform: scale(1);
-  transition: none;
-}
-
-#brideSection.show .bride-photo {
-  transform: scale(1);
 }
 
 .bride-slide {
@@ -703,8 +652,6 @@ body {
   border: 0.5px solid rgba(255, 255, 255, 0.08);
   border-top: none;
   border-radius: 0 0 6px 6px;
-
-  /* Animasi masuk */
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -717,14 +664,12 @@ body {
   transform: translateY(0);
 }
 
-/* Nama — focal point */
 .bride-name-wrap {
   padding: 20px 20px 16px;
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
   position: relative;
 }
 
-/* Aksen garis merah di kiri */
 .bride-name-wrap::before {
   content: "";
   position: absolute;
@@ -744,7 +689,6 @@ body {
   margin-bottom: 4px;
 }
 
-/* Garis dekoratif di bawah nama */
 .bride-name-sep {
   width: 28px;
   height: 1px;
@@ -752,7 +696,6 @@ body {
   margin-top: 8px;
 }
 
-/* Info orang tua */
 .bride-parents {
   padding: 14px 20px;
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
@@ -773,13 +716,11 @@ body {
   font-style: italic;
 }
 
-/* Instagram */
 .bride-instagram {
   padding: 14px 20px;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 0; /* reset margin lama */
 }
 
 .bride-instagram-icon {
@@ -855,12 +796,6 @@ body {
   overflow: hidden;
   border-radius: 6px;
   margin-bottom: 20px;
-  transform: scale(1);
-  transition: none;
-}
-
-#groomSection.show .groom-photo {
-  transform: scale(1);
 }
 
 .groom-slide {
@@ -905,14 +840,11 @@ body {
   color: white;
 }
 
-/* FIX: Tambahin entrance animation untuk groom-info */
 .groom-info {
   text-align: right;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
   border-top: none;
   border-radius: 0 0 6px 6px;
-
-  /* Animasi masuk */
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -925,14 +857,12 @@ body {
   transform: translateY(0);
 }
 
-/* Nama — focal point */
 .groom-name-wrap {
   padding: 20px 20px 16px;
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
   position: relative;
 }
 
-/* Aksen garis gold di kanan (mirror dari bride) */
 .groom-name-wrap::before {
   content: "";
   position: absolute;
@@ -952,16 +882,14 @@ body {
   margin-bottom: 4px;
 }
 
-/* Garis dekoratif di bawah nama — rata kanan */
 .groom-name-sep {
   width: 28px;
   height: 1px;
   background: rgba(212, 175, 55, 0.6);
   margin-top: 8px;
-  margin-left: auto; /* rata kanan */
+  margin-left: auto;
 }
 
-/* Info orang tua */
 .groom-parents {
   padding: 14px 20px;
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
@@ -982,15 +910,13 @@ body {
   font-style: italic;
 }
 
-/* Instagram — mirror ke kanan */
 .groom-instagram {
   padding: 14px 20px;
   display: flex;
   align-items: center;
-  flex-direction: row; /* icon tetap di kiri */
-  justify-content: flex-end; /* dorong ke kanan */
+  flex-direction: row;
+  justify-content: flex-end;
   gap: 10px;
-  margin-top: 0;
 }
 
 .groom-instagram-icon {
@@ -1022,16 +948,14 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.groom-instagram-handle:hover {
+.groom-instagram:hover .groom-instagram-handle {
   opacity: 1;
 }
 
 /* =============================
    COUNTDOWN SECTION
-   Tambahkan di style.css lo
-============================= */
+   ============================= */
 
-/* ===== SECTION WRAPPER ===== */
 #countdownSection {
   position: relative;
   min-height: 100vh;
@@ -1043,26 +967,13 @@ body {
   overflow: hidden;
 }
 
-/* ===== BACKGROUND FOTO PREWED =====
-   GANTI URL DI BAWAH INI
-   dengan path foto prewed lo
-===== */
 .countdown-bg {
   position: absolute;
   inset: 0;
-  /* =============================================
-     GANTI BAGIAN INI dengan path foto lo:
-     background: url("../assets/foto/NAMA_FOTO.jpg") center center / cover no-repeat;
-     ============================================= */
   background: url("../assets/cover_3.JPG") center center / cover no-repeat;
   z-index: 0;
 }
 
-/* ===== OVERLAY GELAP =====
-   Biar teks tetap terbaca di atas foto
-   Naikkan angka rgba terakhir (0.55) kalau
-   foto terlalu terang & teks susah dibaca
-===== */
 .countdown-overlay {
   position: absolute;
   inset: 0;
@@ -1070,7 +981,6 @@ body {
   z-index: 1;
 }
 
-/* ===== KONTEN ===== */
 .countdown-inner {
   position: relative;
   z-index: 2;
@@ -1080,8 +990,6 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 36px;
-
-  /* Animasi masuk saat scroll */
   opacity: 0;
   transform: translateY(30px);
   transition:
@@ -1094,7 +1002,6 @@ body {
   transform: translateY(0);
 }
 
-/* ===== TITLE ===== */
 .countdown-title {
   text-align: center;
 }
@@ -1119,13 +1026,33 @@ body {
 }
 
 .countdown-title-underline {
-  width: 36px;
-  height: 1px;
-  background: rgba(171, 27, 77, 0.7);
-  margin: 8px auto 0;
+  position: relative;
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  margin: 10px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== GRID COUNTDOWN ===== */
+.countdown-target {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 30px;
+  border-radius: 999px;
+  background: rgba(171, 27, 77, 0.18);
+  border: 1px solid rgba(171, 27, 77, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
 .countdown-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1138,7 +1065,6 @@ body {
   max-width: 360px;
 }
 
-/* ===== ITEM ===== */
 .countdown-item {
   padding: 24px 8px 18px;
   background: rgba(0, 0, 0, 0.35);
@@ -1149,7 +1075,6 @@ body {
   gap: 8px;
 }
 
-/* ===== ANGKA ===== */
 .countdown-num {
   font-family: "Playfair Display", serif;
   font-size: 40px;
@@ -1159,14 +1084,12 @@ body {
   color: white;
 }
 
-/* ===== AKSEN MERAH ===== */
 .countdown-accent {
   width: 20px;
   height: 1px;
   background: rgba(171, 27, 77, 0.7);
 }
 
-/* ===== SATUAN ===== */
 .countdown-unit {
   font-size: 9px;
   letter-spacing: 3px;
@@ -1174,7 +1097,6 @@ body {
   opacity: 0.5;
 }
 
-/* ===== DIVIDER ===== */
 .countdown-divider {
   display: flex;
   align-items: center;
@@ -1198,7 +1120,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ===== PESAN ===== */
 .countdown-message {
   font-size: 14px;
   line-height: 2;
@@ -1209,7 +1130,6 @@ body {
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 480px) {
   #countdownSection {
     padding: 60px 24px;
@@ -1229,6 +1149,10 @@ body {
   .countdown-title-word {
     font-size: 20px;
   }
+  .countdown-target {
+    font-size: 16px;
+    padding: 10px 22px;
+  }
   .countdown-message {
     font-size: 12px;
   }
@@ -1247,31 +1171,44 @@ body {
 }
 
 /* =============================
-   EVENT SECTION - FINAL v2
-============================= */
+   EVENT SECTION
+   ============================= */
 
+/* FIX: sebelumnya "display: flex" di sini nyisa dari desain lama
+   waktu #eventSection cuma nampung SATU .container (flex row gak
+   masalah waktu isinya cuma 1 anak). Sekarang isinya 4 blok berurutan
+   (intro, halaman Akad, halaman Resepsi, closing) — tanpa
+   flex-direction eksplisit, flex defaultnya "row", jadi ke-4 blok itu
+   malah disusun BERSEBELAHAN bukan ke bawah. Diganti ke block biasa;
+   tiap blok anak (.event-intro, .event-page, .event-closing) udah
+   ngatur padding & centering-nya sendiri-sendiri. */
 #eventSection {
-  min-height: 100vh;
-  padding: 40px 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(
-    to bottom,
-    rgba(20, 20, 20, 0.35),
-    rgba(35, 35, 35, 0.35)
+    180deg,
+    rgba(18, 16, 22, 0.45) 0%,
+    rgba(25, 20, 30, 0.5) 100%
   );
+  position: relative;
+}
+
+.event-intro {
+  padding: 60px 20px 24px;
+}
+
+.event-closing {
+  padding: 10px 20px 60px;
 }
 
 #eventSection .container {
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
-/* ===== Section Title — The Day ===== */
 .event-section-title {
-  margin-bottom: 28px;
+  margin-bottom: 16px;
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -1286,7 +1223,7 @@ body {
 
 .event-title-the {
   font-family: "Sloop", cursive;
-  font-size: 52px;
+  font-size: 56px;
   color: #ab1b4d;
   letter-spacing: 2px;
   display: inline-block;
@@ -1296,90 +1233,91 @@ body {
 
 .event-title-word {
   font-family: "Noto Serif", serif;
-  font-size: 35px;
-  letter-spacing: 3px;
+  font-size: 32px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  opacity: 0.85;
+  color: #e5e5e5;
   vertical-align: middle;
 }
 
 .event-title-underline {
-  width: 36px;
-  height: 1px;
-  background: rgba(171, 27, 77, 0.6);
-  margin: 8px auto 0;
+  position: relative;
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  margin: 10px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== Label ===== */
 .event-label {
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 6px;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 24px;
   opacity: 0;
-  margin-bottom: 20px;
-  transform: translateY(20px);
+  transform: translateY(15px);
   transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
+    opacity 0.8s ease 0.1s,
+    transform 0.8s ease 0.1s;
 }
 
 #eventSection.show .event-label {
-  opacity: 0.35;
-  transform: translateY(0);
-}
-
-/* ===== Tanggal Hero ===== */
-.event-date-hero {
-  font-family: "Playfair Display", serif;
-  font-size: 96px;
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -3px;
-  color: white;
-  margin-bottom: 20px;
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 1s ease 0.1s,
-    transform 1s ease 0.1s;
-}
-
-#eventSection.show .event-date-hero {
   opacity: 1;
   transform: translateY(0);
 }
 
-.event-month-year {
-  font-size: 14px;
-  letter-spacing: 7px;
-  text-transform: uppercase;
-  margin-bottom: 28px;
+.event-date-block {
+  margin-bottom: 24px;
   opacity: 0;
   transform: translateY(20px);
   transition:
     opacity 0.8s ease 0.2s,
     transform 0.8s ease 0.2s;
+  text-align: center;
 }
 
-#eventSection.show .event-month-year {
-  opacity: 0.8;
+#eventSection.show .event-date-block {
+  opacity: 1;
   transform: translateY(0);
 }
 
-/* ===== UPDATE: hapus margin-bottom dari event-month-year =====
-   Karena sekarang countdown yang handle spacing ke bawah
-===== */
-.event-month-year {
-  margin-bottom: 28px; /* dikurangi dari 44px, countdown yang handle sisanya */
+.event-day-sub {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #d4af37;
+  font-weight: 500;
+  margin-bottom: 2px;
 }
 
-/* ===== Divider dekoratif ===== */
+.event-date-main {
+  font-family: "Playfair Display", serif;
+  font-size: 76px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -2px;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.event-month-year-sub {
+  font-family: "Noto Serif", serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .event-divider {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 0 auto 44px;
-  max-width: 220px;
+  margin: 0 auto 32px;
+  max-width: 200px;
   opacity: 0;
   transition: opacity 0.8s ease 0.3s;
 }
@@ -1390,237 +1328,356 @@ body {
 
 .event-divider-line {
   flex: 1;
-  height: 0.5px;
-  background: rgba(255, 255, 255, 0.15);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
 }
 
 .event-divider-diamond {
-  width: 5px;
-  height: 5px;
-  border: 0.5px solid rgba(171, 27, 77, 0.8);
-  background: rgba(171, 27, 77, 0.3);
+  width: 6px;
+  height: 6px;
+  border: 1px solid #ab1b4d;
+  background: rgba(171, 27, 77, 0.5);
   transform: rotate(45deg);
   flex-shrink: 0;
 }
 
-/* ===== Cards wrapper ===== */
-.event-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 0;
+/* =============================
+   EVENT — AKAD & RESEPSI SEBAGAI "HALAMAN" TERPISAH
+   Tiap acara dapet section-nya sendiri (hampir 1 layar penuh) dengan
+   foto ornamen bergaya film-strip di atas, biar berasa kayak "pindah
+   halaman" pas di-scroll — bukan cuma 2 card kecil berdampingan lagi.
+   ============================= */
+
+.event-page {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+  position: relative;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(40px);
   transition:
-    opacity 1s ease 0.4s,
-    transform 1s ease 0.4s;
+    opacity 1s ease,
+    transform 1s ease;
 }
 
-#eventSection.show .event-cards {
+.event-page.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ===== Individual card ===== */
-.event-card {
-  position: relative;
-  padding: 32px 18px 28px;
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 2px 2px 0 0;
-  background: rgba(255, 255, 255, 0.02);
-  overflow: hidden;
-  transition:
-    border-color 0.4s ease,
-    background 0.4s ease;
-  text-align: center;
-}
-
-.event-card:hover {
-  border-color: rgba(171, 27, 77, 0.4);
-  background: rgba(171, 27, 77, 0.04);
-}
-
-/* Aksen garis atas berwarna */
-.event-card::before {
+/* Glow lembut di belakang foto — merah buat Akad, gold buat Resepsi.
+   Ini satu-satunya aksen dekoratif tambahan yang sengaja gak dibikin
+   berlebihan, biar foto ornamen tetap jadi fokus utama tiap section. */
+.event-page::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1.5px;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 32%,
+    rgba(171, 27, 77, 0.14),
+    transparent 60%
+  );
 }
 
-.event-card.akad::before {
-  background: linear-gradient(to right, transparent, #ab1b4d, transparent);
+.event-page.resepsi::before {
+  background: radial-gradient(
+    circle at 50% 32%,
+    rgba(212, 175, 55, 0.14),
+    transparent 60%
+  );
 }
 
-.event-card.resepsi::before {
-  background: linear-gradient(to right, transparent, #d4af37, transparent);
+/* ===== FOTO ORNAMEN — GAYA FILM-STRIP =====
+   Foto dikasih "perforasi" ala kamera film 35mm di sisi atas-bawah,
+   sedikit dimiringkan biar berasa kayak foto ditempel santai, bukan
+   kotak rata generik. Nyambung ke tone grayscale editorial yang udah
+   ada di section Journey & Gallery.
+===== */
+.event-film-frame {
+  position: relative;
+  width: min(280px, 74%);
+  margin: 0 auto 22px;
+  padding: 10px 14px 26px;
+  background: #15121a;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 
-/* Icon card */
-.event-card-icon {
-  font-size: 24px;
-  margin-bottom: 16px;
+.event-page.akad .event-film-frame {
+  transform: rotate(-3deg);
+}
+
+.event-page.resepsi .event-film-frame {
+  transform: rotate(3deg);
+}
+
+.film-sprockets {
+  height: 7px;
+  margin: 0 -2px 8px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 5px,
+    rgba(245, 240, 230, 0.65) 5px 11px
+  );
+}
+
+.event-film-frame img {
   display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  filter: grayscale(35%) contrast(1.05);
 }
 
-.event-card.akad .event-card-icon {
-  color: #ab1b4d;
+.film-frame-tag {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  font-family: "Noto Serif", serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(245, 240, 230, 0.5);
 }
 
-.event-card.resepsi .event-card-icon {
-  color: #d4af37;
-}
-
-/* ===== Nama acara — FOCAL POINT ===== */
-.event-card-title {
+/* ===== JUDUL & INFO ===== */
+.event-page-heading {
   font-family: "Playfair Display", serif;
-  font-size: 22px;
+  font-size: 34px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 16px 0 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.event-page-subheading {
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.45);
+  position: relative;
+  z-index: 1;
+}
+
+/* Tanggal singkat satu baris — tampil di kedua halaman (Akad &
+   Resepsi), beda sama .event-date-main yang gede di bagian intro.
+   Dibikin lebih menonjol (size naik, warna lebih terang, semi-bold)
+   biar gak ketelen sama elemen lain, tapi tetap 1 baris teks polos
+   tanpa background/pill — biar gak balik ke kesan "badge" lagi. */
+.event-page-date {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 14px;
+  font-family: "Noto Serif", serif;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  margin-bottom: 6px;
-  line-height: 1.2;
-  color: white;
+  color: rgba(255, 255, 255, 0.92);
+  position: relative;
+  z-index: 1;
 }
 
-/* Subtitle italic */
-.event-card-subtitle {
-  font-size: 11px;
-  font-style: italic;
-  opacity: 0.3;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
+.event-page-date i {
+  font-size: 14px;
 }
 
-/* Garis pemisah dalam card */
-.event-card-sep {
-  width: 24px;
-  height: 0.5px;
-  margin: 0 auto 18px;
+.event-page.akad .event-page-date i {
+  color: #ff7597;
 }
 
-.event-card.akad .event-card-sep {
-  background: rgba(171, 27, 77, 0.6);
+.event-page.resepsi .event-page-date i {
+  color: #f3e08f;
 }
 
-.event-card.resepsi .event-card-sep {
-  background: rgba(212, 175, 55, 0.6);
+.event-page-divider {
+  margin: 22px 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* Waktu */
-.event-card-time {
-  font-size: 16px;
-  letter-spacing: 2px;
+.event-page-divider .event-divider-diamond {
+  margin: 0 auto;
+}
+
+.event-page-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.event-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
-  margin-bottom: 10px;
 }
 
-.event-card.akad .event-card-time {
-  color: #ab1b4d;
+/* Jam acara dikasih penekanan paling kuat di antara semua info —
+   ini yang paling penting buat tamu tau kapan harus datang, jadi
+   dibikin jauh lebih besar & pakai Playfair Display biar berasa
+   seperti angka besar di undangan cetak. */
+.event-info-item.time {
+  font-family: "Playfair Display", serif;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #ffffff;
 }
 
-.event-card.resepsi .event-card-time {
-  color: #d4af37;
+.event-info-item.time i {
+  font-size: 18px;
 }
 
-/* Lokasi */
-.event-card-place {
-  font-size: 12px;
-  line-height: 1.9;
-  opacity: 0.4;
-  font-style: italic;
+.event-page.akad .event-info-item i {
+  color: #ff7597;
 }
 
-/* ===== Lokasi bersama ===== */
-.event-location {
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
-  border-top: none;
-  border-radius: 0 0 2px 2px;
-  padding: 20px 18px;
-  background: rgba(255, 255, 255, 0.015);
-  margin-bottom: 28px;
+.event-page.resepsi .event-info-item i {
+  color: #f3e08f;
+}
+
+/* Blok penutup Event: lokasi + tombol kalender, tampil setelah
+   Resepsi selesai di-scroll */
+.event-closing {
+  padding-top: 10px;
+}
+
+.event-location-box {
+  border-radius: 12px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 24px;
   opacity: 0;
   transform: translateY(20px);
   transition:
-    opacity 1s ease 0.55s,
-    transform 1s ease 0.55s;
+    opacity 1s ease 0.5s,
+    transform 1s ease 0.5s;
 }
 
-#eventSection.show .event-location {
+#eventSection.show .event-location-box {
   opacity: 1;
   transform: translateY(0);
 }
 
-.event-location-name {
+.event-location-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(171, 27, 77, 0.15);
+  border: 1px solid rgba(171, 27, 77, 0.3);
+  color: #ff7597;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.event-location-details {
+  text-align: left;
+}
+
+.event-location-title {
   font-family: "Playfair Display", serif;
   font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 2px;
 }
 
-.event-location-detail {
-  font-size: 14px;
-  opacity: 0.6;
-  font-style: italic;
-  letter-spacing: 0.5px;
+.event-location-sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* ===== Tombol Lokasi ===== */
-.event-maps-btn {
+.event-actions {
+  opacity: 0;
+  transform: translateY(15px);
+  transition:
+    opacity 0.8s ease 0.6s,
+    transform 0.8s ease 0.6s;
+}
+
+#eventSection.show .event-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.event-calendar-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 11px 30px;
-  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  gap: 10px;
+  padding: 13px 28px;
+  background: linear-gradient(135deg, #ab1b4d 0%, #87123a 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
   font-family: "Noto Serif", serif;
-  font-size: 10px;
-  letter-spacing: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  background: transparent;
-  border-radius: 2px;
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.8s ease 0.6s,
-    transform 0.8s ease 0.6s,
-    border-color 0.4s ease,
-    color 0.4s ease;
+  box-shadow: 0 6px 20px rgba(171, 27, 77, 0.35);
+  transition: all 0.3s ease;
 }
 
-.event-maps-btn i {
-  font-size: 15px;
-  transition: transform 0.3s ease;
+.event-calendar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(171, 27, 77, 0.5);
+  background: linear-gradient(135deg, #c41e59 0%, #9e1544 100%);
 }
 
-#eventSection.show .event-maps-btn {
-  opacity: 1;
-  transform: translateY(0);
+.event-calendar-btn:active {
+  transform: translateY(1px);
 }
 
-.event-maps-btn:hover {
-  border-color: rgba(171, 27, 77, 0.5);
-  color: white;
-}
-
-.event-maps-btn:hover i {
-  transform: scale(1.15);
-}
-
-.event-maps-btn:active {
-  transform: scale(0.97);
+@media (max-width: 480px) {
+  .event-page {
+    min-height: auto;
+    padding: 56px 20px;
+  }
+  .event-film-frame {
+    width: min(230px, 78%);
+  }
+  .event-page-heading {
+    font-size: 26px;
+  }
+  .event-page-date {
+    font-size: 13px;
+  }
+  .event-info-item.time {
+    font-size: 18px;
+  }
 }
 
 /* =============================
    RSVP SECTION
-   Tambahkan CSS ini di style.css lo
-============================= */
+   ============================= */
 
-/* ===== SECTION WRAPPER ===== */
 #rsvpSection {
   min-height: 100vh;
   padding: 40px 25px;
@@ -1641,8 +1698,6 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 28px;
-
-  /* Animasi masuk saat scroll */
   opacity: 0;
   transform: translateY(40px);
   transition:
@@ -1655,9 +1710,6 @@ body {
   transform: translateY(0);
 }
 
-/* ===== TITLE =====
-   "The" pakai Sloop merah, "RSVP" pakai Noto Serif
-===== */
 .rsvp-title {
   text-align: center;
 }
@@ -1682,15 +1734,16 @@ body {
 }
 
 .rsvp-title-underline {
-  width: 36px;
-  height: 1px;
-  background: rgba(171, 27, 77, 0.6);
-  margin: 8px auto 0;
+  position: relative;
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  margin: 10px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== AVATAR PENGANTIN =====
-   Tampil di atas chat box, berasa personal
-===== */
 .rsvp-avatar {
   display: flex;
   align-items: center;
@@ -1727,14 +1780,12 @@ body {
   font-style: italic;
 }
 
-/* Dot hijau — status online */
 .rsvp-status-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: #4caf50;
   flex-shrink: 0;
-  /* Animasi pulse subtle */
   animation: statusPulse 2s infinite;
 }
 
@@ -1748,7 +1799,6 @@ body {
   }
 }
 
-/* ===== CHAT BOX ===== */
 .rsvp-chat-box {
   width: 100%;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -1756,7 +1806,6 @@ body {
   overflow: hidden;
 }
 
-/* ===== AREA PESAN ===== */
 .rsvp-messages {
   padding: 20px 16px;
   display: flex;
@@ -1766,22 +1815,18 @@ body {
   max-height: 420px;
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.01);
-  /* Smooth scroll saat pesan baru muncul */
   scroll-behavior: smooth;
 }
 
-/* Sembunyikan scrollbar tapi tetap bisa scroll */
 .rsvp-messages::-webkit-scrollbar {
   width: 0;
 }
 
-/* ===== BUBBLE DARI PENGANTIN (kiri) ===== */
 .rsvp-bubble-left {
   display: flex;
   gap: 8px;
   align-items: flex-end;
   max-width: 88%;
-  /* Animasi muncul */
   animation: bubbleIn 0.4s ease both;
 }
 
@@ -1808,7 +1853,6 @@ body {
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* ===== BUBBLE DARI TAMU (kanan) ===== */
 .rsvp-bubble-right {
   align-self: flex-end;
   max-width: 80%;
@@ -1822,12 +1866,11 @@ body {
   color: white;
 }
 
-/* ===== PILIHAN JAWABAN (tombol bubble) ===== */
 .rsvp-choices {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-left: 32px; /* sejajar sama bubble kiri */
+  padding-left: 32px;
   animation: bubbleIn 0.4s ease 0.2s both;
 }
 
@@ -1860,7 +1903,6 @@ body {
   pointer-events: none;
 }
 
-/* ===== TYPING INDICATOR ===== */
 .rsvp-typing {
   display: flex;
   gap: 8px;
@@ -1906,7 +1948,6 @@ body {
   }
 }
 
-/* ===== INPUT AREA ===== */
 .rsvp-input-area {
   padding: 12px 16px;
   border-top: 0.5px solid rgba(255, 255, 255, 0.06);
@@ -1916,7 +1957,6 @@ body {
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* Input teks */
 .rsvp-input {
   flex: 1;
   background: rgba(255, 255, 255, 0.05);
@@ -1939,13 +1979,11 @@ body {
   font-style: italic;
 }
 
-/* Input disabled saat proses loading */
 .rsvp-input:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* Tombol kirim */
 .rsvp-send-btn {
   width: 36px;
   height: 36px;
@@ -1973,15 +2011,10 @@ body {
   transform: none;
 }
 
-/* ===== INPUT AREA HIDDEN =====
-   Disembunyikan saat tidak butuh input teks
-   (misal saat pilihan tombol atau setelah selesai)
-===== */
 .rsvp-input-area.hidden {
   display: none;
 }
 
-/* ===== CATATAN DEADLINE ===== */
 .rsvp-note {
   font-size: 10px;
   opacity: 0.25;
@@ -1990,7 +2023,6 @@ body {
   text-align: center;
 }
 
-/* ===== ANIMASI BUBBLE MASUK ===== */
 @keyframes bubbleIn {
   from {
     opacity: 0;
@@ -2002,7 +2034,6 @@ body {
   }
 }
 
-/* ===== PESAN SUKSES ===== */
 .rsvp-success {
   text-align: center;
   padding: 20px 16px 24px;
@@ -2034,15 +2065,11 @@ body {
 
 /* =============================
    THE VENUE SECTION
-   Tambahkan di style.css lo
-============================= */
+   ============================= */
 
-/* ===== SECTION WRAPPER ===== */
 #venueSection {
-  /* min-height: 100vh; */
   padding: 80px 25px;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
   background: linear-gradient(
     to bottom,
@@ -2059,8 +2086,6 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0;
-
-  /* Animasi masuk saat scroll */
   opacity: 0;
   transform: translateY(40px);
   transition:
@@ -2073,9 +2098,6 @@ body {
   transform: translateY(0);
 }
 
-/* ===== TITLE =====
-   "The" pakai Sloop merah, "Venue" pakai Noto Serif
-===== */
 .venue-title {
   text-align: center;
   margin-bottom: 32px;
@@ -2101,15 +2123,16 @@ body {
 }
 
 .venue-title-underline {
-  width: 36px;
-  height: 1px;
-  background: rgba(171, 27, 77, 0.6);
-  margin: 8px auto 0;
+  position: relative;
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  margin: 10px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== MAPS WRAPPER =====
-   Posisi relative untuk overlay di dalamnya
-===== */
 .venue-maps-wrap {
   position: relative;
   width: 100%;
@@ -2119,20 +2142,20 @@ body {
   border-bottom: none;
 }
 
-/* ===== IFRAME MAPS ===== */
 .venue-maps-frame {
   width: 100%;
   height: 300px;
   display: block;
   border: none;
-  /* Filter dark biar blend sama dark theme website */
+  /* NOTE: filter di atas iframe live Google Maps ini termasuk salah
+     satu elemen yang paling berat buat di-render browser (repaint
+     terus-menerus). Kalau lo mau lebih ringan lagi setelah revisi ini,
+     opsinya ganti jadi static map image (screenshot) + tombol "Buka
+     di Google Maps" — tapi itu ngubah tampilan, jadi sengaja belum
+     gue ubah di sini sampai lo konfirmasi. */
   filter: grayscale(20%) invert(90%) hue-rotate(180deg);
 }
 
-/* ===== GRADIENT OVERLAY =====
-   Gradient gelap di bawah maps
-   biar nama hotel overlay keliatan
-===== */
 .venue-maps-gradient {
   position: absolute;
   bottom: 0;
@@ -2143,9 +2166,6 @@ body {
   pointer-events: none;
 }
 
-/* ===== NAMA HOTEL OVERLAY =====
-   Tampil di atas gradient bawah maps
-===== */
 .venue-maps-overlay {
   position: absolute;
   bottom: 16px;
@@ -2173,9 +2193,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* ===== FOOTER =====
-   Nyambung di bawah maps dengan border
-===== */
 .venue-footer {
   width: 100%;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -2188,7 +2205,6 @@ body {
   margin-bottom: 0;
 }
 
-/* ===== TOMBOL ===== */
 .venue-btn {
   display: inline-flex;
   align-items: center;
@@ -2229,10 +2245,8 @@ body {
 
 /* =============================
    THE WISHES SECTION
-   Tambahkan di style.css lo
-============================= */
+   ============================= */
 
-/* ===== SECTION WRAPPER ===== */
 #wishesSection {
   padding: 80px 25px;
   background: linear-gradient(
@@ -2246,8 +2260,6 @@ body {
   max-width: 480px;
   margin: 0 auto;
   text-align: center;
-
-  /* Animasi masuk saat scroll */
   opacity: 0;
   transform: translateY(40px);
   transition:
@@ -2260,7 +2272,6 @@ body {
   transform: translateY(0);
 }
 
-/* ===== TITLE ===== */
 .wishes-title {
   text-align: center;
   margin-bottom: 36px;
@@ -2286,13 +2297,16 @@ body {
 }
 
 .wishes-title-underline {
-  width: 36px;
-  height: 1px;
-  background: rgba(171, 27, 77, 0.6);
-  margin: 8px auto 0;
+  position: relative;
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  margin: 10px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== LOADING STATE ===== */
 .wishes-loading {
   font-size: 12px;
   opacity: 0.3;
@@ -2301,104 +2315,122 @@ body {
   padding: 40px 0;
 }
 
-/* Sembunyikan saat sudah selesai load */
 .wishes-loading.hidden {
   display: none;
 }
 
-/* ===== MASONRY GRID ===== */
-.wishes-masonry {
-  columns: 2;
-  column-gap: 10px;
+.wishes-scroll-box {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px 8px;
   margin-bottom: 24px;
+  border-radius: 12px;
+  background: rgba(15, 12, 18, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.wishes-scroll-box::-webkit-scrollbar {
+  width: 5px;
+}
+
+.wishes-scroll-box::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.wishes-scroll-box::-webkit-scrollbar-thumb {
+  background: rgba(171, 27, 77, 0.6);
+  border-radius: 10px;
+}
+
+.wishes-scroll-box::-webkit-scrollbar-thumb:hover {
+  background: #ab1b4d;
+}
+
+.wishes-masonry {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   text-align: left;
 }
 
-/* ===== CARD UCAPAN ===== */
 .wishes-card {
-  break-inside: avoid;
-  margin-bottom: 10px;
-  padding: 16px 14px;
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.02);
+  padding: 16px 18px;
+  border-radius: 10px;
+  background: rgba(25, 20, 30, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
-  transition: background 0.3s ease;
-
-  /* Animasi card masuk */
-  animation: cardIn 0.5s ease both;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  animation: cardIn 0.4s ease both;
 }
 
 .wishes-card:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(35, 28, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
-/* Garis aksen merah di atas card */
 .wishes-card::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(to right, #ab1b4d, transparent);
 }
 
-/* Quote mark dekoratif */
-.wishes-card-quote {
-  font-family: "Playfair Display", serif;
-  font-size: 40px;
-  color: rgba(171, 27, 77, 0.15);
-  line-height: 0.5;
-  margin-bottom: 10px;
-  display: block;
+.wishes-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 
-/* Nama tamu */
 .wishes-card-name {
   font-family: "Playfair Display", serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  margin-bottom: 6px;
-  color: white;
+  color: #ffffff;
 }
 
-/* ===== BADGE STATUS ===== */
 .wishes-card-status {
-  font-size: 8px;
-  letter-spacing: 2px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   padding: 3px 8px;
-  border-radius: 1px;
-  display: inline-block;
-  margin-bottom: 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
-/* Hadir — merah */
 .wishes-card-status.hadir {
-  color: rgba(171, 27, 77, 0.9);
-  border: 0.5px solid rgba(171, 27, 77, 0.3);
-  background: rgba(171, 27, 77, 0.08);
+  color: #ff7597;
+  border: 1px solid rgba(171, 27, 77, 0.35);
+  background: rgba(171, 27, 77, 0.15);
 }
 
-/* Berhalangan — gold */
 .wishes-card-status.tidak {
-  color: rgba(212, 175, 55, 0.9);
-  border: 0.5px solid rgba(212, 175, 55, 0.3);
-  background: rgba(212, 175, 55, 0.08);
+  color: #f3e08f;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(212, 175, 55, 0.15);
 }
 
-/* Teks ucapan */
 .wishes-card-text {
-  font-size: 12px;
-  line-height: 1.8;
-  opacity: 0.5;
-  font-style: italic;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.92);
+  font-style: normal;
 }
 
-/* ===== TOMBOL LOAD MORE ===== */
 .wishes-load-more {
   display: inline-flex;
   align-items: center;
@@ -2430,12 +2462,10 @@ body {
   transform: scale(0.97);
 }
 
-/* Sembunyikan tombol kalau semua sudah tampil */
 .wishes-load-more.hidden {
   display: none;
 }
 
-/* ===== EMPTY STATE ===== */
 .wishes-empty {
   font-size: 12px;
   opacity: 0.3;
@@ -2448,7 +2478,6 @@ body {
   display: none;
 }
 
-/* ===== ANIMASI CARD MASUK ===== */
 @keyframes cardIn {
   from {
     opacity: 0;
@@ -2459,6 +2488,10 @@ body {
     transform: translateY(0);
   }
 }
+
+/* =============================
+   GALLERY SECTION
+   ============================= */
 
 #gallerySection {
   position: relative;
@@ -2477,19 +2510,16 @@ body {
   z-index: 0;
 }
 
-/* Inner wrapper */
 .gallery-inner {
   position: relative;
   z-index: 1;
   padding: 80px 0 80px;
 }
 
-/* ===== TITLE ===== */
 .gallery-title {
   text-align: center;
   margin-bottom: 40px;
   padding: 0 25px;
-
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -2522,18 +2552,20 @@ body {
 }
 
 .gallery-title-underline {
-  width: 36px;
-  height: 1px;
-  background: rgba(171, 27, 77, 0.6);
-  margin: 8px auto 0;
+  position: relative;
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  margin: 10px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== EDITORIAL GRID ===== */
 .editorial-grid {
   display: flex;
   flex-direction: column;
   gap: 3px;
-
   opacity: 0;
   transform: translateY(30px);
   transition:
@@ -2546,38 +2578,31 @@ body {
   transform: translateY(0);
 }
 
-/* ===== BARIS ===== */
 .editorial-row {
   display: grid;
   gap: 3px;
   width: 100%;
 }
 
-/* Baris 1: 2fr 1fr — besar kiri, kecil kanan */
 .editorial-row.row-a {
   grid-template-columns: 2fr 1fr;
 }
 
-/* Baris 2: 3 kolom sama rata */
 .editorial-row.row-b {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-/* Baris 3: 1fr 2fr — kecil kiri, besar kanan (mirror baris 1) */
 .editorial-row.row-c {
   grid-template-columns: 1fr 2fr;
 }
 
-/* ===== ITEM FOTO ===== */
 .editorial-item {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  /* Tinggi default untuk baris tengah */
   height: 120px;
 }
 
-/* Foto di baris 1 & 3 lebih tinggi */
 .editorial-row.row-a .editorial-item,
 .editorial-row.row-c .editorial-item {
   height: 180px;
@@ -2594,13 +2619,11 @@ body {
   display: block;
 }
 
-/* Zoom & full color saat hover */
 .editorial-item:hover img {
   transform: scale(1.06);
   filter: grayscale(0%);
 }
 
-/* ===== OVERLAY AKSEN MERAH ===== */
 .editorial-overlay {
   position: absolute;
   inset: 0;
@@ -2614,7 +2637,6 @@ body {
   opacity: 1;
 }
 
-/* Garis aksen merah di bawah — muncul saat hover */
 .editorial-item::before {
   content: "";
   position: absolute;
@@ -2632,7 +2654,6 @@ body {
   transform: scaleX(1);
 }
 
-/* ===== ICON EXPAND ===== */
 .editorial-hint {
   position: absolute;
   top: 8px;
@@ -2674,7 +2695,6 @@ body {
   pointer-events: all;
 }
 
-/* Foto fullscreen */
 .lb-img {
   max-width: 90vw;
   max-height: 82vh;
@@ -2683,7 +2703,6 @@ body {
   animation: lbIn 0.35s ease both;
 }
 
-/* Tombol close */
 .lb-close {
   position: absolute;
   top: 18px;
@@ -2701,7 +2720,6 @@ body {
   opacity: 1;
 }
 
-/* Tombol prev & next */
 .lb-prev,
 .lb-next {
   position: absolute;
@@ -2734,7 +2752,6 @@ body {
   border-color: rgba(171, 27, 77, 0.5);
 }
 
-/* Counter */
 .lb-counter {
   position: absolute;
   bottom: 20px;
@@ -2746,7 +2763,6 @@ body {
   font-family: "Noto Serif", serif;
 }
 
-/* ===== ANIMASI ===== */
 @keyframes lbIn {
   from {
     opacity: 0;
@@ -2758,7 +2774,168 @@ body {
   }
 }
 
-/* ===== CLOSING SECTION ===== */
+/* =============================
+   THANKS SECTION
+   Background-nya foto slideshow yang hidup & pelan (bukan 1 foto
+   statis + overlay gelap kayak Countdown/Closing) — reuse fungsi
+   slider yang sama kayak Bride/Groom di script.js, cuma interval &
+   transisinya jauh lebih pelan biar berasa tenang.
+   ============================= */
+#thanksSection {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 80px 28px;
+}
+
+.thanks-slideshow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.thanks-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: grayscale(20%) contrast(1.05);
+  /* Transisi 3 detik — lebih pelan dari slider Bride/Groom (2 detik)
+     biar berasa lebih tenang & syahdu, cocok buat momen ucapan
+     terima kasih. */
+  transition: opacity 3s ease-in-out;
+}
+
+.thanks-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Gradient tipis buat kontras teks — sengaja gak dibikin overlay
+   gelap rata kayak Closing, biar foto tetap jadi elemen hidupnya,
+   cuma dikasih vignette di atas-bawah aja buat keterbacaan teks. */
+.thanks-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 8, 12, 0.55) 0%,
+    rgba(10, 8, 12, 0.22) 35%,
+    rgba(10, 8, 12, 0.6) 100%
+  );
+  pointer-events: none;
+}
+
+.thanks-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#thanksSection.show .thanks-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.thanks-title {
+  text-align: center;
+}
+
+.thanks-title-the {
+  font-family: "Sloop", cursive;
+  font-size: 52px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.thanks-title-word {
+  font-family: "Noto Serif", serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.9;
+  vertical-align: middle;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.thanks-title-underline {
+  position: relative;
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  margin: 10px auto 0;
+}
+
+.thanks-message {
+  font-size: 14px;
+  line-height: 2;
+  opacity: 0.9;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  max-width: 340px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+.thanks-names {
+  font-family: "Playfair Display", serif;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: white;
+  line-height: 1.3;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+.thanks-names-and {
+  display: inline-block;
+  font-family: "Sloop", cursive;
+  font-size: 26px;
+  color: #ab1b4d;
+  letter-spacing: 2px;
+  margin: 0 10px;
+}
+
+@media (max-width: 480px) {
+  #thanksSection {
+    padding: 60px 22px;
+  }
+  .thanks-title-the {
+    font-size: 40px;
+  }
+  .thanks-title-word {
+    font-size: 20px;
+  }
+  .thanks-message {
+    font-size: 13px;
+  }
+  .thanks-names {
+    font-size: 24px;
+  }
+}
+
+/* =============================
+   CLOSING SECTION
+   ============================= */
 #closingSection {
   min-height: 100vh;
   display: flex;
@@ -2766,23 +2943,17 @@ body {
   justify-content: center;
   text-align: center;
   padding: 80px 32px;
-  background: linear-gradient(
-    to bottom,
-    rgba(10, 10, 10, 0.97),
-    rgba(20, 20, 20, 0.97)
-  );
+  /* sengaja TANPA background — biar #bgVideo yang fixed di
+     belakang tembus pandang penuh, gak ada overlay lagi */
 }
 
-/* ===== INNER WRAPPER ===== */
 .closing-inner {
   max-width: 420px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-
-  /* Animasi masuk saat scroll */
+  gap: 30px;
   opacity: 0;
   transform: translateY(40px);
   transition:
@@ -2795,8 +2966,6 @@ body {
   transform: translateY(0);
 }
 
-/* ===== LOGO INISIAL ===== */
-/* ===== LOGO ===== */
 .closing-logo {
   width: 120px;
   height: 120px;
@@ -2808,6 +2977,7 @@ body {
   justify-content: center;
   overflow: hidden;
   padding: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .closing-logo-img {
@@ -2816,307 +2986,251 @@ body {
   object-fit: contain;
 }
 
-/* ===== DIVIDER ===== */
-.closing-divider {
+/* ===== DUA FOTO KIRI-KANAN ===== */
+.closing-photos {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
-  max-width: 280px;
+  max-width: 300px;
 }
 
-.closing-divider-line {
+.closing-photo {
   flex: 1;
-  height: 0.5px;
-  background: rgba(255, 255, 255, 0.12);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
 }
 
-.closing-divider-diamond {
-  width: 5px;
-  height: 5px;
-  border: 0.5px solid rgba(171, 27, 77, 0.7);
-  background: rgba(171, 27, 77, 0.25);
-  transform: rotate(45deg);
-  flex-shrink: 0;
+.closing-photo.left {
+  transform: rotate(-4deg);
+}
+.closing-photo.right {
+  transform: rotate(4deg);
 }
 
-/* ===== NAMA PASANGAN ===== */
-.closing-names {
-  font-family: "Playfair Display", serif;
-  font-size: 38px;
-  font-weight: 400;
-  letter-spacing: 1px;
-  line-height: 1.3;
-  color: white;
-}
-
-/* "&" di tengah — italic & lebih kecil */
-.closing-names-and {
+.closing-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(20%) contrast(1.05);
   display: block;
-  font-family: "Sloop", cursive;
-  font-size: 36px;
-  color: #ab1b4d;
-  letter-spacing: 3px;
-  margin: 4px 0;
 }
 
-/* ===== PESAN PENUTUP ===== */
-.closing-message {
-  font-size: 14px;
-  line-height: 2;
-  opacity: 0.7;
-  font-style: italic;
-  letter-spacing: 0.3px;
+/* ===== QUOTE — gaya & posisi mirip #quoteSection ===== */
+.closing-quote-wrapper {
   max-width: 320px;
 }
 
-/* ===== TANGGAL ===== */
-.closing-date {
-  font-size: 12px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  opacity: 0.8;
+.closing-quote-text {
+  font-family: "PrestigeSignature", cursive;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.5;
+  letter-spacing: 2px;
+  transform: rotate(-10deg);
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(0, 0, 0, 0.4);
 }
 
-/* ===== HASHTAG ===== */
+.closing-quote-source {
+  font-family: "PrestigeSignature", cursive;
+  margin-top: 10px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  transform: rotate(-10deg);
+  opacity: 0.85;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
 .closing-hashtag {
   font-family: "Playfair Display", serif;
   font-size: 20px;
   font-style: italic;
   color: #ab1b4d;
-  opacity: 0.8;
   letter-spacing: 1px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
-/* ===== FOOTER ===== */
+/* =============================
+   FOOTER
+   ============================= */
 #siteFooter {
-  padding: 24px;
-  border-top: 0.5px solid rgba(255, 255, 255, 0.06);
-  background: rgb(0 0 0 / 88%);
+  padding: 34px 24px 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 
-/* Animasi heartbeat */
 .footer-heart {
-  font-size: 16px;
+  font-size: 18px;
   color: #ab1b4d;
   animation: heartbeat 1.5s ease-in-out infinite;
-  margin-bottom: 2px;
 }
+/* @keyframes heartbeat tetap, gak perlu diubah */
 
-@keyframes heartbeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.25);
-  }
-}
-
-/* Teks "Made with love by" */
 .footer-made {
-  font-size: 12px;
-  opacity: 0.8;
-  letter-spacing: 1.5px;
-  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  font-style: normal;
 }
 
-/* Highlight "The Groom" */
 .footer-highlight {
   color: #ab1b4d;
   opacity: 1;
   font-style: normal;
 }
 
-/* Nama groom */
 .footer-name {
   font-family: "Playfair Display", serif;
-  font-size: 14px;
+  font-size: 19px;
   font-style: italic;
-  opacity: 0.9;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  opacity: 0.95;
 }
 
 /* =============================
    MUSIC PLAYER
-   Tambahkan di style.css lo
-============================= */
+   ============================= */
 
-/* ===== WRAPPER — Fixed pojok kanan bawah ===== */
 .music-player {
   position: fixed;
-  bottom: 28px;
-  right: 24px;
-  z-index: 9998; /* di bawah lightbox (9999) */
+  bottom: 24px;
+  right: 20px;
+  z-index: 9998;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-
-  /* Tersembunyi dulu sebelum cover dibuka */
+  align-items: center;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(10, 8, 12, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 0.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.8s ease;
 }
 
-/* Muncul setelah cover dibuka */
 .music-player.visible {
   opacity: 1;
   pointer-events: all;
 }
 
-/* ===== LABEL "Now Playing" ===== */
-.music-label {
-  font-family: "Noto Serif", serif;
-  font-size: 8px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  white-space: nowrap;
-
-  /* Tersembunyi saat musik off */
-  opacity: 0;
-  transform: translateY(6px);
+.music-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(171, 27, 77, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.music-btn:hover {
+  background: rgba(171, 27, 77, 0.3);
+  color: #ffffff;
+}
+
+.music-btn:active {
+  transform: scale(0.94);
+}
+
+.music-player.playing .music-btn {
+  background: rgba(171, 27, 77, 0.28);
+  color: #ffffff;
+}
+
+/* ===== INFO (bar + label) — nyembul pas lagi playing ===== */
+.music-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-left: 0;
+  transition:
+    max-width 0.5s ease,
     opacity 0.4s ease,
-    transform 0.4s ease;
+    margin-left 0.5s ease;
 }
 
-/* Muncul saat musik on */
-.music-player.playing .music-label {
+.music-player.playing .music-info {
+  max-width: 140px;
   opacity: 1;
-  transform: translateY(0);
+  margin-left: 10px;
+  margin-right: 6px;
 }
 
-/* ===== EQUALIZER BARS ===== */
 .music-bars {
   display: flex;
-  align-items: flex-end;
-  gap: 2px;
+  align-items: center;
+  gap: 3px;
   height: 14px;
-  padding-right: 2px;
-
-  /* Tersembunyi saat musik off */
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-/* Muncul saat musik on */
-.music-player.playing .music-bars {
-  opacity: 1;
+  flex-shrink: 0;
 }
 
 .music-bar {
   width: 3px;
-  height: 4px;
-  background: #ab1b4d;
+  height: 5px;
   border-radius: 2px;
+  background: #ff7597;
 }
 
-/* Animasi bar saat playing */
 .music-player.playing .music-bar:nth-child(1) {
-  animation: barAnim 0.9s ease infinite;
+  animation: barAnim 1s ease-in-out infinite;
 }
 .music-player.playing .music-bar:nth-child(2) {
-  animation: barAnim 0.9s ease infinite 0.2s;
+  animation: barAnim 1s ease-in-out infinite 0.2s;
 }
 .music-player.playing .music-bar:nth-child(3) {
-  animation: barAnim 0.9s ease infinite 0.4s;
-}
-.music-player.playing .music-bar:nth-child(4) {
-  animation: barAnim 0.9s ease infinite 0.15s;
+  animation: barAnim 1s ease-in-out infinite 0.4s;
 }
 
 @keyframes barAnim {
   0%,
   100% {
-    height: 4px;
+    height: 5px;
   }
   50% {
-    height: 14px;
+    height: 13px;
   }
 }
 
-/* ===== TOMBOL PLAY/PAUSE ===== */
-.music-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 0.5px solid rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  position: relative;
+.music-label {
+  font-family: "Noto Serif", serif;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  white-space: nowrap;
 }
 
-.music-btn:hover {
-  border-color: rgba(171, 27, 77, 0.6);
-  color: white;
-  background: rgba(171, 27, 77, 0.15);
-}
-
-.music-btn:active {
-  transform: scale(0.95);
-}
-
-/* ===== RIPPLE ANIMATION saat playing ===== */
-.music-btn::before,
-.music-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(171, 27, 77, 0.4);
-  opacity: 0;
-}
-
-.music-player.playing .music-btn::before {
-  animation: ripple 2s ease-out infinite;
-}
-
-.music-player.playing .music-btn::after {
-  animation: ripple 2s ease-out infinite 0.7s;
-}
-
-/* Tombol berubah warna saat playing */
-.music-player.playing .music-btn {
-  border-color: rgba(171, 27, 77, 0.5);
-  color: white;
-  background: rgba(171, 27, 77, 0.12);
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(1.9);
-    opacity: 0;
-  }
-}
-
-/* ===== RESPONSIVE — Geser sedikit di HP kecil ===== */
 @media (max-width: 480px) {
   .music-player {
     bottom: 20px;
     right: 16px;
-  }
-
-  .music-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 15px;
   }
 }

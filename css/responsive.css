@@ -2,6 +2,7 @@
    RESPONSIVE.CSS
    HANYA tambahkan file ini, jangan ubah style.css yang lama!
    Tambahkan link di HTML setelah style.css:
+   <link rel="stylesheet" href="css/style.css" />
    <link rel="stylesheet" href="css/responsive.css" />
 ============================= */
 
@@ -50,18 +51,23 @@ footer {
     margin-top: 80px;
   }
 
-  /* ===== BRIDE & GROOM ===== */
+  /* ===== BRIDE & GROOM =====
+     FIX: rule lama di sini menyasar tag <h3>/<p> generik yang gak
+     pernah ada di HTML (markup asli pakai class .bride-name,
+     .bride-parents-name, dst) — jadi gak pernah kepakai. Diganti
+     supaya benar-benar menyasar elemen yang ada.
+  ===== */
   #brideSection,
   #groomSection {
     padding: 30px 12px;
   }
-  .bride-info h3,
-  .groom-info h3 {
+  .bride-name,
+  .groom-name {
     font-size: 16px;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
   }
-  .bride-info p,
-  .groom-info p {
+  .bride-parents-name,
+  .groom-parents-name {
     font-size: 13px;
   }
 
@@ -81,31 +87,40 @@ footer {
     padding: 50px 16px;
   }
   .event-title-the {
-    font-size: 40px;
+    font-size: 44px;
   }
   .event-title-word {
     font-size: 26px;
   }
-  .event-date-hero {
-    font-size: 72px;
+  .event-day-sub {
+    font-size: 16px;
+    letter-spacing: 4px;
   }
-  .event-month-year {
-    font-size: 11px;
-    letter-spacing: 5px;
+  .event-date-main {
+    font-size: 64px;
   }
-  .event-card {
-    padding: 24px 12px 20px;
-  }
-  .event-card-title {
-    font-size: 17px;
-  }
-  .event-card-time {
+  .event-month-year-sub {
     font-size: 13px;
+    letter-spacing: 3px;
   }
-  .event-location-name {
-    font-size: 13px;
+  .event-card-item {
+    padding: 16px 18px;
   }
-  .event-location-detail {
+  .event-card-heading {
+    font-size: 18px;
+  }
+  .event-card-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .event-info-item {
+    font-size: 12px;
+  }
+  .event-location-title {
+    font-size: 15px;
+  }
+  .event-location-sub {
     font-size: 12px;
   }
   .countdown-grid {
@@ -167,10 +182,12 @@ footer {
   .wishes-title-word {
     font-size: 20px;
   }
-  /* FIX: 1 kolom di mobile biar tidak terlalu sempit */
-  .wishes-masonry {
-    columns: 1 !important;
-  }
+  /* CLEANUP: rule "columns: 1 !important" yang sebelumnya di sini
+     dihapus — .wishes-masonry di style.css sudah pakai
+     "display: flex; flex-direction: column", jadi propertinya sudah
+     otomatis 1 kolom di semua ukuran layar. "columns" itu properti
+     buat CSS multi-column layout, gak ngefek sama sekali di elemen
+     flex, jadi rule lama itu kode mati. */
 
   /* ===== GALLERY ===== */
   .gallery-title-the {
@@ -223,14 +240,11 @@ footer {
   .wedding-couple {
     font-size: 28px;
   }
-  .event-date-hero {
-    font-size: 60px;
+  .event-date-main {
+    font-size: 52px;
   }
-  .event-card-title {
-    font-size: 15px;
-  }
-  .event-cards {
-    gap: 8px;
+  .event-card-heading {
+    font-size: 16px;
   }
   .countdown-grid {
     max-width: 220px;
