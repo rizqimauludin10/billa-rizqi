@@ -102,12 +102,27 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("venueSection"),
     document.getElementById("rsvpSection"),
     document.getElementById("wishesSection"),
-    document.getElementById("thanksSection"),
+    // document.getElementById("thanksSection"),
     document.getElementById("gallerySection"),
     document.getElementById("closingSection"),
   ].filter(Boolean); // buang null kalau ada elemen yang gak ketemu
 
   revealTargets.forEach((el) => observer.observe(el));
+
+  const thanksObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          thanksObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 },
+  );
+
+  const thanksSectionEl = document.getElementById("thanksSection");
+  if (thanksSectionEl) thanksObserver.observe(thanksSectionEl);
 
   /* =============================
      SLIDER — Bride & Groom
@@ -168,9 +183,17 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     const pad = (n) => String(Math.floor(n)).padStart(2, "0");
+
     const setEl = (id, val) => {
       const el = document.getElementById(id);
-      if (el) el.textContent = pad(val);
+      if (!el) return;
+      const newText = pad(val);
+      if (el.textContent !== newText) {
+        el.textContent = newText;
+        el.classList.remove("tick");
+        void el.offsetWidth; // paksa reflow biar animasi bisa restart
+        el.classList.add("tick");
+      }
     };
     setEl("cdDays", Math.floor(diff / 86400000));
     setEl("cdHours", Math.floor((diff % 86400000) / 3600000));

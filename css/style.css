@@ -461,12 +461,15 @@ body {
   height: 100%;
   object-fit: cover;
   filter: grayscale(15%);
-  transition: transform 0.8s ease;
+  transform: scale(1.08);
+  transition:
+    transform 1.2s ease,
+    filter 0.4s ease;
   display: block;
 }
 
-.story-item:hover .story-photo img {
-  transform: scale(1.04);
+.story-item.show .story-photo img {
+  transform: scale(1);
 }
 
 .story-photo::after {
@@ -1113,6 +1116,25 @@ body {
   color: white;
 }
 
+.countdown-num.tick {
+  animation: countdownTick 0.4s ease;
+}
+
+@keyframes countdownTick {
+  0% {
+    transform: scale(1);
+    color: white;
+  }
+  30% {
+    transform: scale(1.15);
+    color: #ff7597;
+  }
+  100% {
+    transform: scale(1);
+    color: white;
+  }
+}
+
 .countdown-accent {
   width: 20px;
   height: 1px;
@@ -1441,11 +1463,29 @@ body {
 }
 
 .event-page.akad .event-film-frame {
-  transform: rotate(-3deg);
+  opacity: 0;
+  transform: rotate(0deg) scale(0.85);
+  transition:
+    opacity 1s ease 0.15s,
+    transform 1s ease 0.15s;
 }
 
 .event-page.resepsi .event-film-frame {
-  transform: rotate(3deg);
+  opacity: 0;
+  transform: rotate(0deg) scale(0.85);
+  transition:
+    opacity 1s ease 0.15s,
+    transform 1s ease 0.15s;
+}
+
+.event-page.akad.show .event-film-frame {
+  opacity: 1;
+  transform: rotate(-3deg) scale(1);
+}
+
+.event-page.resepsi.show .event-film-frame {
+  opacity: 1;
+  transform: rotate(3deg) scale(1);
 }
 
 .film-sprockets {
@@ -1477,6 +1517,20 @@ body {
 }
 
 /* ===== JUDUL & INFO ===== */
+
+.event-page-heading,
+.event-page-subheading {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s ease 0.35s,
+    transform 0.8s ease 0.35s;
+}
+.event-page.show .event-page-heading,
+.event-page.show .event-page-subheading {
+  opacity: 1;
+  transform: translateY(0);
+}
 .event-page-heading {
   font-family: "Playfair Display", serif;
   font-size: 34px;
@@ -2169,6 +2223,12 @@ body {
   overflow: hidden;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
   border-bottom: none;
+  transform: scale(0.94);
+  transition: transform 1s ease 0.15s;
+}
+
+#venueSection.show .venue-maps-wrap {
+  transform: scale(1);
 }
 
 .venue-maps-frame {
@@ -2885,6 +2945,16 @@ body {
 
 .thanks-title {
   text-align: center;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#thanksSection.show .thanks-title {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .thanks-title-the {
@@ -2918,11 +2988,20 @@ body {
 .thanks-message {
   font-size: 14px;
   line-height: 2;
-  opacity: 0.9;
   font-style: italic;
   letter-spacing: 0.3px;
   max-width: 340px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 1s ease 0.25s,
+    transform 1s ease 0.25s;
+}
+
+#thanksSection.show .thanks-message {
+  opacity: 0.9;
+  transform: translateY(0);
 }
 
 .thanks-names {
@@ -2933,6 +3012,16 @@ body {
   color: white;
   line-height: 1.3;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 1s ease 0.5s,
+    transform 1s ease 0.5s;
+}
+
+#thanksSection.show .thanks-names {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .thanks-names-and {
@@ -3007,6 +3096,16 @@ body {
   overflow: hidden;
   padding: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#closingSection.show .closing-logo {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .closing-logo-img {
@@ -3015,7 +3114,6 @@ body {
   object-fit: contain;
 }
 
-/* ===== DUA FOTO KIRI-KANAN ===== */
 .closing-photos {
   display: flex;
   gap: 16px;
@@ -3029,13 +3127,51 @@ body {
   overflow: hidden;
   border: 3px solid rgba(255, 255, 255, 0.85);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+  opacity: 0;
 }
 
 .closing-photo.left {
-  transform: rotate(-4deg);
+  transform: translateX(-60px) rotate(0deg);
+  transition:
+    opacity 1s ease 0.2s,
+    transform 1s ease 0.2s;
 }
 .closing-photo.right {
-  transform: rotate(4deg);
+  transform: translateX(60px) rotate(0deg);
+  transition:
+    opacity 1s ease 0.2s,
+    transform 1s ease 0.2s;
+}
+
+#closingSection.show .closing-photo.left {
+  opacity: 1;
+  transform: translateX(0) rotate(-4deg);
+  animation: floatLeft 4s ease-in-out 1.2s infinite;
+}
+#closingSection.show .closing-photo.right {
+  opacity: 1;
+  transform: translateX(0) rotate(4deg);
+  animation: floatRight 4.6s ease-in-out 1.2s infinite;
+}
+
+@keyframes floatLeft {
+  0%,
+  100% {
+    transform: translateX(0) rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: translateX(0) rotate(-4deg) translateY(-10px);
+  }
+}
+
+@keyframes floatRight {
+  0%,
+  100% {
+    transform: translateX(0) rotate(4deg) translateY(0);
+  }
+  50% {
+    transform: translateX(0) rotate(4deg) translateY(-10px);
+  }
 }
 
 .closing-photo img {
@@ -3046,9 +3182,18 @@ body {
   display: block;
 }
 
-/* ===== QUOTE — gaya & posisi mirip #quoteSection ===== */
 .closing-quote-wrapper {
   max-width: 320px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1s ease 0.45s,
+    transform 1s ease 0.45s;
+}
+
+#closingSection.show .closing-quote-wrapper {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .closing-quote-text {
@@ -3080,6 +3225,16 @@ body {
   color: #ab1b4d;
   letter-spacing: 1px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1s ease 0.7s,
+    transform 1s ease 0.7s;
+}
+
+#closingSection.show .closing-hashtag {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* =============================
@@ -3101,9 +3256,48 @@ body {
 }
 
 .footer-heart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 18px;
   color: #ab1b4d;
   animation: heartbeat 1.5s ease-in-out infinite;
+}
+/* @keyframes heartbeat tetap, gak perlu diubah */
+
+.footer-heart::before,
+.footer-heart::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 1px solid rgba(171, 27, 77, 0.55);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.footer-heart::before {
+  animation: heartRadiate 2.4s ease-out infinite;
+}
+
+.footer-heart::after {
+  animation: heartRadiate 2.4s ease-out infinite 1.2s;
+}
+
+@keyframes heartRadiate {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
 }
 /* @keyframes heartbeat tetap, gak perlu diubah */
 
