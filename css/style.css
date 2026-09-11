@@ -630,13 +630,14 @@ body {
   display: flex;
   gap: 6px;
   opacity: 0;
+  opacity: 0;
   transform: translateX(-50px) rotate(180deg);
   transition:
-    opacity 1.6s ease,
-    transform 1.6s ease;
+    opacity 1.6s ease 0.5s,
+    transform 1.6s ease 0.5s;
 }
 
-.bride-vertical.show {
+#brideSection.show .bride-vertical {
   opacity: 1;
   transform: translateX(0) rotate(180deg);
 }
@@ -835,8 +836,8 @@ body {
   opacity: 0;
   transform: translateX(50px) rotate(180deg);
   transition:
-    opacity 1.6s ease,
-    transform 1.6s ease;
+    opacity 1.6s ease 0.5s,
+    transform 1.6s ease 0.5s;
 }
 
 .groom-vertical.show {
