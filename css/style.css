@@ -630,7 +630,6 @@ body {
   display: flex;
   gap: 6px;
   opacity: 0;
-  opacity: 0;
   transform: translateX(-50px) rotate(180deg);
   transition:
     opacity 1.6s ease 0.5s,
@@ -840,10 +839,11 @@ body {
     transform 1.6s ease 0.5s;
 }
 
-.groom-vertical.show {
+#groomSection.show .groom-vertical {
   opacity: 1;
   transform: translateX(0) rotate(180deg);
 }
+
 .groom-the {
   font-family: "Sloop", cursive;
   font-size: 58px;
@@ -1054,21 +1054,32 @@ body {
   justify-content: center;
 }
 
+/* ===== TANGGAL TARGET =====
+   Teks polos (gak pakai kotak/border/background) — label kecil
+   "Menuju" di atas, tanggal gede-tebal di bawahnya. Konsisten sama
+   elemen lain di section ini (angka countdown & pesan juga polos,
+   cuma teks + text-shadow buat kontras di atas foto). */
 .countdown-target {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 12px 30px;
-  border-radius: 999px;
-  background: rgba(171, 27, 77, 0.18);
-  border: 1px solid rgba(171, 27, 77, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  gap: 5px;
+}
+
+.countdown-target-label {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.countdown-target-date {
   font-family: "Playfair Display", serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
 }
 
 .countdown-grid {
@@ -1167,9 +1178,8 @@ body {
   .countdown-title-word {
     font-size: 20px;
   }
-  .countdown-target {
-    font-size: 16px;
-    padding: 10px 22px;
+  .countdown-target-date {
+    font-size: 17px;
   }
   .countdown-message {
     font-size: 12px;
@@ -1487,10 +1497,7 @@ body {
 }
 
 /* Tanggal singkat satu baris — tampil di kedua halaman (Akad &
-   Resepsi), beda sama .event-date-main yang gede di bagian intro.
-   Dibikin lebih menonjol (size naik, warna lebih terang, semi-bold)
-   biar gak ketelen sama elemen lain, tapi tetap 1 baris teks polos
-   tanpa background/pill — biar gak balik ke kesan "badge" lagi. */
+   Resepsi), beda sama .event-date-main yang gede di bagian intro. */
 .event-page-date {
   display: flex;
   align-items: center;
@@ -1569,8 +1576,8 @@ body {
   color: #f3e08f;
 }
 
-/* Blok penutup Event: lokasi + tombol kalender, tampil setelah
-   Resepsi selesai di-scroll */
+/* Blok penutup Event: lokasi, tampil setelah Resepsi selesai
+   di-scroll (tombol kalender udah dipindah ke Countdown) */
 .event-closing {
   padding-top: 10px;
 }
@@ -1630,6 +1637,10 @@ body {
   color: rgba(255, 255, 255, 0.6);
 }
 
+/* ===== TOMBOL SIMPAN KE KALENDER =====
+   Sekarang tampil di Countdown, bukan di Event lagi — tapi class-nya
+   dipertahankan (event-actions/event-calendar-btn) biar gak perlu
+   ubah HTML/JS yang udah nge-reference nama class ini. */
 .event-actions {
   opacity: 0;
   transform: translateY(15px);
@@ -1638,7 +1649,7 @@ body {
     transform 0.8s ease 0.6s;
 }
 
-#eventSection.show .event-actions {
+#countdownSection.show .event-actions {
   opacity: 1;
   transform: translateY(0);
 }

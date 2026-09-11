@@ -354,9 +354,11 @@
             <span class="countdown-title-word">Countdown</span>
             <div class="countdown-title-underline"></div>
           </div>
+
           <!-- ===== TANGGAL TARGET — biar tamu tau ini countdown menuju tanggal apa ===== -->
           <!-- <div class="countdown-target">
-            <span>15 Oktober 2026</span>
+            <span class="countdown-target-label">Menuju</span>
+            <span class="countdown-target-date">15 Oktober 2026</span>
           </div> -->
 
           <!-- ===== GRID HITUNG MUNDUR ===== -->
@@ -397,6 +399,19 @@
             Through this invitation, we warmly invite you to join us in
             celebrating our wedding day."
           </p>
+
+          <!-- ===== SIMPAN KE KALENDER =====
+               FIX: sebelumnya ini ada DI LUAR .countdown-inner (jadi
+               sibling), padahal #countdownSection cuma "display:flex"
+               tanpa flex-direction — 2 anak sejajar otomatis disusun
+               ke SAMPING bukan ke bawah. Sekarang dipindah ke DALAM
+               .countdown-inner biar ikut alur flex-column-nya. -->
+          <div class="event-actions">
+            <button class="event-calendar-btn" id="addToCalendarBtn">
+              <i class="bi bi-calendar-plus-fill"></i>
+              <span>Simpan ke Kalender</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -425,10 +440,7 @@
           </div>
         </div>
 
-        <!-- ===== HALAMAN AKAD NIKAH =====
-             NOTE: foto di bawah ("gallery/a.jpg") masih placeholder
-             dari foto Memories yang udah ada — ganti ke foto yang
-             lebih pas kalau lo punya foto khusus buat momen akad. -->
+        <!-- ===== HALAMAN AKAD NIKAH ===== -->
         <div class="event-page akad">
           <div class="event-film-frame">
             <div class="film-sprockets"></div>
@@ -469,9 +481,7 @@
           </div>
         </div>
 
-        <!-- ===== HALAMAN RESEPSI NIKAH =====
-             NOTE: sama seperti di atas, "gallery/d.jpg" placeholder,
-             ganti dengan foto khusus resepsi kalau sudah ada. -->
+        <!-- ===== HALAMAN RESEPSI NIKAH ===== -->
         <div class="event-page resepsi">
           <div class="event-film-frame">
             <div class="film-sprockets"></div>
@@ -512,7 +522,7 @@
           </div>
         </div>
 
-        <!-- ===== PENUTUP: lokasi venue + simpan ke kalender ===== -->
+        <!-- ===== PENUTUP: lokasi venue ===== -->
         <div class="container event-closing">
           <div class="event-location-box">
             <div class="event-location-icon">
@@ -524,13 +534,6 @@
                 Lantai 7 (Rooftop) · Surabaya
               </div>
             </div>
-          </div>
-
-          <div class="event-actions">
-            <button class="event-calendar-btn" id="addToCalendarBtn">
-              <i class="bi bi-calendar-plus-fill"></i>
-              <span>Simpan ke Kalender</span>
-            </button>
           </div>
         </div>
       </section>
@@ -754,11 +757,7 @@
         <div class="lb-counter" id="lbCounter"></div>
       </div>
 
-      <!-- ===== THANKS SECTION =====
-           NOTE: foto slideshow di bawah masih placeholder dari foto
-           Memories yang udah ada — ganti ke foto yang lebih pas kalau
-           lo punya foto khusus. Slideshow ganti foto tiap 6 detik
-           dengan transisi 3 detik, sengaja pelan biar berasa tenang. -->
+      <!-- ===== THANKS SECTION ===== -->
       <section id="thanksSection">
         <div class="thanks-slideshow">
           <img
