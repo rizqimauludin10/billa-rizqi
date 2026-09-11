@@ -653,7 +653,7 @@ function initMusicPlayer() {
       setTimeout(() => {
         player.classList.add("visible");
         playWithFade();
-      }, 700);
+      }, 500);
     });
   }
 
