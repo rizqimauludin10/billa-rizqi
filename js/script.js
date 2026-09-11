@@ -109,6 +109,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   revealTargets.forEach((el) => observer.observe(el));
 
+  const centerRevealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          centerRevealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: "0px 0px -80% 0px", threshold: 0 },
+  );
+
+  document
+    .querySelectorAll(".bride-vertical, .groom-vertical")
+    .forEach((el) => centerRevealObserver.observe(el));
+
   /* =============================
      SLIDER — Bride & Groom
      Reusable function

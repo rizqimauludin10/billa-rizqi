@@ -626,10 +626,19 @@ body {
   left: 0px;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  transform: rotate(180deg);
   z-index: 3;
   display: flex;
   gap: 6px;
+  opacity: 0;
+  transform: translateX(-50px) rotate(180deg);
+  transition:
+    opacity 1.6s ease,
+    transform 1.6s ease;
+}
+
+.bride-vertical.show {
+  opacity: 1;
+  transform: translateX(0) rotate(180deg);
 }
 
 .bride-the {
@@ -820,12 +829,20 @@ body {
   right: 0px;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  transform: rotate(180deg);
   z-index: 3;
   display: flex;
   gap: 6px;
+  opacity: 0;
+  transform: translateX(50px) rotate(180deg);
+  transition:
+    opacity 1.6s ease,
+    transform 1.6s ease;
 }
 
+.groom-vertical.show {
+  opacity: 1;
+  transform: translateX(0) rotate(180deg);
+}
 .groom-the {
   font-family: "Sloop", cursive;
   font-size: 58px;
@@ -970,7 +987,7 @@ body {
 .countdown-bg {
   position: absolute;
   inset: 0;
-  background: url("../assets/cover_3.JPG") center center / cover no-repeat;
+  background: url("../assets/countdown.jpg") center center / cover no-repeat;
   z-index: 0;
 }
 
