@@ -36,6 +36,9 @@ footer {
   .guest {
     font-size: 14px;
   }
+  #guestName {
+    font-size: 18px;
+  }
   .button-wrapper {
     top: 82vh;
   }
@@ -63,12 +66,12 @@ footer {
   }
   .bride-name,
   .groom-name {
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.5px;
   }
   .bride-parents-name,
   .groom-parents-name {
-    font-size: 16px;
+    font-size: 13px;
   }
 
   /* ===== OUR JOURNEY =====
