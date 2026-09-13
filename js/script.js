@@ -619,9 +619,28 @@ function initGallery() {
   const items = document.querySelectorAll(".editorial-item");
   // ANIMASI: kasih custom property --i ke tiap foto berdasarkan
   // data-index-nya, dipakai CSS buat ngitung delay stagger
+
   items.forEach((item) => {
-    item.style.setProperty("--i", item.dataset.index);
+    item.style.setProperty("--i", item.dataset.index % 3);
   });
+
+  // FIX: tiap foto dikasih observer sendiri-sendiri, biar animasinya
+  // beneran jalan PAS foto itu masuk layar — bukan numpang trigger 1x
+  // dari section (yang keburu "kelar main" duluan sebelum user scroll
+  // sampai foto-foto di baris bawah).
+  const photoObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          photoObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 },
+  );
+
+  items.forEach((item) => photoObserver.observe(item));
   const lightbox = document.getElementById("galleryLightbox");
   const lbImg = document.getElementById("lbImg");
   const lbClose = document.getElementById("lbClose");

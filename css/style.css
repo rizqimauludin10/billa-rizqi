@@ -2720,7 +2720,7 @@ body {
   transition-delay: calc(var(--i, 0) * 0.08s);
 }
 
-#gallerySection.show .editorial-item {
+.editorial-item.show {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
