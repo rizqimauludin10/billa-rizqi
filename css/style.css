@@ -1565,34 +1565,6 @@ body {
   z-index: 1;
 }
 
-/* Tanggal singkat satu baris — tampil di kedua halaman (Akad &
-   Resepsi), beda sama .event-date-main yang gede di bagian intro. */
-.event-page-date {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-top: 14px;
-  font-family: "Noto Serif", serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.92);
-  position: relative;
-  z-index: 1;
-}
-
-.event-page-date i {
-  font-size: 14px;
-}
-
-.event-page.akad .event-page-date i {
-  color: #ff7597;
-}
-
-.event-page.resepsi .event-page-date i {
-  color: #f3e08f;
-}
-
 .event-page-divider {
   margin: 22px 0;
   position: relative;
@@ -1603,89 +1575,94 @@ body {
   margin: 0 auto;
 }
 
-.event-page-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+/* =============================
+   KOTAK INFO — Tanggal, Waktu, Lokasi
+   REVISI: versi kotak 2-kolom sebelumnya kepepet sempit, teksnya
+   jadi kekecilan dan pesannya "gak nyampe". Sekarang ditumpuk
+   VERTIKAL — tiap info (Tanggal/Waktu/Lokasi) dapet lebar penuh buat
+   "napas", jadi bisa dibesarin tanpa kepotong. Waktu acara dikasih
+   penekanan paling kuat (font paling gede) karena itu info paling
+   krusial buat tamu.
+   ============================= */
+.event-info-box {
+  width: 100%;
+  max-width: 340px;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
   position: relative;
   z-index: 1;
+  border-top-width: 2px;
 }
 
-.event-info-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
+.event-page.akad .event-info-box {
+  border-top-color: #ab1b4d;
 }
 
-/* Garis tipis pemisah antara jam & lokasi — biar 2 info ini gak
-   nempel jadi satu blok */
-.event-info-divider {
-  width: 36px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.14);
+.event-page.resepsi .event-info-box {
+  border-top-color: #d4af37;
 }
 
-/* FIX: sebelumnya ikon lokasi di-align-center padahal teksnya 2
-   baris — ikonnya jadi "ngambang" di tengah paragraf. Sekarang
-   align ke atas (flex-start) biar sejajar sama baris pertama, dan
-   teksnya rata kiri (bukan ikut center dari section) biar 2 baris
-   alamat yang beda panjang gak keliatan berantakan. */
-.event-info-item.location {
-  align-items: flex-start;
-  text-align: left;
-  max-width: 260px;
-}
-
-.event-info-item.location i {
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
-.event-info-location-text {
+.event-info-row {
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-info-row:last-child {
+  border-bottom: none;
+}
+
+.event-info-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.event-info-value {
+  font-family: "Playfair Display", serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+/* Baris Waktu — paling ditonjolkan, background sedikit lebih gelap
+   biar kebeda dari baris lain */
+.event-info-row.time {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.event-info-value.time {
+  font-size: 26px;
+  letter-spacing: 0.5px;
+}
+
+.event-info-row.location {
+  padding-top: 18px;
+  padding-bottom: 20px;
 }
 
 .event-info-venue {
   font-weight: 600;
   color: #ffffff;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 2px;
 }
 
 .event-info-address {
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.55);
-  line-height: 1.4;
-}
-
-/* Jam acara dikasih penekanan paling kuat di antara semua info —
-   ini yang paling penting buat tamu tau kapan harus datang, jadi
-   dibikin jauh lebih besar & pakai Playfair Display biar berasa
-   seperti angka besar di undangan cetak. */
-.event-info-item.time {
-  font-family: "Playfair Display", serif;
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: #ffffff;
-}
-
-.event-info-item.time i {
-  font-size: 18px;
-}
-
-.event-page.akad .event-info-item i {
-  color: #ff7597;
-}
-
-.event-page.resepsi .event-info-item i {
-  color: #f3e08f;
+  line-height: 1.5;
 }
 
 /* ===== TOMBOL SIMPAN KE KALENDER =====
@@ -1746,11 +1723,26 @@ body {
   .event-page-heading {
     font-size: 26px;
   }
-  .event-page-date {
-    font-size: 15px;
+  .event-info-box {
+    max-width: 300px;
   }
-  .event-info-item.time {
-    font-size: 18px;
+  .event-info-row {
+    padding: 14px 16px;
+  }
+  .event-info-value {
+    font-size: 16px;
+  }
+  .event-info-row.time {
+    padding: 17px 16px;
+  }
+  .event-info-value.time {
+    font-size: 22px;
+  }
+  .event-info-venue {
+    font-size: 13px;
+  }
+  .event-info-address {
+    font-size: 11px;
   }
 }
 
