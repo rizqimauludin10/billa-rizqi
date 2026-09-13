@@ -116,6 +116,7 @@ body {
 .logo-wrapper {
   position: absolute;
   top: 5vh;
+  top: 5dvh;
   left: 50%;
   transform: translate(-50%, 20px);
   z-index: 2;
@@ -133,6 +134,7 @@ body {
 .couple-wrapper {
   position: absolute;
   top: 64vh;
+  top: 64dvh;
   left: 50%;
   transform: translate(-50%, 20px);
   width: 100%;
@@ -154,6 +156,7 @@ body {
 .guest-wrapper {
   position: absolute;
   top: 73vh;
+  top: 73dvh;
   left: 50%;
   transform: translate(-50%, 20px);
   width: 100%;

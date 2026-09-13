@@ -26,12 +26,14 @@ footer {
   }
   .couple-wrapper {
     top: 60vh;
+    top: 60dvh;
   }
   .couple-name {
     font-size: 28px;
   }
   .guest-wrapper {
     top: 70vh;
+    top: 70dvh;
   }
   .guest {
     font-size: 14px;
