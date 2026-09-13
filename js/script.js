@@ -46,6 +46,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ===== LOADING STATE — GOOGLE MAPS =====
+  const venueMapsFrame = document.getElementById("venueMapsFrame");
+  const venueMapsLoading = document.getElementById("venueMapsLoading");
+  if (venueMapsFrame && venueMapsLoading) {
+    venueMapsFrame.addEventListener("load", () => {
+      venueMapsLoading.classList.add("hidden");
+    });
+  }
+
   /* =============================
      COVER ENTRANCE ANIMATION
   ============================= */

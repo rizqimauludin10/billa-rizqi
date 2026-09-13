@@ -542,9 +542,15 @@
           </div>
 
           <div class="venue-maps-wrap">
+            <div class="venue-maps-loading" id="venueMapsLoading">
+              <div class="venue-maps-spinner"></div>
+              <span>Memuat peta...</span>
+            </div>
+
             <!-- Google Maps embed -->
             <iframe
               class="venue-maps-frame"
+              id="venueMapsFrame"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4034.8923093583508!2d112.7426748751182!3d-7.286762871618077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fbd8060433b7%3A0xd9094060346a6f0!2sStay.vie%20Dinoyo%20Prime%20Hotel%20%26%20Co-Living%20-%20Surabaya!5e1!3m2!1sid!2sid!4v1773999286641!5m2!1sid!2sid"
               allowfullscreen=""
               loading="lazy"
