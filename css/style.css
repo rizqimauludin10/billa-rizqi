@@ -80,6 +80,13 @@ body {
 
 #cover {
   height: 100vh;
+  /* FIX: 100dvh ("dynamic viewport height") ngukur tinggi layar yang
+     BENERAN kelihatan, ngitung toolbar browser yang muncul/collapse
+     (Chrome iOS toolbar-nya beda ngitungnya sama Safari, itu yang
+     bikin tombol "Buka Undangan" ketutupan di Chrome). Baris di atas
+     (100vh) tetap dipertahankan sebagai fallback buat browser lama
+     yang belum kenal unit dvh. */
+  height: 100dvh;
   background: url("../assets/cover_3.JPG") center center / cover no-repeat;
   position: relative;
   text-align: center;
@@ -176,7 +183,13 @@ body {
    ============================= */
 .button-wrapper {
   position: absolute;
-  top: 85vh;
+  /* FIX: sebelumnya "top: 85vh" — dihitung dari atas, jadi kalau
+     ada selisih tinggi vh antar browser (Chrome vs Safari di iOS),
+     efeknya numpuk ke bawah dan tombolnya ketutupan. "bottom" jauh
+     lebih stabil karena dihitung dari tepi bawah yang beneran
+     kelihatan. max(...) mastiin jaraknya gak pernah kurang dari 24px
+     di atas home-indicator iPhone. */
+  bottom: max(6vh, calc(env(safe-area-inset-bottom) + 24px));
   left: 50%;
   transform: translate(-50%, 20px);
   z-index: 2;
@@ -1736,7 +1749,7 @@ body {
     padding: 14px 16px;
   }
   .event-info-value {
-    font-size: 16px;
+    font-size: 15px;
   }
   .event-info-row.time {
     padding: 17px 16px;
