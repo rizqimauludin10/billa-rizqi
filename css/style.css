@@ -461,6 +461,9 @@ body {
   height: 100%;
   object-fit: cover;
   filter: grayscale(15%);
+  /* ANIMASI: foto mulai agak di-zoom (1.08), terus "narik mundur" ke
+     ukuran normal pas story-item kelihatan — kesannya foto yang
+     datang ke kita, bukan cuma numpang lewat pas section fade-in. */
   transform: scale(1.08);
   transition:
     transform 1.2s ease,
@@ -470,6 +473,10 @@ body {
 
 .story-item.show .story-photo img {
   transform: scale(1);
+}
+
+.story-item:hover .story-photo img {
+  transform: scale(1.04);
 }
 
 .story-photo::after {
@@ -1108,14 +1115,17 @@ body {
 }
 
 .countdown-num {
-  font-family: "Playfair Display", serif;
+  font-family: "Cinzel", serif;
   font-size: 40px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -1px;
+  letter-spacing: 0px;
   color: white;
 }
 
+/* Animasi "tick" — pulse kecil tiap angka beneran berganti, biar
+   countdown berasa hidup kayak jam sungguhan, bukan teks statis yang
+   diam-diam ganti sendiri. */
 .countdown-num.tick {
   animation: countdownTick 0.4s ease;
 }
@@ -1230,7 +1240,7 @@ body {
    (intro, halaman Akad, halaman Resepsi, closing) — tanpa
    flex-direction eksplisit, flex defaultnya "row", jadi ke-4 blok itu
    malah disusun BERSEBELAHAN bukan ke bawah. Diganti ke block biasa;
-   tiap blok anak (.event-intro, .event-page, .event-closing) udah
+   tiap blok anak (.event-intro, .event-page) udah
    ngatur padding & centering-nya sendiri-sendiri. */
 #eventSection {
   background: linear-gradient(
@@ -1243,10 +1253,6 @@ body {
 
 .event-intro {
   padding: 60px 20px 24px;
-}
-
-.event-closing {
-  padding: 10px 20px 60px;
 }
 
 #eventSection .container {
@@ -1345,11 +1351,11 @@ body {
 }
 
 .event-date-main {
-  font-family: "Playfair Display", serif;
+  font-family: "Cinzel", serif;
   font-size: 76px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -2px;
+  letter-spacing: 1px;
   color: #ffffff;
   margin-bottom: 4px;
 }
@@ -1462,6 +1468,11 @@ body {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 
+/* ANIMASI: foto film-frame punya entrance sendiri — mulai rata
+   (rotate 0), agak kecil (scale 0.85), transparan, terus "jatuh ke
+   posisi" pas halaman Akad/Resepsi kelihatan, baru miring ke tilt
+   akhirnya. Dipisah dari .event-page (yang fade duluan) biar berasa
+   2 tahap, bukan sekali fade doang. */
 .event-page.akad .event-film-frame {
   opacity: 0;
   transform: rotate(0deg) scale(0.85);
@@ -1517,7 +1528,9 @@ body {
 }
 
 /* ===== JUDUL & INFO ===== */
-
+/* ANIMASI: judul nyusul dikit setelah foto film-frame (delay 0.35s
+   vs foto yang 0.15s) — biar reveal-nya berasa 2 tahap: foto dulu
+   "jatuh ke posisi", baru judulnya nyusul naik. */
 .event-page-heading,
 .event-page-subheading {
   opacity: 0;
@@ -1526,11 +1539,13 @@ body {
     opacity 0.8s ease 0.35s,
     transform 0.8s ease 0.35s;
 }
+
 .event-page.show .event-page-heading,
 .event-page.show .event-page-subheading {
   opacity: 1;
   transform: translateY(0);
 }
+
 .event-page-heading {
   font-family: "Playfair Display", serif;
   font-size: 34px;
@@ -1592,7 +1607,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   position: relative;
   z-index: 1;
 }
@@ -1604,6 +1619,49 @@ body {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
+}
+
+/* Garis tipis pemisah antara jam & lokasi — biar 2 info ini gak
+   nempel jadi satu blok */
+.event-info-divider {
+  width: 36px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* FIX: sebelumnya ikon lokasi di-align-center padahal teksnya 2
+   baris — ikonnya jadi "ngambang" di tengah paragraf. Sekarang
+   align ke atas (flex-start) biar sejajar sama baris pertama, dan
+   teksnya rata kiri (bukan ikut center dari section) biar 2 baris
+   alamat yang beda panjang gak keliatan berantakan. */
+.event-info-item.location {
+  align-items: flex-start;
+  text-align: left;
+  max-width: 260px;
+}
+
+.event-info-item.location i {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.event-info-location-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.event-info-venue {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.event-info-address {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.4;
 }
 
 /* Jam acara dikasih penekanan paling kuat di antara semua info —
@@ -1628,67 +1686,6 @@ body {
 
 .event-page.resepsi .event-info-item i {
   color: #f3e08f;
-}
-
-/* Blok penutup Event: lokasi, tampil setelah Resepsi selesai
-   di-scroll (tombol kalender udah dipindah ke Countdown) */
-.event-closing {
-  padding-top: 10px;
-}
-
-.event-location-box {
-  border-radius: 12px;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 24px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 1s ease 0.5s,
-    transform 1s ease 0.5s;
-}
-
-#eventSection.show .event-location-box {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.event-location-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(171, 27, 77, 0.15);
-  border: 1px solid rgba(171, 27, 77, 0.3);
-  color: #ff7597;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.event-location-details {
-  text-align: left;
-}
-
-.event-location-title {
-  font-family: "Playfair Display", serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 2px;
-}
-
-.event-location-sub {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ===== TOMBOL SIMPAN KE KALENDER =====
@@ -2223,6 +2220,8 @@ body {
   overflow: hidden;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
   border-bottom: none;
+  /* ANIMASI: peta scale-in halus pas discroll, bukan langsung datar
+     nongol bareng teks lain. */
   transform: scale(0.94);
   transition: transform 1s ease 0.15s;
 }
@@ -2945,6 +2944,9 @@ body {
 
 .thanks-title {
   text-align: center;
+  /* ANIMASI: judul duluan yang nongol, disusul pesan lalu nama
+     (lihat .thanks-message & .thanks-names) — reveal 3 tahap yang
+     pelan, senada sama mood section ini. */
   opacity: 0;
   transform: translateY(18px);
   transition:
@@ -3084,6 +3086,8 @@ body {
   transform: translateY(0);
 }
 
+/* ANIMASI: reveal berurutan — logo dulu, foto masuk dari sisi
+   kiri-kanan, quote nyusul, hashtag paling akhir. */
 .closing-logo {
   width: 120px;
   height: 120px;
@@ -3114,6 +3118,7 @@ body {
   object-fit: contain;
 }
 
+/* ===== DUA FOTO KIRI-KANAN ===== */
 .closing-photos {
   display: flex;
   gap: 16px;
@@ -3130,6 +3135,9 @@ body {
   opacity: 0;
 }
 
+/* Entrance: foto masuk dari sisi masing-masing (kiri dari kiri,
+   kanan dari kanan — sama konsepnya kayak teks vertical Bride/Groom),
+   sambil rotate dari rata (0deg) ke tilt akhirnya. */
 .closing-photo.left {
   transform: translateX(-60px) rotate(0deg);
   transition:
@@ -3143,6 +3151,16 @@ body {
     transform 1s ease 0.2s;
 }
 
+/* FIX: floating sekarang di div pembungkus INI (yang punya border),
+   bukan di <img> doang — biar border ikut gerak bareng foto sebagai
+   1 kesatuan bingkai, bukan foto "geser" sendirian di dalam bingkai
+   yang diem.
+
+   animation-delay 1.2s = persis nunggu transition entrance di atas
+   kelar (0.2s delay + 1s durasi) baru floating mulai jalan, jadi gak
+   ada "lompatan" transform pas serah-terima dari transition ke
+   animation. Durasi float kiri/kanan sengaja beda (4s vs 4.6s) biar
+   gerakannya gak sinkron sempurna, lebih natural. */
 #closingSection.show .closing-photo.left {
   opacity: 1;
   transform: translateX(0) rotate(-4deg);
@@ -3182,6 +3200,7 @@ body {
   display: block;
 }
 
+/* ===== QUOTE — gaya & posisi mirip #quoteSection ===== */
 .closing-quote-wrapper {
   max-width: 320px;
   opacity: 0;
@@ -3266,6 +3285,9 @@ body {
 }
 /* @keyframes heartbeat tetap, gak perlu diubah */
 
+/* Cincin yang mekar keluar & menghilang, berulang — kesan "memancar"
+   dari hati-nya. 2 cincin dijalanin gantian (delay 1.2s) biar selalu
+   ada minimal 1 yang lagi mekar, gak ada jeda kosong. */
 .footer-heart::before,
 .footer-heart::after {
   content: "";
@@ -3299,7 +3321,6 @@ body {
     opacity: 0;
   }
 }
-/* @keyframes heartbeat tetap, gak perlu diubah */
 
 .footer-made {
   font-size: 10px;

@@ -102,13 +102,62 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("venueSection"),
     document.getElementById("rsvpSection"),
     document.getElementById("wishesSection"),
-    // document.getElementById("thanksSection"),
+    // thanksSection sengaja gak didaftarin di sini — dia dapet
+    // observer sendiri di bawah dengan threshold beda (lihat
+    // thanksObserver).
     document.getElementById("gallerySection"),
     document.getElementById("closingSection"),
   ].filter(Boolean); // buang null kalau ada elemen yang gak ketemu
 
   revealTargets.forEach((el) => observer.observe(el));
 
+  /* =============================
+     OBSERVER TERPISAH — ANGKA TANGGAL EVENT
+     Angka gede "15" di section Event dianimasikan jalan dari 1
+     sampai berhenti di angka aslinya (dibaca dari textContent di
+     HTML, jadi kalau tanggalnya lain, ini otomatis nyesuain — gak
+     perlu ubah angka target manual di JS).
+  ============================= */
+  function animateDateCounter(el, target, duration = 1200) {
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      // easeOutQuad — mulai cepat, pelan-pelan berhenti di angka akhir
+      const eased = 1 - (1 - progress) * (1 - progress);
+      el.textContent = Math.max(1, Math.round(1 + eased * (target - 1)));
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = target;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const eventDateObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.textContent.trim(), 10);
+          if (!isNaN(target)) animateDateCounter(el, target);
+          eventDateObserver.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+
+  const eventDateMainEl = document.querySelector(".event-date-main");
+  if (eventDateMainEl) eventDateObserver.observe(eventDateMainEl);
+
+  /* =============================
+     OBSERVER TERPISAH — THANKS SECTION
+     Section lain pakai threshold 0.15 (15% kelihatan langsung
+     trigger). Khusus Thanks, animasinya baru nyala pas 40% section
+     ini udah ke-scroll — biar gak "ketinggalan" muncul terlalu awal
+     sebelum user beneran sampai di section-nya.
+  ============================= */
   const thanksObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -151,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Interval lebih panjang (6 detik) dari Bride/Groom (4-4.5 detik),
   // digabung sama transisi 3 detik di CSS — hasilnya slideshow yang
   // beneran berasa pelan & tenang, bukan buru-buru gonta-ganti foto.
-  startSlider(".thanks-slide", 6000);
+  startSlider(".thanks-slide", 4000);
 
   /* =============================
      RSVP CHAT
@@ -183,11 +232,13 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     const pad = (n) => String(Math.floor(n)).padStart(2, "0");
-
     const setEl = (id, val) => {
       const el = document.getElementById(id);
       if (!el) return;
       const newText = pad(val);
+      // ANIMASI: cuma trigger "tick" kalau angkanya BENERAN berubah —
+      // biar Hours/Minutes/Days gak ikut ke-animasi tiap detik padahal
+      // cuma Seconds yang biasanya berubah tiap tick.
       if (el.textContent !== newText) {
         el.textContent = newText;
         el.classList.remove("tick");
@@ -637,16 +688,38 @@ function initGallery() {
   // Swipe support untuk mobile
   let touchStartX = 0;
   let touchEndX = 0;
+  // FIX: flag ini nandain gesture yang dimulai dengan 2 jari (pinch-
+  // zoom), biar swipe detector di bawah gak salah nangkep gerakan
+  // salah satu jari itu sebagai "swipe" dan ganti foto di tengah
+  // proses zoom — itu penyebab utama bug "gambar gerak sendiri lalu
+  // crash" pas di-pinch di HP.
+  let isMultiTouch = false;
 
   lightbox.addEventListener(
     "touchstart",
     (e) => {
+      isMultiTouch = e.touches.length > 1;
       touchStartX = e.changedTouches[0].screenX;
     },
     { passive: true },
   );
 
+  // FIX tambahan: kadang jari kedua baru nempel SETELAH gesture
+  // dimulai (bukan barengan pas touchstart) — touchmove ini nangkep
+  // kasus itu juga, biar guard-nya menyeluruh.
+  lightbox.addEventListener(
+    "touchmove",
+    (e) => {
+      if (e.touches.length > 1) isMultiTouch = true;
+    },
+    { passive: true },
+  );
+
   lightbox.addEventListener("touchend", (e) => {
+    if (isMultiTouch) {
+      isMultiTouch = false;
+      return;
+    }
     touchEndX = e.changedTouches[0].screenX;
     const diff = touchStartX - touchEndX;
     if (Math.abs(diff) > 50) {
@@ -676,7 +749,7 @@ function initMusicPlayer() {
       setTimeout(() => {
         player.classList.add("visible");
         playWithFade();
-      }, 400);
+      }, 700);
     });
   }
 
