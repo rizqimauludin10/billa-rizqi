@@ -638,6 +638,7 @@ function initGallery() {
   let current = 0;
 
   function openLightbox(index) {
+    resetImageZoom();
     current = index;
     lbImg.src = srcs[current];
     lbCounter.textContent = `${current + 1} / ${total}`;
@@ -653,12 +654,14 @@ function initGallery() {
   }
 
   function prevPhoto() {
+    resetImageZoom();
     current = (current - 1 + total) % total;
     lbImg.src = srcs[current];
     lbCounter.textContent = `${current + 1} / ${total}`;
   }
 
   function nextPhoto() {
+    resetImageZoom();
     current = (current + 1) % total;
     lbImg.src = srcs[current];
     lbCounter.textContent = `${current + 1} / ${total}`;
@@ -686,40 +689,101 @@ function initGallery() {
   });
 
   // Swipe support untuk mobile
+  // ===== ZOOM, PAN & SWIPE buat foto di lightbox =====
   let touchStartX = 0;
   let touchEndX = 0;
-  // FIX: flag ini nandain gesture yang dimulai dengan 2 jari (pinch-
-  // zoom), biar swipe detector di bawah gak salah nangkep gerakan
-  // salah satu jari itu sebagai "swipe" dan ganti foto di tengah
-  // proses zoom — itu penyebab utama bug "gambar gerak sendiri lalu
-  // crash" pas di-pinch di HP.
   let isMultiTouch = false;
+  let currentScale = 1;
+  let currentTranslateX = 0;
+  let currentTranslateY = 0;
+  let startDistance = 0;
+  let startScale = 1;
+  let isPanning = false;
+  let panStartX = 0;
+  let panStartY = 0;
+  let lastTapTime = 0;
+
+  function getDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function applyImageTransform() {
+    lbImg.style.transform = `translate(${currentTranslateX}px, ${currentTranslateY}px) scale(${currentScale})`;
+  }
+
+  function resetImageZoom() {
+    currentScale = 1;
+    currentTranslateX = 0;
+    currentTranslateY = 0;
+    lbImg.style.transform = "";
+  }
 
   lightbox.addEventListener(
     "touchstart",
     (e) => {
-      isMultiTouch = e.touches.length > 1;
-      touchStartX = e.changedTouches[0].screenX;
+      if (e.touches.length === 2) {
+        // Mulai PINCH — 2 jari
+        isMultiTouch = true;
+        startDistance = getDistance(e.touches);
+        startScale = currentScale;
+      } else if (e.touches.length === 1) {
+        isMultiTouch = false;
+        if (currentScale > 1) {
+          // Foto lagi di-zoom → 1 jari buat GESER (pan), bukan ganti foto
+          isPanning = true;
+          panStartX = e.touches[0].clientX - currentTranslateX;
+          panStartY = e.touches[0].clientY - currentTranslateY;
+        } else {
+          touchStartX = e.changedTouches[0].screenX;
+        }
+
+        // Double-tap buat toggle zoom cepat
+        const now = Date.now();
+        if (now - lastTapTime < 300) {
+          if (currentScale > 1) {
+            resetImageZoom();
+          } else {
+            currentScale = 2;
+            applyImageTransform();
+          }
+        }
+        lastTapTime = now;
+      }
     },
     { passive: true },
   );
 
-  // FIX tambahan: kadang jari kedua baru nempel SETELAH gesture
-  // dimulai (bukan barengan pas touchstart) — touchmove ini nangkep
-  // kasus itu juga, biar guard-nya menyeluruh.
   lightbox.addEventListener(
     "touchmove",
     (e) => {
-      if (e.touches.length > 1) isMultiTouch = true;
+      if (e.touches.length === 2) {
+        isMultiTouch = true;
+        const newDistance = getDistance(e.touches);
+        const scaleChange = newDistance / startDistance;
+        currentScale = Math.min(Math.max(startScale * scaleChange, 1), 4);
+        applyImageTransform();
+      } else if (e.touches.length === 1 && isPanning) {
+        currentTranslateX = e.touches[0].clientX - panStartX;
+        currentTranslateY = e.touches[0].clientY - panStartY;
+        applyImageTransform();
+      }
     },
     { passive: true },
   );
 
   lightbox.addEventListener("touchend", (e) => {
+    if (e.touches.length === 0) isPanning = false;
+
     if (isMultiTouch) {
       isMultiTouch = false;
+      if (currentScale <= 1.05) resetImageZoom();
       return;
     }
+
+    if (currentScale > 1) return; // lagi di-zoom, swipe jangan ganti foto
+
     touchEndX = e.changedTouches[0].screenX;
     const diff = touchStartX - touchEndX;
     if (Math.abs(diff) > 50) {

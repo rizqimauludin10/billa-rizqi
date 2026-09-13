@@ -2803,6 +2803,7 @@ body {
   object-fit: contain;
   box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
   animation: lbIn 0.35s ease both;
+  touch-action: none; /* biar browser gak ikut campur nangkep gesture, semua kontrol lewat JS kita */
 }
 
 .lb-close {
