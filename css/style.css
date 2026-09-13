@@ -743,7 +743,7 @@ body {
 }
 
 .bride-parents-label {
-  font-size: 10px;
+  font-size: 14px;
   letter-spacing: 3px;
   text-transform: uppercase;
   opacity: 0.3;
@@ -751,7 +751,7 @@ body {
 }
 
 .bride-parents-name {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.8;
   opacity: 0.65;
   font-style: italic;
@@ -946,7 +946,7 @@ body {
 }
 
 .groom-parents-label {
-  font-size: 10px;
+  font-size: 14px;
   letter-spacing: 3px;
   text-transform: uppercase;
   opacity: 0.3;
@@ -954,7 +954,7 @@ body {
 }
 
 .groom-parents-name {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.8;
   opacity: 0.65;
   font-style: italic;
@@ -1650,7 +1650,7 @@ body {
 
 .event-info-value {
   font-family: "Playfair Display", serif;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
   color: #ffffff;
   line-height: 1.3;
@@ -1752,13 +1752,13 @@ body {
     padding: 14px 16px;
   }
   .event-info-value {
-    font-size: 15px;
+    font-size: 16px;
   }
   .event-info-row.time {
     padding: 17px 16px;
   }
   .event-info-value.time {
-    font-size: 22px;
+    font-size: 20px;
   }
   .event-info-venue {
     font-size: 13px;
@@ -3274,7 +3274,7 @@ body {
    FOOTER
    ============================= */
 #siteFooter {
-  padding: 34px 24px 30px;
+  padding: 34px 24px 100px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     180deg,
