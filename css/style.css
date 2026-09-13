@@ -2664,7 +2664,7 @@ body {
   justify-content: center;
 }
 
-.editorial-grid {
+/* .editorial-grid {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -2673,6 +2673,12 @@ body {
   transition:
     opacity 1s ease 0.2s,
     transform 1s ease 0.2s;
+} */
+
+.editorial-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 #gallerySection.show .editorial-grid {
@@ -2703,6 +2709,20 @@ body {
   overflow: hidden;
   cursor: pointer;
   height: 120px;
+  /* ANIMASI: tiap foto masuk sendiri-sendiri, delay-nya dihitung dari
+     custom property --i (di-set lewat JS berdasarkan data-index),
+     jadi urutan animasinya ngikutin posisi foto di layar. */
+  opacity: 0;
+  transform: translateY(24px) scale(0.96);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+  transition-delay: calc(var(--i, 0) * 0.08s);
+}
+
+#gallerySection.show .editorial-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .editorial-row.row-a .editorial-item,

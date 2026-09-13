@@ -617,6 +617,11 @@ function initWishes() {
 ============================= */
 function initGallery() {
   const items = document.querySelectorAll(".editorial-item");
+  // ANIMASI: kasih custom property --i ke tiap foto berdasarkan
+  // data-index-nya, dipakai CSS buat ngitung delay stagger
+  items.forEach((item) => {
+    item.style.setProperty("--i", item.dataset.index);
+  });
   const lightbox = document.getElementById("galleryLightbox");
   const lbImg = document.getElementById("lbImg");
   const lbClose = document.getElementById("lbClose");
