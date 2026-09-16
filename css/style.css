@@ -316,6 +316,43 @@ body {
   transform: translateY(0);
 }
 
+.scroll-hint {
+  position: absolute;
+  bottom: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 1s ease 1.5s;
+  pointer-events: none;
+}
+
+#mainContent.show-content .scroll-hint {
+  opacity: 1;
+}
+
+.scroll-hint.hidden {
+  opacity: 0 !important;
+  transition: opacity 0.5s ease;
+}
+
+.scroll-hint i {
+  display: inline-block;
+  animation: scrollHintBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollHintBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
 .wedding-header {
   margin-bottom: 150px;
 }
@@ -648,12 +685,22 @@ body {
   top: 0;
   left: 0;
   opacity: 0;
-  transition: opacity 2s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  animation: kenBurnsLoop 9s ease-in-out infinite alternate;
 }
 
 .bride-slide.active {
   opacity: 1;
   z-index: 1;
+}
+
+@keyframes kenBurnsLoop {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.08);
+  }
 }
 
 .bride-vertical {
@@ -853,7 +900,8 @@ body {
   top: 0;
   left: 0;
   opacity: 0;
-  transition: opacity 2s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  animation: kenBurnsLoop 9s ease-in-out infinite alternate;
 }
 
 .groom-slide.active {
@@ -1428,6 +1476,15 @@ body {
   height: 6px;
   border: 1px solid #ab1b4d;
   background: rgba(171, 27, 77, 0.5);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.event-divider-diamond-resepsi {
+  width: 6px;
+  height: 6px;
+  border: 1px solid #d4af37;
+  background: rgba(212, 175, 55, 0.5);
   transform: rotate(45deg);
   flex-shrink: 0;
 }
@@ -2138,8 +2195,8 @@ body {
 }
 
 .rsvp-note {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   opacity: 0.9;
   font-style: italic;
   letter-spacing: 0.5px;
@@ -3453,11 +3510,7 @@ body {
    ============================= */
 #siteFooter {
   padding: 34px 24px 100px;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.85) 100%
-  );
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -3519,6 +3572,7 @@ body {
   text-transform: uppercase;
   opacity: 0.5;
   font-style: normal;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .footer-highlight {
@@ -3534,6 +3588,7 @@ body {
   letter-spacing: 0.5px;
   color: #ffffff;
   opacity: 0.95;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 /* =============================
@@ -3563,7 +3618,14 @@ body {
   opacity: 1;
   pointer-events: all;
 }
-
+/* Disembunyikan sementara selama masih di quoteSection (biar gak
+   ketutup sama scroll-hint) — musik tetap jalan, cuma tombolnya aja
+   yang ngilang visual. Ditaruh SETELAH .visible di file ini biar
+   menang pas dua-duanya aktif bareng. */
+.music-player.auto-hide {
+  opacity: 0;
+  pointer-events: none;
+}
 .music-btn {
   width: 40px;
   height: 40px;

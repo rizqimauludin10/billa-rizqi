@@ -46,6 +46,50 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ===== SEMBUNYIIN TOMBOL MUSIK SEMENTARA DI quoteSection =====
+  const musicPlayerEl = document.getElementById("musicPlayer");
+  const quoteSectionEl = document.getElementById("quoteSection");
+  if (musicPlayerEl && quoteSectionEl) {
+    const musicAutoHideObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            musicPlayerEl.classList.add("auto-hide");
+          } else {
+            musicPlayerEl.classList.remove("auto-hide");
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
+
+    // FIX: observer BARU mulai mantau setelah #mainContent beneran
+    // ke-render (display:block) — bukan dari awal halaman dibuka.
+    // Kalau dipasang dari awal, #quoteSection masih "display:none"
+    // (nunggu cover diklik), jadi observer salah baca itu sebagai
+    // "gak kelihatan" dan nyabut auto-hide duluan sebelum waktunya.
+    if (openBtn) {
+      openBtn.addEventListener("click", () => {
+        setTimeout(() => {
+          musicAutoHideObserver.observe(quoteSectionEl);
+        }, 1300);
+      });
+    }
+  }
+
+  // ===== SCROLL HINT — quoteSection =====
+  // Hilang permanen begitu tamu scroll pertama kali, gak nongol lagi
+  // walau balik ke atas (cuma reset kalau halaman di-refresh, soalnya
+  // state-nya murni variable JS biasa, bukan disimpan di localStorage).
+  const scrollHint = document.getElementById("scrollHint");
+  if (scrollHint) {
+    function hideScrollHint() {
+      scrollHint.classList.add("hidden");
+      window.removeEventListener("scroll", hideScrollHint);
+    }
+    window.addEventListener("scroll", hideScrollHint, { passive: true });
+  }
+
   // ===== LOADING STATE — GOOGLE MAPS =====
   const venueMapsFrame = document.getElementById("venueMapsFrame");
   const venueMapsLoading = document.getElementById("venueMapsLoading");
