@@ -240,11 +240,24 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!slides.length) return;
     let index = 0;
 
+    // FIX: foto yang lagi aktif dipaksa restart animasi zoom-nya dari
+    // nol tiap kali gantian giliran — "reflow trick" (remove class,
+    // paksa reflow, add class lagi) biar animasi CSS beneran ke-restart,
+    // bukan nyambung dari posisi terakhir.
+    function triggerZoom(el) {
+      el.classList.remove("zooming");
+      void el.offsetWidth;
+      el.classList.add("zooming");
+    }
+
+    triggerZoom(slides[0]);
+
     setInterval(() => {
       if (document.hidden) return;
       slides[index].classList.remove("active");
       index = (index + 1) % slides.length;
       slides[index].classList.add("active");
+      triggerZoom(slides[index]);
     }, interval);
   }
 
