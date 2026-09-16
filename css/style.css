@@ -686,7 +686,7 @@ body {
   left: 0;
   opacity: 0;
   transition: opacity 1s ease-in-out;
-  animation: kenBurnsLoop 9s ease-in-out infinite alternate;
+  animation: kenBurnsLoop 6s ease-in-out infinite alternate;
 }
 
 .bride-slide.active {
@@ -699,7 +699,7 @@ body {
     transform: scale(1);
   }
   100% {
-    transform: scale(1.08);
+    transform: scale(1.15);
   }
 }
 
@@ -901,7 +901,7 @@ body {
   left: 0;
   opacity: 0;
   transition: opacity 1s ease-in-out;
-  animation: kenBurnsLoop 9s ease-in-out infinite alternate;
+  animation: kenBurnsLoop 6s ease-in-out infinite alternate;
 }
 
 .groom-slide.active {
