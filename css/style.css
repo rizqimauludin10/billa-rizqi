@@ -687,6 +687,9 @@ body {
   opacity: 0;
   transition: opacity 1s ease-in-out;
   animation: kenBurnsLoop 6s ease-in-out infinite alternate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .bride-slide.active {
@@ -902,6 +905,9 @@ body {
   opacity: 0;
   transition: opacity 1s ease-in-out;
   animation: kenBurnsLoop 6s ease-in-out infinite alternate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .groom-slide.active {
