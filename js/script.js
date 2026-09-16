@@ -558,49 +558,55 @@ function initWishes() {
   const loadMore = document.getElementById("wishesLoadMore");
   const loading = document.getElementById("wishesLoading");
   const empty = document.getElementById("wishesEmpty");
+  const errorBox = document.getElementById("wishesError");
+  const retryBtn = document.getElementById("wishesRetryBtn");
 
-  if (!masonry || !loadMore || !loading || !empty) return;
+  if (!masonry || !loadMore || !loading || !empty || !errorBox || !retryBtn)
+    return;
 
   const PER_PAGE = 5;
   let allWishes = [];
   let currentIndex = 0;
 
-  loadMore.classList.add("hidden");
-  empty.classList.add("hidden");
+  // FIX: logic fetch dibungkus jadi fungsi sendiri (loadWishes), biar
+  // bisa dipanggil ulang dari tombol "Muat Ulang" tanpa perlu refresh
+  // seluruh halaman.
+  function loadWishes() {
+    loading.classList.remove("hidden");
+    empty.classList.add("hidden");
+    errorBox.classList.add("hidden");
+    loadMore.classList.add("hidden");
+    masonry.innerHTML = "";
+    currentIndex = 0;
 
-  // FIX: Google Apps Script kadang butuh beberapa detik buat "bangun"
-  // (cold start) kalau lama gak dipanggil. AbortController di sini
-  // kasih batas waktu tunggu 10 detik — kalau kelewat, tampilkan
-  // pesan yang jujur ("lagi lama dimuat") bukan pesan "belum ada
-  // ucapan" yang bisa bikin tamu salah paham ucapannya hilang.
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-  fetch(APPS_SCRIPT_URL, { signal: controller.signal })
-    .then((res) => res.json())
-    .then((data) => {
-      clearTimeout(timeoutId);
-      loading.classList.add("hidden");
-      allWishes = data.filter((row) => row.ucapan && row.ucapan.trim() !== "");
-      if (allWishes.length === 0) {
-        empty.classList.remove("hidden");
-        return;
-      }
-      renderWishes();
-      updateLoadMoreBtn();
-    })
-    .catch((err) => {
-      clearTimeout(timeoutId);
-      loading.classList.add("hidden");
-      empty.classList.remove("hidden");
-      const emptyText = empty.querySelector("p");
-      if (emptyText) {
-        emptyText.textContent =
-          err.name === "AbortError"
-            ? "Ucapan agak lama dimuat. Coba refresh halaman ya 🤍"
-            : "Belum ada ucapan. Jadilah yang pertama! 🤍";
-      }
-    });
+    fetch(APPS_SCRIPT_URL, { signal: controller.signal })
+      .then((res) => res.json())
+      .then((data) => {
+        clearTimeout(timeoutId);
+        loading.classList.add("hidden");
+        allWishes = data.filter(
+          (row) => row.ucapan && row.ucapan.trim() !== "",
+        );
+        if (allWishes.length === 0) {
+          empty.classList.remove("hidden");
+          return;
+        }
+        renderWishes();
+        updateLoadMoreBtn();
+      })
+      .catch(() => {
+        clearTimeout(timeoutId);
+        loading.classList.add("hidden");
+        errorBox.classList.remove("hidden");
+      });
+  }
+
+  retryBtn.addEventListener("click", loadWishes);
+
+  loadWishes();
 
   function renderWishes() {
     const batch = allWishes.slice(currentIndex, currentIndex + PER_PAGE);

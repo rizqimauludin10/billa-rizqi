@@ -2571,15 +2571,26 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 .wishes-card-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-family: "Playfair Display", serif;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.5px;
   color: #ffffff;
+}
+
+.wishes-card-name::before {
+  content: "✦";
+  font-size: 10px;
+  color: #ab1b4d;
 }
 
 .wishes-card-status {
@@ -2656,6 +2667,53 @@ body {
 
 .wishes-empty.hidden {
   display: none;
+}
+
+.wishes-error {
+  font-size: 12px;
+  opacity: 0.5;
+  font-style: italic;
+  letter-spacing: 1px;
+  padding: 30px 0 10px;
+  text-align: center;
+}
+
+.wishes-error.hidden {
+  display: none;
+}
+
+.wishes-retry-btn {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 24px;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: "Noto Serif", serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.wishes-retry-btn:hover {
+  border-color: rgba(171, 27, 77, 0.5);
+  color: white;
+}
+
+.wishes-thanks-note {
+  margin-top: 20px;
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
 }
 
 @keyframes cardIn {
