@@ -239,15 +239,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const slides = document.querySelectorAll(selector);
     if (!slides.length) return;
     let index = 0;
+    // Toggle arah zoom — gantian tiap kali foto berpindah, biar gak
+    // monoton selalu zoom-in doang.
+    let zoomIn = true;
 
-    // FIX: foto yang lagi aktif dipaksa restart animasi zoom-nya dari
-    // nol tiap kali gantian giliran — "reflow trick" (remove class,
-    // paksa reflow, add class lagi) biar animasi CSS beneran ke-restart,
-    // bukan nyambung dari posisi terakhir.
     function triggerZoom(el) {
-      el.classList.remove("zooming");
-      void el.offsetWidth;
-      el.classList.add("zooming");
+      el.classList.remove("zooming-in", "zooming-out");
+      void el.offsetWidth; // paksa reflow biar animasi bisa restart
+      el.classList.add(zoomIn ? "zooming-in" : "zooming-out");
+      zoomIn = !zoomIn;
     }
 
     triggerZoom(slides[0]);

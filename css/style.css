@@ -693,16 +693,29 @@ body {
   z-index: 1;
 }
 
-.bride-slide.zooming {
-  animation: kenBurnsZoom 4s ease-out forwards;
+.bride-slide.zooming-in {
+  animation: kenBurnsIn 4s ease-out forwards;
 }
 
-@keyframes kenBurnsZoom {
+.bride-slide.zooming-out {
+  animation: kenBurnsOut 4s ease-out forwards;
+}
+
+@keyframes kenBurnsIn {
   0% {
     transform: scale(1);
   }
   100% {
     transform: scale(1.15);
+  }
+}
+
+@keyframes kenBurnsOut {
+  0% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -911,8 +924,12 @@ body {
   z-index: 1;
 }
 
-.groom-slide.zooming {
-  animation: kenBurnsZoom 4.5s ease-out forwards;
+.groom-slide.zooming-in {
+  animation: kenBurnsIn 4.5s ease-out forwards;
+}
+
+.groom-slide.zooming-out {
+  animation: kenBurnsOut 4.5s ease-out forwards;
 }
 
 .groom-vertical {
