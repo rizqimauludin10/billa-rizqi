@@ -687,14 +687,13 @@ body {
   opacity: 0;
   transition: opacity 1s ease-in-out;
   animation: kenBurnsLoop 6s ease-in-out infinite alternate;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: transform;
+  animation-play-state: paused;
 }
 
 .bride-slide.active {
   opacity: 1;
   z-index: 1;
+  animation-play-state: running;
 }
 
 @keyframes kenBurnsLoop {
@@ -905,14 +904,13 @@ body {
   opacity: 0;
   transition: opacity 1s ease-in-out;
   animation: kenBurnsLoop 6s ease-in-out infinite alternate;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: transform;
+  animation-play-state: paused;
 }
 
 .groom-slide.active {
   opacity: 1;
   z-index: 1;
+  animation-play-state: running;
 }
 
 .groom-vertical {
