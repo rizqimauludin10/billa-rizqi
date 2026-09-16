@@ -298,6 +298,7 @@ function initRSVP() {
   function handleSend() {
     const val = inputEl.value.trim();
     if (!val || !currentCallback) return;
+    stopChatPulse();
     inputEl.disabled = true;
     sendBtn.disabled = true;
     inputArea.classList.add("hidden");
@@ -309,21 +310,45 @@ function initRSVP() {
   inputArea.classList.add("hidden");
 
   // Mulai percakapan
-  setTimeout(
-    () =>
-      addBubbleLeft("Halo! Senang sekali kamu sudah membuka undangan kami 🥰"),
-    600,
+  const chatBox = document.querySelector(".rsvp-chat-box");
+  function stopChatPulse() {
+    if (chatBox) chatBox.classList.add("engaged");
+  }
+
+  // FIX: percakapan sekarang di-gate — baru mulai pas section RSVP
+  // beneran kelihatan di layar, bukan otomatis pas halaman dibuka.
+  function startConversation() {
+    showTyping();
+    setTimeout(() => {
+      removeTyping();
+      addBubbleLeft("Halo! Senang sekali kamu sudah membuka undangan kami 🥰");
+    }, 900);
+
+    setTimeout(() => {
+      addBubbleLeft("Apakah kamu bisa hadir di hari istimewa kami?");
+      addChoices(
+        [
+          { emoji: "🥂", text: "Insya Allah hadir!" },
+          { emoji: "💔", text: "Maaf, berhalangan hadir" },
+        ],
+        handleHadir,
+      );
+    }, 1900);
+  }
+
+  const rsvpSectionEl = document.getElementById("rsvpSection");
+  const rsvpStartObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          startConversation();
+          rsvpStartObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 },
   );
-  setTimeout(() => {
-    addBubbleLeft("Apakah kamu bisa hadir di hari istimewa kami?");
-    addChoices(
-      [
-        { emoji: "🥂", text: "Insya Allah hadir!" },
-        { emoji: "💔", text: "Maaf, berhalangan hadir" },
-      ],
-      handleHadir,
-    );
-  }, 1400);
+  if (rsvpSectionEl) rsvpStartObserver.observe(rsvpSectionEl);
 
   function handleHadir(pilihan) {
     userData.hadir = pilihan === 0 ? "Hadir" : "Tidak Hadir";
@@ -471,6 +496,7 @@ function initRSVP() {
       btn.className = "rsvp-choice-btn";
       btn.innerHTML = `${c.emoji} &nbsp;${c.text}`;
       btn.addEventListener("click", () => {
+        stopChatPulse();
         wrap
           .querySelectorAll(".rsvp-choice-btn")
           .forEach((b) => (b.disabled = true));

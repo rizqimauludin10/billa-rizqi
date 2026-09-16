@@ -1910,6 +1910,24 @@ body {
   overflow: hidden;
 }
 
+#rsvpSection.show .rsvp-chat-box {
+  animation: rsvpGlow 2.4s ease-in-out infinite;
+}
+
+.rsvp-chat-box.engaged {
+  animation: none;
+}
+
+@keyframes rsvpGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(171, 27, 77, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(171, 27, 77, 0);
+  }
+}
+
 .rsvp-messages {
   padding: 20px 16px;
   display: flex;
@@ -1951,7 +1969,7 @@ body {
   padding: 10px 14px;
   border-radius: 12px 12px 12px 2px;
   background: rgba(255, 255, 255, 0.06);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.85);
@@ -1985,7 +2003,7 @@ body {
   background: transparent;
   color: rgba(255, 255, 255, 0.65);
   font-family: "Noto Serif", serif;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   text-align: left;
   transition: all 0.3s ease;
@@ -2120,11 +2138,13 @@ body {
 }
 
 .rsvp-note {
-  font-size: 10px;
-  opacity: 0.25;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.9;
   font-style: italic;
   letter-spacing: 0.5px;
   text-align: center;
+  color: #d4af37;
 }
 
 @keyframes bubbleIn {
@@ -3360,11 +3380,9 @@ body {
    ============================= */
 #siteFooter {
   padding: 34px 24px 100px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     180deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.55) 100px,
+    rgba(0, 0, 0, 0.55) 0%,
     rgba(0, 0, 0, 0.85) 100%
   );
   text-align: center;
