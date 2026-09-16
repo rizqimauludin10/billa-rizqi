@@ -17,6 +17,36 @@ footer {
 }
 
 /* =============================
+   BREAKPOINT TABLET & LAPTOP — 768px ke atas
+   Konten dibatasi jadi "kartu" terpusat, biar gak keliatan versi HP
+   yang di-stretch doang di layar lebar. Video background yang fixed
+   tetap full-layar di belakangnya, ngasih atmosfer di luar frame.
+   520px diambil dari max-width terlebar yang udah dipakai beberapa
+   container (#quoteSection, #eventSection) — biar gak ada konten
+   yang nembus keluar frame.
+============================= */
+@media (min-width: 768px) {
+  body {
+    background: #0a0a0a;
+  }
+
+  #cover,
+  #mainContent {
+    max-width: 520px;
+    margin: 0 auto;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Musik player numpang posisi ke tepi kanan "kartu", bukan ke
+     pojok browser beneran — biar tetap nempel visual sama konten,
+     gak keliatan "nyasar" jauh di sudut layar lebar */
+  .music-player {
+    right: calc(50vw - 240px);
+  }
+}
+/* =============================
    BREAKPOINT UTAMA — 480px
 ============================= */
 @media (max-width: 480px) {
