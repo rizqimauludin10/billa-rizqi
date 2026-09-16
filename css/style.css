@@ -3284,9 +3284,24 @@ body {
     transform 1s ease;
 }
 
+/* Glow berdenyut pelan — cuma jalan begitu section-nya kelihatan,
+   biar gak "napas" duluan pas masih di luar layar */
 #closingSection.show .closing-logo {
-  opacity: 1;
-  transform: translateY(0);
+  animation: logoGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.5),
+      0 0 0 0 rgba(171, 27, 77, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.5),
+      0 0 18px 6px rgba(171, 27, 77, 0.35);
+  }
 }
 
 .closing-logo-img {
