@@ -378,8 +378,10 @@ body {
   position: relative;
   background: linear-gradient(
     to bottom,
-    rgba(14, 14, 14, 0.35),
-    rgba(28, 28, 28, 0.35)
+    transparent,
+    rgba(14, 14, 14, 0.35) 100px,
+    rgba(28, 28, 28, 0.35) calc(100% - 100px),
+    transparent
   );
 }
 
@@ -603,8 +605,10 @@ body {
   padding: 50px 15px;
   background: linear-gradient(
     to bottom,
-    rgba(22, 22, 22, 0.25),
-    rgba(30, 30, 30, 0.35)
+    transparent,
+    rgba(22, 22, 22, 0.25) 100px,
+    rgba(30, 30, 30, 0.35) calc(100% - 100px),
+    transparent
   );
   display: flex;
   align-items: center;
@@ -806,8 +810,10 @@ body {
   padding: 50px 15px;
   background: linear-gradient(
     to bottom,
-    rgba(18, 18, 18, 0.25),
-    rgba(25, 25, 25, 0.35)
+    transparent,
+    rgba(18, 18, 18, 0.25) 100px,
+    rgba(25, 25, 25, 0.35) calc(100% - 100px),
+    transparent
   );
   display: flex;
   align-items: center;
@@ -1267,8 +1273,10 @@ body {
 #eventSection {
   background: linear-gradient(
     180deg,
-    rgba(18, 16, 22, 0.45) 0%,
-    rgba(25, 20, 30, 0.5) 100%
+    transparent 0%,
+    rgba(18, 16, 22, 0.45) 100px,
+    rgba(25, 20, 30, 0.5) calc(100% - 100px),
+    transparent 100%
   );
   position: relative;
 }
@@ -1780,8 +1788,10 @@ body {
   justify-content: center;
   background: linear-gradient(
     to bottom,
-    rgba(15, 15, 15, 0.35),
-    rgba(25, 25, 25, 0.4)
+    transparent,
+    rgba(15, 15, 15, 0.35) 100px,
+    rgba(25, 25, 25, 0.4) calc(100% - 100px),
+    transparent
   );
 }
 
@@ -2167,8 +2177,10 @@ body {
   justify-content: center;
   background: linear-gradient(
     to bottom,
-    rgba(18, 18, 18, 0.35),
-    rgba(30, 30, 30, 0.35)
+    transparent,
+    rgba(18, 18, 18, 0.35) 100px,
+    rgba(30, 30, 30, 0.35) calc(100% - 100px),
+    transparent
   );
 }
 
@@ -2397,8 +2409,10 @@ body {
   padding: 80px 25px;
   background: linear-gradient(
     to bottom,
-    rgba(14, 14, 14, 0.35),
-    rgba(25, 25, 25, 0.35)
+    transparent,
+    rgba(14, 14, 14, 0.35) 100px,
+    rgba(25, 25, 25, 0.35) calc(100% - 100px),
+    transparent
   );
 }
 
@@ -2642,7 +2656,13 @@ body {
 #gallerySection {
   position: relative;
   overflow: hidden;
-  background: rgba(10, 10, 10, 0.3);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(10, 10, 10, 0.3) 100px,
+    rgba(10, 10, 10, 0.3) calc(100% - 100px),
+    transparent
+  );
 }
 
 /* Grain texture — berasa vintage & film */
@@ -3343,7 +3363,8 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.55) 0%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 100px,
     rgba(0, 0, 0, 0.85) 100%
   );
   text-align: center;
