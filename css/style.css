@@ -3284,9 +3284,9 @@ body {
     transform 1s ease;
 }
 
-/* Glow berdenyut pelan — cuma jalan begitu section-nya kelihatan,
-   biar gak "napas" duluan pas masih di luar layar */
 #closingSection.show .closing-logo {
+  opacity: 1;
+  transform: translateY(0);
   animation: logoGlow 2.6s ease-in-out infinite;
 }
 
