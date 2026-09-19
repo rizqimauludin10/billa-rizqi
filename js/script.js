@@ -4,6 +4,28 @@
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwB2V_jDquV9BfvNIDppQ-hXWZs19GidgOz9Cz8IGp8sPGdw2HHq3986m0yAcpkvnNR/exec";
 
+/* =============================
+   ANGKA JALAN — dipakai bareng buat angka tanggal Event & total
+   Wishes, makanya ditaruh di luar DOMContentLoaded biar bisa diakses
+   dari initWishes() juga (fungsi terpisah di bawah).
+============================= */
+function animateDateCounter(el, target, duration = 1200) {
+  const start = performance.now();
+  const startValue = target > 0 ? 1 : 0;
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    // easeOutQuad — mulai cepat, pelan-pelan berhenti di angka akhir
+    const eased = 1 - (1 - progress) * (1 - progress);
+    el.textContent = Math.round(startValue + eased * (target - startValue));
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      el.textContent = target;
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   /* =============================
      AMBIL NAMA TAMU DARI URL
@@ -46,32 +68,41 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ===== SEMBUNYIIN TOMBOL MUSIK SEMENTARA DI quoteSection =====
+  // ===== SEMBUNYIIN TOMBOL MUSIK SEMENTARA — quoteSection & closingSection =====
   const musicPlayerEl = document.getElementById("musicPlayer");
   const quoteSectionEl = document.getElementById("quoteSection");
-  if (musicPlayerEl && quoteSectionEl) {
+  const closingSectionEl = document.getElementById("closingSection");
+  const musicHideTargets = [quoteSectionEl, closingSectionEl].filter(Boolean);
+
+  if (musicPlayerEl && musicHideTargets.length) {
+    // FIX: nyimpen SEMUA section yang lagi kelihatan bareng, bukan cuma
+    // baca status 1 section terakhir yang diproses — biar gak ke-timpa
+    // salah pas 2 section sama-sama ngasih status bareng.
+    const intersectingHideTargets = new Set();
+
     const musicAutoHideObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            musicPlayerEl.classList.add("auto-hide");
+            intersectingHideTargets.add(entry.target);
           } else {
-            musicPlayerEl.classList.remove("auto-hide");
+            intersectingHideTargets.delete(entry.target);
           }
         });
+
+        if (intersectingHideTargets.size > 0) {
+          musicPlayerEl.classList.add("auto-hide");
+        } else {
+          musicPlayerEl.classList.remove("auto-hide");
+        }
       },
       { threshold: 0.3 },
     );
 
-    // FIX: observer BARU mulai mantau setelah #mainContent beneran
-    // ke-render (display:block) — bukan dari awal halaman dibuka.
-    // Kalau dipasang dari awal, #quoteSection masih "display:none"
-    // (nunggu cover diklik), jadi observer salah baca itu sebagai
-    // "gak kelihatan" dan nyabut auto-hide duluan sebelum waktunya.
     if (openBtn) {
       openBtn.addEventListener("click", () => {
         setTimeout(() => {
-          musicAutoHideObserver.observe(quoteSectionEl);
+          musicHideTargets.forEach((el) => musicAutoHideObserver.observe(el));
         }, 1300);
       });
     }
@@ -171,22 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
      HTML, jadi kalau tanggalnya lain, ini otomatis nyesuain — gak
      perlu ubah angka target manual di JS).
   ============================= */
-  function animateDateCounter(el, target, duration = 1200) {
-    const start = performance.now();
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      // easeOutQuad — mulai cepat, pelan-pelan berhenti di angka akhir
-      const eased = 1 - (1 - progress) * (1 - progress);
-      el.textContent = Math.max(1, Math.round(1 + eased * (target - 1)));
-      if (progress < 1) {
-        requestAnimationFrame(tick);
-      } else {
-        el.textContent = target;
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-
   const eventDateObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -617,6 +632,7 @@ function initWishes() {
   const empty = document.getElementById("wishesEmpty");
   const errorBox = document.getElementById("wishesError");
   const retryBtn = document.getElementById("wishesRetryBtn");
+  const countNumberEl = document.getElementById("wishesCountNumber");
 
   if (!masonry || !loadMore || !loading || !empty || !errorBox || !retryBtn)
     return;
@@ -635,6 +651,7 @@ function initWishes() {
     loadMore.classList.add("hidden");
     masonry.innerHTML = "";
     currentIndex = 0;
+    if (countNumberEl) countNumberEl.textContent = "0";
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -647,6 +664,8 @@ function initWishes() {
         allWishes = data.filter(
           (row) => row.ucapan && row.ucapan.trim() !== "",
         );
+        if (countNumberEl)
+          animateDateCounter(countNumberEl, allWishes.length, 1000);
         if (allWishes.length === 0) {
           empty.classList.remove("hidden");
           return;
@@ -658,6 +677,7 @@ function initWishes() {
         clearTimeout(timeoutId);
         loading.classList.add("hidden");
         errorBox.classList.remove("hidden");
+        if (countNumberEl) countNumberEl.textContent = "-";
       });
   }
 

@@ -215,6 +215,7 @@ body {
   transition: all 0.3s ease;
   backdrop-filter: blur(3px);
   animation: softPulse 2.5s infinite;
+  white-space: nowrap;
 }
 
 #openBtn:active {
@@ -1252,7 +1253,7 @@ body {
 
 .countdown-unit {
   font-size: 9px;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   opacity: 0.5;
 }
@@ -1303,6 +1304,10 @@ body {
   .countdown-item {
     padding: 18px 6px 14px;
   }
+  .countdown-unit {
+    letter-spacing: 1px;
+    font-size: 8px;
+  }
   .countdown-title-the {
     font-size: 40px;
   }
@@ -1326,6 +1331,9 @@ body {
   }
   .countdown-item {
     padding: 14px 4px 10px;
+  }
+  .countdown-unit {
+    letter-spacing: 0.5px;
   }
 }
 
@@ -2567,6 +2575,22 @@ body {
   justify-content: center;
 }
 
+.wishes-count-note {
+  margin-bottom: 26px;
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+.wishes-count-number {
+  font-style: italic;
+  font-weight: 700;
+  color: #ab1b4d;
+  font-size: 15px;
+}
+
 .wishes-loading {
   font-size: 12px;
   opacity: 0.3;
@@ -3314,14 +3338,12 @@ body {
    CLOSING SECTION
    ============================= */
 #closingSection {
-  min-height: 100vh;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 32px;
-  /* sengaja TANPA background — biar #bgVideo yang fixed di
-     belakang tembus pandang penuh, gak ada overlay lagi */
+  padding: 50px 32px 30px;
 }
 
 .closing-inner {
@@ -3346,6 +3368,7 @@ body {
 /* ANIMASI: reveal berurutan — logo dulu, foto masuk dari sisi
    kiri-kanan, quote nyusul, hashtag paling akhir. */
 .closing-logo {
+  position: relative;
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -3367,20 +3390,38 @@ body {
 #closingSection.show .closing-logo {
   opacity: 1;
   transform: translateY(0);
-  animation: logoGlow 2.6s ease-in-out infinite;
 }
 
-@keyframes logoGlow {
-  0%,
-  100% {
-    box-shadow:
-      0 8px 24px rgba(0, 0, 0, 0.5),
-      0 0 0 0 rgba(171, 27, 77, 0.45);
+/* Efek "kilau lewat" — cahaya tipis nyapu diagonal ngelewatin logo
+   secara periodik, kesannya kayak cahaya kena perhiasan/cincin.
+   Murni opacity+transform di dalam gradient, aman di GPU manapun. */
+.closing-logo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 65%
+  );
+  transform: translateX(-140%);
+  pointer-events: none;
+}
+
+#closingSection.show .closing-logo::after {
+  animation: logoShimmer 4.5s ease-in-out infinite;
+}
+
+@keyframes logoShimmer {
+  0% {
+    transform: translateX(-140%);
   }
-  50% {
-    box-shadow:
-      0 8px 24px rgba(0, 0, 0, 0.5),
-      0 0 18px 6px rgba(171, 27, 77, 0.35);
+  25% {
+    transform: translateX(140%);
+  }
+  100% {
+    transform: translateX(140%);
   }
 }
 
@@ -3532,7 +3573,7 @@ body {
    FOOTER
    ============================= */
 #siteFooter {
-  padding: 34px 24px 100px;
+  padding: 24px 24px 30px;
   background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
   text-align: center;
   display: flex;
@@ -3590,14 +3631,13 @@ body {
 }
 
 .footer-made {
-  font-size: 10px;
-  letter-spacing: 2.5px;
+  font-size: 13px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  opacity: 0.5;
+  opacity: 0.85;
   font-style: normal;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
-
 .footer-highlight {
   color: #ab1b4d;
   opacity: 1;
@@ -3605,13 +3645,27 @@ body {
 }
 
 .footer-name {
+  position: relative;
+  display: inline-block;
   font-family: "Playfair Display", serif;
-  font-size: 19px;
+  font-size: 21px;
   font-style: italic;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   color: #ffffff;
   opacity: 0.95;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  padding-bottom: 8px;
+}
+
+.footer-name::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
 }
 
 /* =============================
