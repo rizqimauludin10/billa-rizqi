@@ -2724,14 +2724,26 @@ body {
    box-shadow yang dianimasikan bareng border-radius itu pernah kena
    bug rendering di GPU Android tertentu (lihat revisi closing-logo). */
 .wishes-card-new {
-  animation: wishNewHighlight 3s ease-out;
+  animation: wishNewHighlight 1.8s ease-out both;
 }
 
 @keyframes wishNewHighlight {
   0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+    background: rgba(var(--color-akad-rgb), 0.35);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    background: rgba(var(--color-akad-rgb), 0.35);
     border-color: rgba(var(--color-akad-rgb), 0.8);
   }
   100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    background: rgba(25, 20, 30, 0.7);
     border-color: rgba(255, 255, 255, 0.1);
   }
 }
