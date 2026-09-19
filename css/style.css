@@ -1,4 +1,21 @@
 /* =============================
+   VARIABEL WARNA
+   REVIEW: 2 warna aksen utama (merah/Akad & gold/Resepsi) sebelumnya
+   ditulis literal berulang-ulang (87x tersebar di seluruh file — 72x
+   buat merah, 15x buat gold). Sekarang dipusatkan jadi variabel di
+   sini — kalau suatu saat mau ganti tema warna, tinggal ubah 4 baris
+   ini, gak perlu cari satu-satu di seluruh file. Versi "-rgb" (angka
+   doang, tanpa dibungkus "rgba()") dipakai khusus buat bikin warna
+   transparan, contoh pemakaiannya: rgba(var(--color-akad-rgb), 0.5)
+   ============================= */
+:root {
+  --color-akad: #ab1b4d;
+  --color-akad-rgb: 171, 27, 77;
+  --color-resepsi: #d4af37;
+  --color-resepsi-rgb: 212, 175, 55;
+}
+
+/* =============================
    CUSTOM FONT
    CLEANUP: "ThePrestige" dihapus — font ini di-load tapi gak pernah
    dipanggil di manapun dalam CSS (cek: gak ada satupun elemen pakai
@@ -262,10 +279,10 @@ body {
     box-shadow: 0 0 0 0 rgba(242, 234, 208, 0.6);
   }
   70% {
-    box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
+    box-shadow: 0 0 0 15px rgba(var(--color-resepsi-rgb), 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+    box-shadow: 0 0 0 0 rgba(var(--color-resepsi-rgb), 0);
   }
 }
 
@@ -438,7 +455,7 @@ body {
 .journey-our {
   font-family: "Sloop", cursive;
   font-size: 52px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   margin-right: 6px;
   display: inline-block;
@@ -589,7 +606,12 @@ body {
   top: 20%;
   bottom: 20%;
   width: 1.5px;
-  background: linear-gradient(to bottom, transparent, #ab1b4d, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-akad),
+    transparent
+  );
 }
 
 .story-item.even .story-info::before {
@@ -599,7 +621,12 @@ body {
   top: 20%;
   bottom: 20%;
   width: 1.5px;
-  background: linear-gradient(to bottom, transparent, #ab1b4d, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-akad),
+    transparent
+  );
 }
 
 .story-title {
@@ -615,7 +642,7 @@ body {
 .story-sep {
   width: 24px;
   height: 1px;
-  background: rgba(171, 27, 77, 0.6);
+  background: rgba(var(--color-akad-rgb), 0.6);
   margin-bottom: 14px;
 }
 
@@ -744,7 +771,7 @@ body {
 .bride-the {
   font-family: "Sloop", cursive;
   font-size: 58px;
-  color: #ab1b4d;
+  color: var(--color-akad);
 }
 
 .bride-word {
@@ -786,7 +813,12 @@ body {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, transparent, #ab1b4d, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-akad),
+    transparent
+  );
 }
 
 .bride-name {
@@ -801,7 +833,7 @@ body {
 .bride-name-sep {
   width: 28px;
   height: 1px;
-  background: rgba(171, 27, 77, 0.6);
+  background: rgba(var(--color-akad-rgb), 0.6);
   margin-top: 8px;
 }
 
@@ -848,8 +880,8 @@ body {
 }
 
 .bride-instagram:hover .bride-instagram-icon {
-  background: rgba(171, 27, 77, 0.2);
-  border-color: rgba(171, 27, 77, 0.4);
+  background: rgba(var(--color-akad-rgb), 0.2);
+  border-color: rgba(var(--color-akad-rgb), 0.4);
 }
 
 .bride-instagram-handle {
@@ -957,7 +989,7 @@ body {
 .groom-the {
   font-family: "Sloop", cursive;
   font-size: 58px;
-  color: #d4af37;
+  color: var(--color-resepsi);
 }
 
 .groom-word {
@@ -998,7 +1030,12 @@ body {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, transparent, #d4af37, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-resepsi),
+    transparent
+  );
 }
 
 .groom-name {
@@ -1013,7 +1050,7 @@ body {
 .groom-name-sep {
   width: 28px;
   height: 1px;
-  background: rgba(212, 175, 55, 0.6);
+  background: rgba(var(--color-resepsi-rgb), 0.6);
   margin-top: 8px;
   margin-left: auto;
 }
@@ -1063,8 +1100,8 @@ body {
 }
 
 .groom-instagram:hover .groom-instagram-icon {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(var(--color-resepsi-rgb), 0.15);
+  border-color: rgba(var(--color-resepsi-rgb), 0.4);
 }
 
 .groom-instagram-handle {
@@ -1137,7 +1174,7 @@ body {
 .countdown-title-the {
   font-family: "Sloop", cursive;
   font-size: 52px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   display: inline-block;
   margin-right: 8px;
@@ -1157,7 +1194,12 @@ body {
   position: relative;
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
   margin: 10px auto 0;
   display: flex;
   align-items: center;
@@ -1248,7 +1290,7 @@ body {
 .countdown-accent {
   width: 20px;
   height: 1px;
-  background: rgba(171, 27, 77, 0.7);
+  background: rgba(var(--color-akad-rgb), 0.7);
 }
 
 .countdown-unit {
@@ -1275,8 +1317,8 @@ body {
 .countdown-divider-diamond {
   width: 5px;
   height: 5px;
-  border: 0.5px solid rgba(171, 27, 77, 0.8);
-  background: rgba(171, 27, 77, 0.3);
+  border: 0.5px solid rgba(var(--color-akad-rgb), 0.8);
+  background: rgba(var(--color-akad-rgb), 0.3);
   transform: rotate(45deg);
   flex-shrink: 0;
 }
@@ -1389,7 +1431,7 @@ body {
 .event-title-the {
   font-family: "Sloop", cursive;
   font-size: 56px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   display: inline-block;
   margin-right: 8px;
@@ -1409,7 +1451,12 @@ body {
   position: relative;
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
   margin: 10px auto 0;
   display: flex;
   align-items: center;
@@ -1454,7 +1501,7 @@ body {
   font-size: 18px;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: #d4af37;
+  color: var(--color-resepsi);
   font-weight: 500;
   margin-bottom: 2px;
 }
@@ -1505,19 +1552,21 @@ body {
 .event-divider-diamond {
   width: 6px;
   height: 6px;
-  border: 1px solid #ab1b4d;
-  background: rgba(171, 27, 77, 0.5);
+  border: 1px solid var(--color-akad);
+  background: rgba(var(--color-akad-rgb), 0.5);
   transform: rotate(45deg);
   flex-shrink: 0;
 }
 
-.event-divider-diamond-resepsi {
-  width: 6px;
-  height: 6px;
-  border: 1px solid #d4af37;
-  background: rgba(212, 175, 55, 0.5);
-  transform: rotate(45deg);
-  flex-shrink: 0;
+/* REVIEW: sebelumnya ada class ".event-divider-diamond-resepsi"
+   terpisah yang isinya copy-paste persis dari atas, cuma beda warna
+   doang. Digabung jadi override warna yang di-scope ke halaman
+   Resepsi — hasil visualnya identik (diamond gold), tapi HTML-nya
+   sekarang cukup pakai ".event-divider-diamond" yang sama kayak di
+   halaman Akad, gak perlu 2 nama class buat 1 bentuk yang sama. */
+.event-page.resepsi .event-divider-diamond {
+  border-color: var(--color-resepsi);
+  background: rgba(var(--color-resepsi-rgb), 0.5);
 }
 
 /* =============================
@@ -1558,7 +1607,7 @@ body {
   pointer-events: none;
   background: radial-gradient(
     circle at 50% 32%,
-    rgba(171, 27, 77, 0.14),
+    rgba(var(--color-akad-rgb), 0.14),
     transparent 60%
   );
 }
@@ -1566,7 +1615,7 @@ body {
 .event-page.resepsi::before {
   background: radial-gradient(
     circle at 50% 32%,
-    rgba(212, 175, 55, 0.14),
+    rgba(var(--color-resepsi-rgb), 0.14),
     transparent 60%
   );
 }
@@ -1715,11 +1764,11 @@ body {
 }
 
 .event-page.akad .event-info-box {
-  border-top-color: #ab1b4d;
+  border-top-color: var(--color-akad);
 }
 
 .event-page.resepsi .event-info-box {
-  border-top-color: #d4af37;
+  border-top-color: var(--color-resepsi);
 }
 
 .event-info-row {
@@ -1806,7 +1855,7 @@ body {
   justify-content: center;
   gap: 10px;
   padding: 13px 28px;
-  background: linear-gradient(135deg, #ab1b4d 0%, #87123a 100%);
+  background: linear-gradient(135deg, var(--color-akad) 0%, #87123a 100%);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 30px;
@@ -1816,13 +1865,13 @@ body {
   letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(171, 27, 77, 0.35);
+  box-shadow: 0 6px 20px rgba(var(--color-akad-rgb), 0.35);
   transition: all 0.3s ease;
 }
 
 .event-calendar-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(171, 27, 77, 0.5);
+  box-shadow: 0 10px 25px rgba(var(--color-akad-rgb), 0.5);
   background: linear-gradient(135deg, #c41e59 0%, #9e1544 100%);
 }
 
@@ -1909,7 +1958,7 @@ body {
 .rsvp-title-the {
   font-family: "Sloop", cursive;
   font-size: 52px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   display: inline-block;
   margin-right: 8px;
@@ -1929,7 +1978,12 @@ body {
   position: relative;
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
   margin: 10px auto 0;
   display: flex;
   align-items: center;
@@ -1947,8 +2001,8 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(171, 27, 77, 0.15);
-  border: 0.5px solid rgba(171, 27, 77, 0.4);
+  background: rgba(var(--color-akad-rgb), 0.15);
+  border: 0.5px solid rgba(var(--color-akad-rgb), 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2009,10 +2063,10 @@ body {
 @keyframes rsvpGlow {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(171, 27, 77, 0.3);
+    box-shadow: 0 0 0 0 rgba(var(--color-akad-rgb), 0.3);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(171, 27, 77, 0);
+    box-shadow: 0 0 0 8px rgba(var(--color-akad-rgb), 0);
   }
 }
 
@@ -2044,8 +2098,8 @@ body {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(171, 27, 77, 0.15);
-  border: 0.5px solid rgba(171, 27, 77, 0.3);
+  background: rgba(var(--color-akad-rgb), 0.15);
+  border: 0.5px solid rgba(var(--color-akad-rgb), 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2071,8 +2125,8 @@ body {
 
 .rsvp-bubble-right .rsvp-bubble {
   border-radius: 12px 12px 2px 12px;
-  background: rgba(171, 27, 77, 0.15);
-  border-color: rgba(171, 27, 77, 0.25);
+  background: rgba(var(--color-akad-rgb), 0.15);
+  border-color: rgba(var(--color-akad-rgb), 0.25);
   color: white;
 }
 
@@ -2102,8 +2156,8 @@ body {
 }
 
 .rsvp-choice-btn:hover {
-  border-color: rgba(171, 27, 77, 0.5);
-  background: rgba(171, 27, 77, 0.08);
+  border-color: rgba(var(--color-akad-rgb), 0.5);
+  background: rgba(var(--color-akad-rgb), 0.08);
   color: white;
 }
 
@@ -2181,7 +2235,7 @@ body {
 }
 
 .rsvp-input:focus {
-  border-color: rgba(171, 27, 77, 0.4);
+  border-color: rgba(var(--color-akad-rgb), 0.4);
 }
 
 .rsvp-input::placeholder {
@@ -2198,7 +2252,7 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #ab1b4d;
+  background: var(--color-akad);
   border: none;
   color: white;
   font-size: 14px;
@@ -2232,7 +2286,7 @@ body {
   font-style: italic;
   letter-spacing: 0.5px;
   text-align: center;
-  color: #d4af37;
+  color: var(--color-resepsi);
 }
 
 @keyframes bubbleIn {
@@ -2320,7 +2374,7 @@ body {
 .venue-title-the {
   font-family: "Sloop", cursive;
   font-size: 52px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   display: inline-block;
   margin-right: 8px;
@@ -2340,7 +2394,12 @@ body {
   position: relative;
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
   margin: 10px auto 0;
   display: flex;
   align-items: center;
@@ -2385,7 +2444,7 @@ body {
   width: 30px;
   height: 30px;
   border: 2px solid rgba(255, 255, 255, 0.15);
-  border-top-color: #ab1b4d;
+  border-top-color: var(--color-akad);
   border-radius: 50%;
   animation: mapsSpin 0.8s linear infinite;
 }
@@ -2497,7 +2556,7 @@ body {
 }
 
 .venue-btn:hover {
-  border-color: rgba(171, 27, 77, 0.5);
+  border-color: rgba(var(--color-akad-rgb), 0.5);
   color: white;
 }
 
@@ -2548,7 +2607,7 @@ body {
 .wishes-title-the {
   font-family: "Sloop", cursive;
   font-size: 52px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   display: inline-block;
   margin-right: 8px;
@@ -2568,7 +2627,12 @@ body {
   position: relative;
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
   margin: 10px auto 0;
   display: flex;
   align-items: center;
@@ -2587,7 +2651,7 @@ body {
 .wishes-count-number {
   font-style: italic;
   font-weight: 700;
-  color: #ab1b4d;
+  color: var(--color-akad);
   font-size: 15px;
 }
 
@@ -2625,12 +2689,12 @@ body {
 }
 
 .wishes-scroll-box::-webkit-scrollbar-thumb {
-  background: rgba(171, 27, 77, 0.6);
+  background: rgba(var(--color-akad-rgb), 0.6);
   border-radius: 10px;
 }
 
 .wishes-scroll-box::-webkit-scrollbar-thumb:hover {
-  background: #ab1b4d;
+  background: var(--color-akad);
 }
 
 .wishes-masonry {
@@ -2667,7 +2731,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(to right, #ab1b4d, transparent);
+  background: linear-gradient(to right, var(--color-akad), transparent);
 }
 
 .wishes-card-header {
@@ -2694,7 +2758,7 @@ body {
 .wishes-card-name::before {
   content: "✦";
   font-size: 10px;
-  color: #ab1b4d;
+  color: var(--color-akad);
 }
 
 .wishes-card-status {
@@ -2709,14 +2773,14 @@ body {
 
 .wishes-card-status.hadir {
   color: #ff7597;
-  border: 1px solid rgba(171, 27, 77, 0.35);
-  background: rgba(171, 27, 77, 0.15);
+  border: 1px solid rgba(var(--color-akad-rgb), 0.35);
+  background: rgba(var(--color-akad-rgb), 0.15);
 }
 
 .wishes-card-status.tidak {
   color: #f3e08f;
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(var(--color-resepsi-rgb), 0.35);
+  background: rgba(var(--color-resepsi-rgb), 0.15);
 }
 
 .wishes-card-text {
@@ -2749,7 +2813,7 @@ body {
 }
 
 .wishes-load-more:hover {
-  border-color: rgba(171, 27, 77, 0.5);
+  border-color: rgba(var(--color-akad-rgb), 0.5);
   color: white;
 }
 
@@ -2807,7 +2871,7 @@ body {
 }
 
 .wishes-retry-btn:hover {
-  border-color: rgba(171, 27, 77, 0.5);
+  border-color: rgba(var(--color-akad-rgb), 0.5);
   color: white;
 }
 
@@ -2883,7 +2947,7 @@ body {
 .gallery-title-the {
   font-family: "Sloop", cursive;
   font-size: 52px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   display: inline-block;
   margin-right: 8px;
@@ -2903,7 +2967,12 @@ body {
   position: relative;
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
   margin: 10px auto 0;
   display: flex;
   align-items: center;
@@ -2995,7 +3064,7 @@ body {
 .editorial-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(171, 27, 77, 0.12);
+  background: rgba(var(--color-akad-rgb), 0.12);
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
@@ -3012,7 +3081,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: #ab1b4d;
+  background: var(--color-akad);
   transform: scaleX(0);
   transition: transform 0.4s ease;
   z-index: 2;
@@ -3028,7 +3097,7 @@ body {
   right: 8px;
   width: 22px;
   height: 22px;
-  background: rgba(171, 27, 77, 0.85);
+  background: rgba(var(--color-akad-rgb), 0.85);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -3117,8 +3186,8 @@ body {
 
 .lb-prev:hover,
 .lb-next:hover {
-  background: rgba(171, 27, 77, 0.3);
-  border-color: rgba(171, 27, 77, 0.5);
+  background: rgba(var(--color-akad-rgb), 0.3);
+  border-color: rgba(var(--color-akad-rgb), 0.5);
 }
 
 .lb-counter {
@@ -3243,7 +3312,7 @@ body {
 .thanks-title-the {
   font-family: "Sloop", cursive;
   font-size: 52px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   display: inline-block;
   margin-right: 8px;
@@ -3264,7 +3333,12 @@ body {
   position: relative;
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
   margin: 10px auto 0;
 }
 
@@ -3311,7 +3385,7 @@ body {
   display: inline-block;
   font-family: "Sloop", cursive;
   font-size: 26px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 2px;
   margin: 0 10px;
 }
@@ -3372,8 +3446,8 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 0.5px solid rgba(171, 27, 77, 0.4);
-  background: rgba(171, 27, 77, 0.08);
+  border: 0.5px solid rgba(var(--color-akad-rgb), 0.4);
+  background: rgba(var(--color-akad-rgb), 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3554,7 +3628,7 @@ body {
   font-family: "Playfair Display", serif;
   font-size: 20px;
   font-style: italic;
-  color: #ab1b4d;
+  color: var(--color-akad);
   letter-spacing: 1px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
   opacity: 0;
@@ -3588,7 +3662,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  color: #ab1b4d;
+  color: var(--color-akad);
   animation: heartbeat 1.5s ease-in-out infinite;
 }
 /* @keyframes heartbeat tetap, gak perlu diubah */
@@ -3605,7 +3679,7 @@ body {
   width: 20px;
   height: 20px;
   margin: -10px 0 0 -10px;
-  border: 1px solid rgba(171, 27, 77, 0.55);
+  border: 1px solid rgba(var(--color-akad-rgb), 0.55);
   border-radius: 50%;
   opacity: 0;
   pointer-events: none;
@@ -3639,7 +3713,7 @@ body {
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 .footer-highlight {
-  color: #ab1b4d;
+  color: var(--color-akad);
   opacity: 1;
   font-style: normal;
 }
@@ -3665,7 +3739,12 @@ body {
   transform: translateX(-50%);
   width: 50px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #ab1b4d 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-akad) 50%,
+    transparent
+  );
 }
 
 /* =============================
@@ -3708,7 +3787,7 @@ body {
   height: 40px;
   border-radius: 50%;
   border: none;
-  background: rgba(171, 27, 77, 0.18);
+  background: rgba(var(--color-akad-rgb), 0.18);
   color: rgba(255, 255, 255, 0.85);
   font-size: 15px;
   cursor: pointer;
@@ -3723,7 +3802,7 @@ body {
 }
 
 .music-btn:hover {
-  background: rgba(171, 27, 77, 0.3);
+  background: rgba(var(--color-akad-rgb), 0.3);
   color: #ffffff;
 }
 
@@ -3732,7 +3811,7 @@ body {
 }
 
 .music-player.playing .music-btn {
-  background: rgba(171, 27, 77, 0.28);
+  background: rgba(var(--color-akad-rgb), 0.28);
   color: #ffffff;
 }
 
