@@ -26,6 +26,59 @@ function animateDateCounter(el, target, duration = 1200) {
   requestAnimationFrame(tick);
 }
 
+/* =============================
+   KARTU UCAPAN — dipakai bareng oleh initWishes() (render dari data
+   Apps Script) dan initRSVP() (biar ucapan tamu langsung nongol di
+   Wishes begitu dia submit RSVP, tanpa nunggu fetch ulang ke server).
+============================= */
+function escapeHTML(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function createWishCard(nama, ucapan, hadir) {
+  const card = document.createElement("div");
+  card.className = "wishes-card";
+  const isHadir = hadir === "Hadir";
+  const statusClass = isHadir ? "hadir" : "tidak";
+  const statusText = isHadir ? "Hadir" : "Berhalangan";
+  card.innerHTML = `
+    <div class="wishes-card-header">
+      <div class="wishes-card-name">${escapeHTML(nama)}</div>
+      <span class="wishes-card-status ${statusClass}">${statusText}</span>
+    </div>
+    <div class="wishes-card-text">${escapeHTML(ucapan)}</div>
+  `;
+  return card;
+}
+
+// FIX: ucapan tamu langsung ditaruh di PALING ATAS daftar Wishes
+// begitu dia submit RSVP — gak nunggu fetch ulang ke Apps Script
+// (yang kadang lambat/cold-start), user langsung liat ucapannya
+// sendiri tanpa jeda sama sekali.
+function addWishToUI(nama, ucapan, hadir) {
+  const masonry = document.getElementById("wishesMasonry");
+  const empty = document.getElementById("wishesEmpty");
+  const countNumberEl = document.getElementById("wishesCountNumber");
+  if (!masonry || !ucapan) return;
+
+  const card = createWishCard(nama, ucapan, hadir);
+  card.classList.add("wishes-card-new");
+  masonry.insertBefore(card, masonry.firstChild);
+
+  if (empty) empty.classList.add("hidden");
+
+  if (countNumberEl) {
+    const current = parseInt(countNumberEl.textContent, 10) || 0;
+    countNumberEl.textContent = current + 1;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   /* =============================
      AMBIL NAMA TAMU DARI URL
@@ -481,6 +534,7 @@ function initRSVP() {
   function handleUcapan(ucapan) {
     userData.ucapan = ucapan;
     addBubbleRight(ucapan);
+    addWishToUI(userData.nama, userData.ucapan, userData.hadir);
     inputArea.classList.add("hidden");
     setTimeout(
       () =>
@@ -688,19 +742,8 @@ function initWishes() {
   function renderWishes() {
     const batch = allWishes.slice(currentIndex, currentIndex + PER_PAGE);
     batch.forEach((wish, i) => {
-      const card = document.createElement("div");
-      card.className = "wishes-card";
+      const card = createWishCard(wish.nama, wish.ucapan, wish.hadir);
       card.style.animationDelay = `${i * 0.08}s`;
-      const isHadir = wish.hadir === "Hadir";
-      const statusClass = isHadir ? "hadir" : "tidak";
-      const statusText = isHadir ? "Hadir" : "Berhalangan";
-      card.innerHTML = `
-        <div class="wishes-card-header">
-          <div class="wishes-card-name">${escapeHTML(wish.nama)}</div>
-          <span class="wishes-card-status ${statusClass}">${statusText}</span>
-        </div>
-        <div class="wishes-card-text">${escapeHTML(wish.ucapan)}</div>
-      `;
       masonry.appendChild(card);
     });
     currentIndex += batch.length;
@@ -718,16 +761,6 @@ function initWishes() {
     renderWishes();
     updateLoadMoreBtn();
   });
-
-  function escapeHTML(str) {
-    if (!str) return "";
-    return str
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
 }
 
 /* =============================

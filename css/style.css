@@ -2718,6 +2718,24 @@ body {
   animation: cardIn 0.4s ease both;
 }
 
+/* Highlight halus buat ucapan yang baru aja disubmit tamu — border
+   warna nyala sebentar terus meredup ke normal dalam 3 detik. Sengaja
+   cuma animasiin "border-color" (bukan box-shadow), soalnya
+   box-shadow yang dianimasikan bareng border-radius itu pernah kena
+   bug rendering di GPU Android tertentu (lihat revisi closing-logo). */
+.wishes-card-new {
+  animation: wishNewHighlight 3s ease-out;
+}
+
+@keyframes wishNewHighlight {
+  0% {
+    border-color: rgba(var(--color-akad-rgb), 0.8);
+  }
+  100% {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
 .wishes-card:hover {
   background: rgba(35, 28, 42, 0.85);
   border-color: rgba(255, 255, 255, 0.2);
