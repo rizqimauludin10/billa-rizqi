@@ -887,13 +887,12 @@ body {
 .bride-instagram-handle {
   font-size: 12px;
   letter-spacing: 1px;
-  opacity: 0.6;
-  text-decoration: none;
+  opacity: 0.85;
   color: white;
   transition: opacity 0.3s ease;
 }
 
-.bride-instagram-handle:hover {
+.bride-instagram:hover .bride-instagram-handle {
   opacity: 1;
 }
 
@@ -1107,8 +1106,7 @@ body {
 .groom-instagram-handle {
   font-size: 12px;
   letter-spacing: 1px;
-  opacity: 0.6;
-  text-decoration: none;
+  opacity: 0.85;
   color: white;
   transition: opacity 0.3s ease;
 }
@@ -1116,7 +1114,6 @@ body {
 .groom-instagram:hover .groom-instagram-handle {
   opacity: 1;
 }
-
 /* =============================
    COUNTDOWN SECTION
    ============================= */
@@ -2705,7 +2702,7 @@ body {
 }
 
 .wishes-card {
-  padding: 16px 18px;
+  padding: 13px 15px;
   border-radius: 10px;
   background: rgba(25, 20, 30, 0.7);
   backdrop-filter: blur(8px);
@@ -2779,7 +2776,7 @@ body {
   align-items: center;
   gap: 6px;
   font-family: "Playfair Display", serif;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.5px;
   color: #ffffff;
@@ -2814,8 +2811,8 @@ body {
 }
 
 .wishes-card-text {
-  font-size: 13px;
-  line-height: 1.65;
+  font-size: 12px;
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.92);
   font-style: normal;
 }
