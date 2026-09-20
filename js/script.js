@@ -411,8 +411,26 @@ function initRSVP() {
 
   if (!messagesEl || !inputArea || !inputEl || !sendBtn) return;
 
-  let userData = { hadir: "", nama: "", jumlah: "", ucapan: "" };
+  // Nama tamu diambil dari parameter URL (?to=...) — sama persis
+  // yang dipakai buat nampilin nama di cover. Kalau ada, RSVP
+  // langsung lompat ke pertanyaan kehadiran (gak perlu tanya nama
+  // lagi). Kalau gak ada (tamu buka link generik tanpa ?to=), tetap
+  // ditanya manual sebagai fallback biar datanya gak kosong.
+  const urlGuestName = new URLSearchParams(window.location.search).get("to");
+
+  let userData = {
+    hadir: "",
+    nama: urlGuestName || "",
+    jumlah: "",
+    ucapan: "",
+  };
   let currentCallback = null;
+
+  // FIX: kunci penyimpanan localStorage diikat ke nama tamu dari URL
+  // (bukan flag global) — biar kalau ada 2 tamu beda buka link
+  // masing-masing di 1 HP yang sama (misal keluarga gantian pinjam
+  // HP), submission salah satu tamu gak keliru "mengunci" tamu lain.
+  const rsvpStorageKey = "rsvpSubmitted_" + (urlGuestName || "guest");
 
   // Pasang event listener sekali saja
   sendBtn.addEventListener("click", handleSend);
@@ -446,19 +464,45 @@ function initRSVP() {
     showTyping();
     setTimeout(() => {
       removeTyping();
-      addBubbleLeft("Halo! Senang sekali kamu sudah membuka undangan kami 🥰");
+      if (urlGuestName) {
+        addBubbleLeft(
+          `Halo, ${escapeHTML(
+            urlGuestName,
+          )}! Senang sekali kamu sudah membuka undangan kami 🥰`,
+        );
+      } else {
+        addBubbleLeft(
+          "Halo! Senang sekali kamu sudah membuka undangan kami 🥰",
+        );
+      }
     }, 900);
 
     setTimeout(() => {
-      addBubbleLeft("Apakah kamu bisa hadir di hari istimewa kami?");
-      addChoices(
-        [
-          { emoji: "🥂", text: "Insya Allah hadir!" },
-          { emoji: "💔", text: "Maaf, berhalangan hadir" },
-        ],
-        handleHadir,
-      );
+      if (urlGuestName) {
+        askKehadiran();
+      } else {
+        addBubbleLeft("Boleh tau nama kamu?");
+        showInput("Ketik nama kamu...", handleNama, "text");
+      }
     }, 1900);
+  }
+
+  function handleNama(nama) {
+    userData.nama = nama;
+    addBubbleRight(nama);
+    setTimeout(() => addBubbleLeft(`Hai ${nama}! 😊`), 600);
+    setTimeout(() => askKehadiran(), 1400);
+  }
+
+  function askKehadiran() {
+    addBubbleLeft("Apakah kamu bisa hadir di hari istimewa kami?");
+    addChoices(
+      [
+        { emoji: "🥂", text: "Insya Allah hadir!" },
+        { emoji: "💔", text: "Maaf, berhalangan hadir" },
+      ],
+      handleHadir,
+    );
   }
 
   const rsvpSectionEl = document.getElementById("rsvpSection");
@@ -466,7 +510,26 @@ function initRSVP() {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          startConversation();
+          // FIX: kalau tamu ini (berdasarkan nama di URL) udah pernah
+          // submit sebelumnya, jangan ulang obrolannya dari awal —
+          // langsung tunjukkin dia udah konfirmasi, biar gak bisa
+          // isi berkali-kali cuma dengan refresh halaman.
+          let savedRaw = null;
+          try {
+            savedRaw = localStorage.getItem(rsvpStorageKey);
+          } catch (e) {
+            savedRaw = null;
+          }
+          if (savedRaw) {
+            try {
+              const saved = JSON.parse(savedRaw);
+              showAlreadyConfirmed(saved.nama, saved.hadir);
+            } catch (e) {
+              startConversation();
+            }
+          } else {
+            startConversation();
+          }
           rsvpStartObserver.unobserve(entry.target);
         }
       });
@@ -474,6 +537,27 @@ function initRSVP() {
     { threshold: 0.3 },
   );
   if (rsvpSectionEl) rsvpStartObserver.observe(rsvpSectionEl);
+
+  function showAlreadyConfirmed(nama, hadir) {
+    stopChatPulse();
+    const sukses = document.createElement("div");
+    sukses.className = "rsvp-success";
+    sukses.innerHTML = `
+      <div class="rsvp-success-icon">🤍</div>
+      <div class="rsvp-success-title">Halo lagi, ${escapeHTML(
+        nama || "kamu",
+      )}!</div>
+      <div class="rsvp-success-desc">
+        Kamu udah konfirmasi kehadiran sebelumnya.<br>
+        ${
+          hadir === "Hadir"
+            ? "Sampai jumpa di hari istimewa kami! 🥂"
+            : "Terima kasih atas doa dan kabarnya. 🤍"
+        }
+      </div>
+    `;
+    messagesEl.appendChild(sukses);
+  }
 
   function handleHadir(pilihan) {
     userData.hadir = pilihan === 0 ? "Hadir" : "Tidak Hadir";
@@ -487,26 +571,13 @@ function initRSVP() {
           : "Tidak apa-apa, terima kasih sudah memberitahu kami 🤍",
       );
     }, 600);
-    setTimeout(() => {
-      addBubbleLeft("Boleh tau nama kamu?");
-      showInput("Ketik nama kamu...", handleNama, "text");
-    }, 1400);
-  }
-
-  function handleNama(nama) {
-    userData.nama = nama;
-    addBubbleRight(nama);
-    setTimeout(() => addBubbleLeft(`Hai ${nama}! 😊`), 600);
     if (userData.hadir === "Hadir") {
       setTimeout(() => {
         addBubbleLeft("Berapa orang yang akan hadir? (termasuk kamu)");
         showInput("Contoh: 2", handleJumlah, "number");
       }, 1400);
     } else {
-      setTimeout(() => {
-        addBubbleLeft("Titip ucapan dan doa untuk kami yuk! 🤍");
-        showInput("Tulis ucapan kamu...", handleUcapan, "text");
-      }, 1400);
+      setTimeout(() => askUcapanOptional(), 1400);
     }
   }
 
@@ -525,17 +596,39 @@ function initRSVP() {
         ),
       600,
     );
-    setTimeout(() => {
-      addBubbleLeft("Titip ucapan dan doa untuk kami yuk! 🤍");
+    setTimeout(() => askUcapanOptional(), 1400);
+  }
+
+  // FIX: ucapan sekarang OPSIONAL (berlaku buat dua-duanya, baik
+  // "Hadir" maupun "Tidak Hadir") — tamu dikasih pilihan mau nulis
+  // ucapan atau lewatin aja, bukan dipaksa isi kayak sebelumnya.
+  function askUcapanOptional() {
+    addBubbleLeft("Mau titip ucapan & doa buat kami? 🤍");
+    addChoices(
+      [
+        { emoji: "✍️", text: "Ya, aku mau nulis" },
+        { emoji: "⏭️", text: "Nanti aja" },
+      ],
+      handleUcapanChoice,
+    );
+  }
+
+  function handleUcapanChoice(pilihan) {
+    if (pilihan === 0) {
       showInput("Tulis ucapan kamu...", handleUcapan, "text");
-    }, 1400);
+    } else {
+      addBubbleRight("Nanti aja ya");
+      setTimeout(() => {
+        addBubbleLeft("Terima kasih banyak sudah konfirmasi kehadiranmu! 🤍");
+      }, 600);
+      setTimeout(() => finalizeRSVP(), 1400);
+    }
   }
 
   function handleUcapan(ucapan) {
     userData.ucapan = ucapan;
     addBubbleRight(ucapan);
     addWishToUI(userData.nama, userData.ucapan, userData.hadir);
-    inputArea.classList.add("hidden");
     setTimeout(
       () =>
         addBubbleLeft(
@@ -543,11 +636,23 @@ function initRSVP() {
         ),
       600,
     );
-    setTimeout(() => {
-      addBubbleLeft("Sedang menyimpan konfirmasimu...");
-      showTyping();
-      kirimKeSheets();
-    }, 1400);
+    setTimeout(() => finalizeRSVP(), 1400);
+  }
+
+  // FIX: titik akhir bersama buat 2 jalur (ucapan diisi / dilewati) —
+  // nyimpen jejak "udah submit" ke localStorage di sini, biar apapun
+  // jalurnya, tamu tetap ke-tandain udah konfirmasi.
+  function finalizeRSVP() {
+    inputArea.classList.add("hidden");
+    try {
+      localStorage.setItem(
+        rsvpStorageKey,
+        JSON.stringify({ nama: userData.nama, hadir: userData.hadir }),
+      );
+    } catch (e) {}
+    addBubbleLeft("Sedang menyimpan konfirmasimu...");
+    showTyping();
+    kirimKeSheets();
   }
 
   function kirimKeSheets() {
