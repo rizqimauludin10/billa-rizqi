@@ -859,9 +859,10 @@ body {
 
 .bride-instagram {
   padding: 14px 20px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 }
 
 .bride-instagram-icon {
@@ -889,6 +890,7 @@ body {
   letter-spacing: 1px;
   opacity: 0.85;
   color: white;
+  text-decoration: none;
   transition: opacity 0.3s ease;
 }
 
@@ -1076,11 +1078,12 @@ body {
 
 .groom-instagram {
   padding: 14px 20px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   flex-direction: row;
   justify-content: flex-end;
   gap: 10px;
+  text-decoration: none;
 }
 
 .groom-instagram-icon {
@@ -1108,6 +1111,7 @@ body {
   letter-spacing: 1px;
   opacity: 0.85;
   color: white;
+  text-decoration: none;
   transition: opacity 0.3s ease;
 }
 
@@ -2822,30 +2826,34 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 11px 30px;
-  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 32px;
+  border: 1px solid rgba(var(--color-akad-rgb), 0.45);
   font-family: "Noto Serif", serif;
   font-size: 10px;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  background: transparent;
+  background: rgba(var(--color-akad-rgb), 0.12);
   border-radius: 2px;
   transition:
-    border-color 0.4s ease,
-    color 0.4s ease,
-    opacity 0.4s ease;
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.15s ease;
   margin-top: 8px;
 }
 
 .wishes-load-more:hover {
-  border-color: rgba(var(--color-akad-rgb), 0.5);
+  border-color: rgba(var(--color-akad-rgb), 0.7);
+  background: rgba(var(--color-akad-rgb), 0.2);
   color: white;
 }
 
 .wishes-load-more:active {
   transform: scale(0.97);
+  background: rgba(var(--color-akad-rgb), 0.3);
+  border-color: rgba(var(--color-akad-rgb), 0.8);
 }
 
 .wishes-load-more.hidden {
