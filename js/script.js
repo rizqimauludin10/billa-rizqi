@@ -544,9 +544,7 @@ function initRSVP() {
     sukses.className = "rsvp-success";
     sukses.innerHTML = `
       <div class="rsvp-success-icon">🤍</div>
-      <div class="rsvp-success-title">Halo lagi, ${escapeHTML(
-        nama || "kamu",
-      )}!</div>
+      <div class="rsvp-success-title">Halo, ${escapeHTML(nama || "kamu")}!</div>
       <div class="rsvp-success-desc">
         Kamu udah konfirmasi kehadiran sebelumnya.<br>
         ${
@@ -846,12 +844,15 @@ function initWishes() {
 
   function renderWishes() {
     const batch = allWishes.slice(currentIndex, currentIndex + PER_PAGE);
+    const createdCards = [];
     batch.forEach((wish, i) => {
       const card = createWishCard(wish.nama, wish.ucapan, wish.hadir);
       card.style.animationDelay = `${i * 0.08}s`;
       masonry.appendChild(card);
+      createdCards.push(card);
     });
     currentIndex += batch.length;
+    return createdCards;
   }
 
   function updateLoadMoreBtn() {
@@ -862,9 +863,21 @@ function initWishes() {
     }
   }
 
+  // FIX: kartu baru yang muncul lewat "Lihat lebih banyak" itu
+  // ke-render di LUAR layar (di bawah, belum kelihatan) — animasi
+  // masuknya udah kelar duluan sebelum tamu sempat scroll ke situ,
+  // jadi kerasa kayak gak ada yang berubah. Sekarang kartu-kartu baru
+  // dikasih highlight (numpang animasi yang sama kayak ucapan
+  // real-time di RSVP) DAN halaman auto-scroll pelan ke kartu
+  // pertama yang baru muncul, biar tamu langsung "diantar" liat
+  // ucapan barunya tanpa perlu nebak-nebak scroll sendiri.
   loadMore.addEventListener("click", () => {
-    renderWishes();
+    const newCards = renderWishes();
     updateLoadMoreBtn();
+    if (newCards.length) {
+      newCards.forEach((card) => card.classList.add("wishes-card-new"));
+      newCards[0].scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   });
 }
 
