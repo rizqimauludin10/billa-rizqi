@@ -91,6 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
     guestEl.innerText = guestName;
   }
 
+  initNetworkWarning();
+
   /* =============================
      COVER BUTTON
   ============================= */
@@ -1183,4 +1185,75 @@ if (addToCalendarBtn) {
 
     window.open(gcalUrl, "_blank");
   });
+}
+
+// ===== DETEKSI JARINGAN LAMBAT — Resource Timing API =====
+// Ngukur throughput NYATA dari kecepatan download foto cover (yang
+// pasti udah ke-load duluan sejak awal halaman dibuka), bukan cuma
+// nebak dari "video belum muter". Ini didukung di SEMUA browser
+// modern termasuk Safari/iOS, dan bisa ngasih peringatan LEBIH AWAL
+// — bahkan sebelum tamu sempat klik "Buka Undangan".
+function measureConnectionSpeed(resourceUrlPart) {
+  const entries = performance.getEntriesByType("resource");
+  const entry = entries.find((e) => e.name.includes(resourceUrlPart));
+
+  // transferSize 0 artinya foto diambil dari cache browser (bukan
+  // lewat jaringan) — pengukurannya jadi gak valid, gak bisa
+  // disimpulkan apa-apa dari situ.
+  if (!entry || !entry.transferSize) return null;
+
+  const durationSec = (entry.responseEnd - entry.responseStart) / 1000;
+  if (durationSec <= 0) return null;
+
+  return entry.transferSize / 1024 / durationSec; // KB per detik
+}
+
+function initNetworkWarning() {
+  const toast = document.getElementById("networkToast");
+  const closeBtn = document.getElementById("networkToastClose");
+  const reloadBtn = document.getElementById("networkToastReload");
+  if (!toast || !closeBtn || !reloadBtn) return;
+
+  let dismissed = false;
+  function showToast() {
+    if (dismissed) return;
+    toast.classList.remove("hidden");
+    requestAnimationFrame(() => toast.classList.add("show"));
+  }
+  closeBtn.addEventListener("click", () => {
+    toast.classList.remove("show");
+    dismissed = true;
+  });
+  reloadBtn.addEventListener("click", () => window.location.reload());
+
+  // LAPIS 1 (paling akurat): cek berkala tiap 500ms sampai data
+  // timing foto cover ketemu, atau nyerah setelah 5 detik nyoba.
+  let checkCount = 0;
+  const speedCheckInterval = setInterval(() => {
+    checkCount++;
+    const speed = measureConnectionSpeed("cover_3.JPG");
+    if (speed !== null) {
+      clearInterval(speedCheckInterval);
+      // Ambang ~200 KB/s (~1.6 Mbps) — di bawah ini biasanya udah
+      // kerasa berat buat load foto/video ukuran besar di web ini.
+      if (speed < 200) showToast();
+    } else if (checkCount >= 10) {
+      clearInterval(speedCheckInterval);
+    }
+  }, 500);
+
+  // LAPIS 2 (jaring pengaman): kalau lapis 1 gagal ngukur (misal
+  // foto kebetulan udah ke-cache dari kunjungan sebelumnya, jadi
+  // gak lewat jaringan sama sekali), tetap ada cadangan — kalau
+  // video belum mulai muter 7 detik setelah "Buka Undangan" diklik.
+  if (openBtn) {
+    openBtn.addEventListener("click", () => {
+      if (bgVideo) {
+        const timeoutId = setTimeout(showToast, 7000);
+        bgVideo.addEventListener("playing", () => clearTimeout(timeoutId), {
+          once: true,
+        });
+      }
+    });
+  }
 }

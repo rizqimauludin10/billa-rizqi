@@ -968,6 +968,25 @@
         <span class="music-label">Now Playing</span>
       </div>
     </div>
+
+    <div class="network-toast hidden" id="networkToast">
+      <div class="network-toast-text">
+        🐢 Koneksi kamu sepertinya lambat. Undangan tetap bisa dibuka, tapi
+        beberapa foto/video mungkin butuh waktu lebih lama buat muncul.
+      </div>
+      <div class="network-toast-actions">
+        <button id="networkToastReload" class="network-toast-btn">
+          Muat Ulang
+        </button>
+        <button
+          id="networkToastClose"
+          class="network-toast-close"
+          aria-label="Tutup"
+        >
+          &times;
+        </button>
+      </div>
+    </div>
     <script src="js/script.js" defer></script>
   </body>
 </html>

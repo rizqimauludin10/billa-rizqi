@@ -76,6 +76,7 @@ body {
   display: none;
   opacity: 0;
   transition: opacity 1.5s ease;
+  background: #15121a;
 }
 
 #bgVideo.show-video {
@@ -533,6 +534,7 @@ body {
 .story-photo {
   position: relative;
   overflow: hidden;
+  background: #737373;
 }
 
 .story-photo img {
@@ -703,6 +705,7 @@ body {
   overflow: hidden;
   border-radius: 6px;
   margin-bottom: 20px;
+  background: #15121a;
 }
 
 .bride-slide {
@@ -940,6 +943,7 @@ body {
   overflow: hidden;
   border-radius: 6px;
   margin-bottom: 20px;
+  background: #15121a;
 }
 
 .groom-slide {
@@ -3921,4 +3925,76 @@ body {
     bottom: 20px;
     right: 16px;
   }
+}
+
+/* =============================
+   TOAST — PERINGATAN JARINGAN LAMBAT
+   ============================= */
+.network-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  z-index: 50;
+  width: calc(100% - 48px);
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(20, 18, 24, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 0.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  pointer-events: none;
+}
+
+.network-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.network-toast.hidden {
+  display: none;
+}
+
+.network-toast-text {
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.network-toast-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.network-toast-btn {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 0.5px solid rgba(var(--color-akad-rgb), 0.4);
+  background: rgba(var(--color-akad-rgb), 0.15);
+  color: white;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.network-toast-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
 }
