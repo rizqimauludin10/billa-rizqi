@@ -3932,18 +3932,20 @@ body {
    ============================= */
 .network-toast {
   position: fixed;
-  bottom: 90px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   z-index: 50;
   width: calc(100% - 48px);
-  max-width: 300px;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 14px 16px;
-  border-radius: 10px;
-  background: rgba(20, 18, 24, 0.92);
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 26px 22px 18px;
+  border-radius: 14px;
+  background: rgba(20, 18, 24, 0.94);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 0.5px solid rgba(255, 255, 255, 0.14);
@@ -3965,36 +3967,38 @@ body {
   display: none;
 }
 
+.network-toast-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
 .network-toast-text {
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.55;
   color: rgba(255, 255, 255, 0.85);
 }
 
-.network-toast-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .network-toast-btn {
-  padding: 6px 16px;
+  margin-top: 2px;
+  padding: 8px 26px;
   border-radius: 999px;
   border: 0.5px solid rgba(var(--color-akad-rgb), 0.4);
   background: rgba(var(--color-akad-rgb), 0.15);
   color: white;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   cursor: pointer;
 }
 
 .network-toast-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.45);
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
-  padding: 0 4px;
+  padding: 4px;
 }

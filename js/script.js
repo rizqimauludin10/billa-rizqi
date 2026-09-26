@@ -91,8 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
     guestEl.innerText = guestName;
   }
 
-  initNetworkWarning();
-
   /* =============================
      COVER BUTTON
   ============================= */
@@ -108,6 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
       cover.classList.add("fade-out");
       bgVideo.classList.add("show-video");
       bgVideo.play().catch(() => {});
+
+      initNetworkWarning();
 
       setTimeout(() => {
         cover.style.display = "none";
@@ -1208,6 +1208,7 @@ function measureConnectionSpeed(resourceUrlPart) {
   return entry.transferSize / 1024 / durationSec; // KB per detik
 }
 
+// ===== DETEKSI JARINGAN LAMBAT =====
 function initNetworkWarning() {
   const toast = document.getElementById("networkToast");
   const closeBtn = document.getElementById("networkToastClose");
@@ -1226,26 +1227,6 @@ function initNetworkWarning() {
   });
   reloadBtn.addEventListener("click", () => window.location.reload());
 
-  // LAPIS 1 (paling akurat): cek berkala tiap 500ms sampai data
-  // timing foto cover ketemu, atau nyerah setelah 5 detik nyoba.
-  let checkCount = 0;
-  const speedCheckInterval = setInterval(() => {
-    checkCount++;
-    const speed = measureConnectionSpeed("cover_3.JPG");
-    if (speed !== null) {
-      clearInterval(speedCheckInterval);
-      // Ambang ~200 KB/s (~1.6 Mbps) — di bawah ini biasanya udah
-      // kerasa berat buat load foto/video ukuran besar di web ini.
-      if (speed < 200) showToast();
-    } else if (checkCount >= 10) {
-      clearInterval(speedCheckInterval);
-    }
-  }, 500);
-
-  // LAPIS 2 (jaring pengaman): kalau lapis 1 gagal ngukur (misal
-  // foto kebetulan udah ke-cache dari kunjungan sebelumnya, jadi
-  // gak lewat jaringan sama sekali), tetap ada cadangan — kalau
-  // video belum mulai muter 7 detik setelah "Buka Undangan" diklik.
   if (openBtn) {
     openBtn.addEventListener("click", () => {
       if (bgVideo) {

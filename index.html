@@ -970,22 +970,21 @@
     </div>
 
     <div class="network-toast hidden" id="networkToast">
+      <button
+        id="networkToastClose"
+        class="network-toast-close"
+        aria-label="Tutup"
+      >
+        &times;
+      </button>
+      <div class="network-toast-icon">🐢</div>
       <div class="network-toast-text">
-        🐢 Koneksi kamu sepertinya lambat. Undangan tetap bisa dibuka, tapi
-        beberapa foto/video mungkin butuh waktu lebih lama buat muncul.
+        Koneksi kamu sepertinya lambat, beberapa konten mungkin butuh waktu
+        lebih lama muncul.
       </div>
-      <div class="network-toast-actions">
-        <button id="networkToastReload" class="network-toast-btn">
-          Muat Ulang
-        </button>
-        <button
-          id="networkToastClose"
-          class="network-toast-close"
-          aria-label="Tutup"
-        >
-          &times;
-        </button>
-      </div>
+      <button id="networkToastReload" class="network-toast-btn">
+        Muat Ulang
+      </button>
     </div>
     <script src="js/script.js" defer></script>
   </body>
