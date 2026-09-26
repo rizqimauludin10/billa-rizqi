@@ -1187,27 +1187,6 @@ if (addToCalendarBtn) {
   });
 }
 
-// ===== DETEKSI JARINGAN LAMBAT — Resource Timing API =====
-// Ngukur throughput NYATA dari kecepatan download foto cover (yang
-// pasti udah ke-load duluan sejak awal halaman dibuka), bukan cuma
-// nebak dari "video belum muter". Ini didukung di SEMUA browser
-// modern termasuk Safari/iOS, dan bisa ngasih peringatan LEBIH AWAL
-// — bahkan sebelum tamu sempat klik "Buka Undangan".
-function measureConnectionSpeed(resourceUrlPart) {
-  const entries = performance.getEntriesByType("resource");
-  const entry = entries.find((e) => e.name.includes(resourceUrlPart));
-
-  // transferSize 0 artinya foto diambil dari cache browser (bukan
-  // lewat jaringan) — pengukurannya jadi gak valid, gak bisa
-  // disimpulkan apa-apa dari situ.
-  if (!entry || !entry.transferSize) return null;
-
-  const durationSec = (entry.responseEnd - entry.responseStart) / 1000;
-  if (durationSec <= 0) return null;
-
-  return entry.transferSize / 1024 / durationSec; // KB per detik
-}
-
 // ===== DETEKSI JARINGAN LAMBAT =====
 function initNetworkWarning() {
   const toast = document.getElementById("networkToast");
@@ -1227,14 +1206,14 @@ function initNetworkWarning() {
   });
   reloadBtn.addEventListener("click", () => window.location.reload());
 
-  if (openBtn) {
-    openBtn.addEventListener("click", () => {
-      if (bgVideo) {
-        const timeoutId = setTimeout(showToast, 7000);
-        bgVideo.addEventListener("playing", () => clearTimeout(timeoutId), {
-          once: true,
-        });
-      }
+  // FIX: fungsi ini sendiri udah dipanggil DARI DALAM klik "Buka
+  // Undangan" (lihat titik panggilnya di bawah), jadi langsung mulai
+  // mantau di sini — gak perlu lagi masang listener klik terpisah,
+  // soalnya klik yang ditunggu udah kejadian barusan.
+  if (bgVideo) {
+    const timeoutId = setTimeout(showToast, 7000);
+    bgVideo.addEventListener("playing", () => clearTimeout(timeoutId), {
+      once: true,
     });
   }
 }
