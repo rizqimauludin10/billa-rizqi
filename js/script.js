@@ -239,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ke tiap halaman, bukan sekaligus pas judul "The Event" muncul.
     ...document.querySelectorAll(".event-page"),
     document.getElementById("venueSection"),
+    document.getElementById("liveSection"),
     document.getElementById("rsvpSection"),
     document.getElementById("wishesSection"),
     // thanksSection sengaja gak didaftarin di sini — dia dapet
@@ -352,6 +353,11 @@ document.addEventListener("DOMContentLoaded", function () {
      GALLERY
   ============================= */
   initGallery();
+
+  /* =============================
+     LIVE STREAMING PREVIEW
+  ============================= */
+  initLivePreview();
 
   /* =============================
      COUNTDOWN TIMER
@@ -1216,4 +1222,25 @@ function initNetworkWarning() {
       once: true,
     });
   }
+}
+
+// ===== PREVIEW LIVE STREAMING — thumbnail YouTube, klik buat embed =====
+function initLivePreview() {
+  const preview = document.getElementById("livePreview");
+  const thumb = document.getElementById("livePreviewThumb");
+  if (!preview || !thumb) return;
+
+  const videoId = preview.dataset.videoId;
+  if (!videoId || videoId === "GANTI_DENGAN_ID_VIDEO") return;
+
+  thumb.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+  preview.addEventListener("click", () => {
+    preview.innerHTML = `<iframe
+      src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1"
+      title="Live Streaming"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>`;
+  });
 }

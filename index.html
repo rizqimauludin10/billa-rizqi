@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Wedding Invitation</title>
 
     <!-- ==========================================================
@@ -617,6 +618,47 @@
               <i class="bi bi-geo-alt-fill"></i>
               Buka di Google Maps
             </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== LIVE STREAMING SECTION (opsional — kalau gak jadi dipakai,
+     hapus semua dari sini sampai penutup </section> di bawahnya) ===== -->
+      <section id="liveSection">
+        <div class="container">
+          <div class="live-title">
+            <span class="live-title-the">The</span>
+            <span class="live-title-word">Streaming</span>
+            <div class="live-title-underline"></div>
+          </div>
+
+          <p class="live-desc">
+            Tidak bisa hadir langsung? Saksikan momen akad &amp; resepsi kami
+            secara live lewat tautan berikut.
+          </p>
+
+          <div class="live-footer">
+            <!-- GANTI "GANTI_DENGAN_ID_VIDEO" di bawah dengan ID video YouTube
+       kalian (bagian setelah "v=" atau "youtu.be/" di link video).
+       Cukup ganti di 1 tempat ini aja — thumbnail & embed-nya otomatis
+       nyesuain dari ID yang sama. -->
+            <div
+              class="live-preview"
+              id="livePreview"
+              data-video-id="Ht2Kja3-kJM"
+            >
+              <img
+                class="live-preview-thumb"
+                id="livePreviewThumb"
+                alt="Preview Live Streaming"
+                loading="lazy"
+                onerror="this.style.display = 'none'"
+              />
+              <div class="live-preview-play">
+                <i class="bi bi-play-fill"></i>
+              </div>
+            </div>
+            <div class="live-note">Tautan aktif mulai hari-H</div>
           </div>
         </div>
       </section>

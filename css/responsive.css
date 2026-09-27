@@ -175,6 +175,12 @@ footer {
   .venue-maps-frame {
     height: 240px;
   }
+  .live-title-the {
+    font-size: 40px;
+  }
+  .live-title-word {
+    font-size: 22px;
+  }
 
   /* ===== RSVP ===== */
   #rsvpSection {
