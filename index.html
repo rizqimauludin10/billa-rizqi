@@ -845,6 +845,29 @@
             <span class="wishes-title-word">Wishes</span>
             <div class="wishes-title-underline"></div>
           </div>
+
+          <!-- ===== FORM TULIS UCAPAN — berdiri sendiri, terpisah dari
+               RSVP. Nama tamu diambil otomatis dari ?to= di URL. ===== -->
+          <div class="wishes-form" id="wishesForm">
+            <p class="wishes-form-name">
+              Tulis ucapan &amp; doa untuk kami,
+              <span id="wishesFormName">Tamu</span>
+            </p>
+            <textarea
+              class="wishes-form-input"
+              id="wishesFormInput"
+              rows="3"
+              placeholder="Tulis ucapan & doa kamu di sini..."
+            ></textarea>
+            <button class="wishes-form-submit" id="wishesFormSubmit">
+              Kirim Ucapan
+            </button>
+          </div>
+          <div class="wishes-form-success hidden" id="wishesFormSuccess">
+            <div class="wishes-form-success-icon">🤍</div>
+            <p>Terima kasih atas doa dan ucapanmu!</p>
+          </div>
+
           <p class="wishes-count-note" id="wishesCount">
             <span class="wishes-count-number" id="wishesCountNumber">0 </span>
             ucapan &amp; doa telah dikirimkan untuk kami

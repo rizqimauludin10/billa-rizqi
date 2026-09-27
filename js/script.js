@@ -44,13 +44,23 @@ function escapeHTML(str) {
 function createWishCard(nama, ucapan, hadir) {
   const card = document.createElement("div");
   card.className = "wishes-card";
+  // FIX: badge status kehadiran cuma ditampilkan kalau memang ada
+  // datanya ("Hadir" / "Tidak Hadir" dari RSVP). Ucapan yang dikirim
+  // lewat form Wishes yang berdiri sendiri gak nanya kehadiran, jadi
+  // hadir bakal kosong ("") — badge disembunyikan total, bukan
+  // ke-default jadi "Berhalangan".
+  const showBadge = hadir === "Hadir" || hadir === "Tidak Hadir";
   const isHadir = hadir === "Hadir";
   const statusClass = isHadir ? "hadir" : "tidak";
   const statusText = isHadir ? "Hadir" : "Berhalangan";
   card.innerHTML = `
     <div class="wishes-card-header">
       <div class="wishes-card-name">${escapeHTML(nama)}</div>
-      <span class="wishes-card-status ${statusClass}">${statusText}</span>
+      ${
+        showBadge
+          ? `<span class="wishes-card-status ${statusClass}">${statusText}</span>`
+          : ""
+      }
     </div>
     <div class="wishes-card-text">${escapeHTML(ucapan)}</div>
   `;
@@ -348,6 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
      WISHES
   ============================= */
   initWishes();
+  initWishesForm();
 
   /* =============================
      GALLERY
@@ -583,7 +594,13 @@ function initRSVP() {
         showInput("Contoh: 2", handleJumlah, "number");
       }, 1400);
     } else {
-      setTimeout(() => askUcapanOptional(), 1400);
+      // FIX: RSVP & Wishes sekarang dipisah — RSVP cukup sampai
+      // konfirmasi kehadiran aja, gak lagi nanya mau titip ucapan
+      // di sini. Nulis ucapan pindah ke form sendiri di section Wishes.
+      setTimeout(() => {
+        addBubbleLeft("Terima kasih banyak sudah konfirmasi kehadiranmu! 🤍");
+      }, 1400);
+      setTimeout(() => finalizeRSVP(), 2400);
     }
   }
 
@@ -602,52 +619,14 @@ function initRSVP() {
         ),
       600,
     );
-    setTimeout(() => askUcapanOptional(), 1400);
+    setTimeout(() => {
+      addBubbleLeft("Terima kasih banyak sudah konfirmasi kehadiranmu! 🤍");
+    }, 1400);
+    setTimeout(() => finalizeRSVP(), 2400);
   }
 
-  // FIX: ucapan sekarang OPSIONAL (berlaku buat dua-duanya, baik
-  // "Hadir" maupun "Tidak Hadir") — tamu dikasih pilihan mau nulis
-  // ucapan atau lewatin aja, bukan dipaksa isi kayak sebelumnya.
-  function askUcapanOptional() {
-    addBubbleLeft("Mau titip ucapan & doa buat kami? 🤍");
-    addChoices(
-      [
-        { emoji: "✍️", text: "Ya, aku mau nulis" },
-        { emoji: "⏭️", text: "Nanti aja" },
-      ],
-      handleUcapanChoice,
-    );
-  }
-
-  function handleUcapanChoice(pilihan) {
-    if (pilihan === 0) {
-      showInput("Tulis ucapan kamu...", handleUcapan, "text");
-    } else {
-      addBubbleRight("Nanti aja ya");
-      setTimeout(() => {
-        addBubbleLeft("Terima kasih banyak sudah konfirmasi kehadiranmu! 🤍");
-      }, 600);
-      setTimeout(() => finalizeRSVP(), 1400);
-    }
-  }
-
-  function handleUcapan(ucapan) {
-    userData.ucapan = ucapan;
-    addBubbleRight(ucapan);
-    addWishToUI(userData.nama, userData.ucapan, userData.hadir);
-    setTimeout(
-      () =>
-        addBubbleLeft(
-          "Terima kasih banyak! Ucapanmu sangat berarti untuk kami 🤍",
-        ),
-      600,
-    );
-    setTimeout(() => finalizeRSVP(), 1400);
-  }
-
-  // FIX: titik akhir bersama buat 2 jalur (ucapan diisi / dilewati) —
-  // nyimpen jejak "udah submit" ke localStorage di sini, biar apapun
-  // jalurnya, tamu tetap ke-tandain udah konfirmasi.
+  // FIX: titik akhir tunggal — RSVP sekarang berhenti di sini, gak ada
+  // lagi cabang ucapan (dipindah ke form Wishes yang berdiri sendiri).
   function finalizeRSVP() {
     inputArea.classList.add("hidden");
     try {
@@ -885,6 +864,87 @@ function initWishes() {
     if (newCards.length) {
       newCards.forEach((card) => card.classList.add("wishes-card-new"));
       newCards[0].scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
+}
+
+/* =============================
+   WISHES FORM — form nulis ucapan berdiri sendiri, terpisah dari RSVP.
+   Nama tamu diambil otomatis dari parameter URL (?to=...), sama kayak
+   yang dipakai di cover & RSVP — jadi tamu tinggal nulis ucapannya
+   aja tanpa perlu isi nama lagi.
+============================= */
+function initWishesForm() {
+  const formEl = document.getElementById("wishesForm");
+  const nameEl = document.getElementById("wishesFormName");
+  const inputEl = document.getElementById("wishesFormInput");
+  const submitBtn = document.getElementById("wishesFormSubmit");
+  const successEl = document.getElementById("wishesFormSuccess");
+
+  if (!formEl || !nameEl || !inputEl || !submitBtn || !successEl) return;
+
+  const urlGuestName = new URLSearchParams(window.location.search).get("to");
+  const guestName = urlGuestName || "Tamu";
+
+  nameEl.textContent = guestName;
+
+  // FIX: kunci localStorage terpisah dari RSVP (rsvpSubmitted_...) —
+  // biar submit ucapan gak nyampur sama status konfirmasi kehadiran,
+  // dan tetap diikat per-nama-tamu dari URL biar gak saling kunci
+  // kalau 1 HP dipakai gantian beberapa tamu.
+  const wishStorageKey = "wishSubmitted_" + (urlGuestName || "guest");
+
+  function showSuccess() {
+    formEl.classList.add("hidden");
+    successEl.classList.remove("hidden");
+  }
+
+  try {
+    if (localStorage.getItem(wishStorageKey)) {
+      showSuccess();
+    }
+  } catch (e) {}
+
+  function handleSubmit() {
+    const ucapan = inputEl.value.trim();
+    if (!ucapan) {
+      inputEl.focus();
+      return;
+    }
+
+    submitBtn.disabled = true;
+    inputEl.disabled = true;
+
+    // Ucapan langsung nongol di Wishes tanpa nunggu fetch ulang.
+    addWishToUI(guestName, ucapan, "");
+
+    try {
+      localStorage.setItem(wishStorageKey, "1");
+    } catch (e) {}
+
+    const payload = {
+      nama: guestName,
+      hadir: "-",
+      jumlah: "-",
+      ucapan: ucapan,
+      waktu: new Date().toLocaleString("id-ID"),
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then(() => showSuccess())
+      .catch(() => showSuccess());
+  }
+
+  submitBtn.addEventListener("click", handleSubmit);
+  inputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
     }
   });
 }
