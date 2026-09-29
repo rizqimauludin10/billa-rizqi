@@ -136,8 +136,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===== SEMBUNYIIN TOMBOL MUSIK SEMENTARA — quoteSection & closingSection =====
   const musicPlayerEl = document.getElementById("musicPlayer");
   const quoteSectionEl = document.getElementById("quoteSection");
+  const brideSectionEl = document.getElementById("brideSection");
+  const groomSectionEl = document.getElementById("groomSection");
   const closingSectionEl = document.getElementById("closingSection");
-  const musicHideTargets = [quoteSectionEl, closingSectionEl].filter(Boolean);
+  const musicHideTargets = [
+    quoteSectionEl,
+    brideSectionEl,
+    groomSectionEl,
+    closingSectionEl,
+  ].filter(Boolean);
 
   if (musicPlayerEl && musicHideTargets.length) {
     // FIX: nyimpen SEMUA section yang lagi kelihatan bareng, bukan cuma
@@ -514,7 +521,7 @@ function initRSVP() {
   }
 
   function askKehadiran() {
-    addBubbleLeft("Apakah kamu bisa hadir di hari istimewa kami?");
+    addBubbleLeft("Apakah bisa hadir di hari istimewa kami?");
     addChoices(
       [
         { emoji: "🥂", text: "Insya Allah hadir!" },
@@ -565,7 +572,7 @@ function initRSVP() {
       <div class="rsvp-success-icon">🤍</div>
       <div class="rsvp-success-title">Halo, ${escapeHTML(nama || "kamu")}!</div>
       <div class="rsvp-success-desc">
-        Kamu udah konfirmasi kehadiran sebelumnya.<br>
+        Kamu sudah konfirmasi kehadiran sebelumnya.<br>
         ${
           hadir === "Hadir"
             ? "Sampai jumpa di hari istimewa kami! 🥂"
@@ -1239,7 +1246,7 @@ if (addToCalendarBtn) {
   addToCalendarBtn.addEventListener("click", () => {
     const title = encodeURIComponent("The Wedding of Billa & Rizqi");
     const details = encodeURIComponent(
-      "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di perayaan pernikahan Billa & Rizqi.\n\n- Akad Nikah: 08.00 WIB\n- Resepsi Nikah: 11.00 - 14.00 WIB",
+      "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di perayaan pernikahan Billa & Rizqi.\n\n- Akad Nikah: 08.00 WIB\n- Resepsi Nikah: 10.00 - 12.00 WIB",
     );
     const location = encodeURIComponent(
       "Stay.vie Hotel, Lantai 7 (Rooftop), Surabaya",

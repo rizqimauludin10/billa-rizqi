@@ -402,6 +402,7 @@ body {
 }
 
 .quote-text {
+  display: inline-block;
   font-family: "PrestigeSignature", cursive;
   font-weight: 400;
   font-size: 24px;
@@ -413,8 +414,20 @@ body {
   text-shadow:
     0 2px 8px rgba(0, 0, 0, 0.6),
     0 0 15px rgba(0, 0, 0, 0.3);
+  animation: quoteTextFloat 6s ease-in-out infinite;
 }
 
+@keyframes quoteTextFloat {
+  0%,
+  100% {
+    transform: rotate(-10deg) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(-10deg) translateY(-4px);
+    opacity: 0.92;
+  }
+}
 .quote-source {
   font-family: "PrestigeSignature", cursive;
   margin-top: 10px;
@@ -3815,50 +3828,21 @@ body {
 }
 
 .footer-heart {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   color: var(--color-akad);
-  animation: heartbeat 1.5s ease-in-out infinite;
-}
-/* @keyframes heartbeat tetap, gak perlu diubah */
-
-/* Cincin yang mekar keluar & menghilang, berulang — kesan "memancar"
-   dari hati-nya. 2 cincin dijalanin gantian (delay 1.2s) biar selalu
-   ada minimal 1 yang lagi mekar, gak ada jeda kosong. */
-.footer-heart::before,
-.footer-heart::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 20px;
-  height: 20px;
-  margin: -10px 0 0 -10px;
-  border: 1px solid rgba(var(--color-akad-rgb), 0.55);
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
+  animation: footerHeartPulse 1.8s ease-in-out infinite;
 }
 
-.footer-heart::before {
-  animation: heartRadiate 2.4s ease-out infinite;
-}
-
-.footer-heart::after {
-  animation: heartRadiate 2.4s ease-out infinite 1.2s;
-}
-
-@keyframes heartRadiate {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.55;
-  }
+@keyframes footerHeartPulse {
+  0%,
   100% {
-    transform: scale(2.8);
-    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
   }
 }
 
