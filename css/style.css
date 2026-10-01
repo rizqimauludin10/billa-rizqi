@@ -192,6 +192,12 @@ body {
 #guestName {
   display: inline-block;
   margin-top: 6px;
+  /* FIX: nama tamu yang panjang bisa melebar sampe nempel ke tepi
+     device (wrapper induknya width: 100% tanpa padding sama sekali).
+     max-width 100% + box-sizing: border-box bikin padding ini
+     kehitung DI DALAM lebar 100% itu, jadi otomatis ninggalin jarak
+     di kiri-kanan dan teksnya wrap ke baris baru kalau kepanjangan,
+     gak numpuk nempel ke batas layar. */
   max-width: 100%;
   box-sizing: border-box;
   padding: 0 24px;
@@ -411,12 +417,15 @@ body {
   font-size: 24px;
   line-height: 1.5;
   font-style: normal;
-  opacity: 1;
-  transform: rotate(-10deg);
   letter-spacing: 2px;
   text-shadow:
     0 2px 8px rgba(0, 0, 0, 0.6),
     0 0 15px rgba(0, 0, 0, 0.3);
+  /* Animasi lembut — melayang naik-turun tipis banget (cuma 4px) +
+     opacity nge-breathe halus, durasi lambat (6s) biar geraknya nyaris
+     gak kerasa tapi tetap kelihatan hidup, kayak tulisan tangan yang
+     "bernapas". rotate(-10deg) aslinya ikut ditulis di tiap keyframe
+     biar kemiringan teks gak ke-reset pas animasi jalan. */
   animation: quoteTextFloat 6s ease-in-out infinite;
 }
 
@@ -431,6 +440,7 @@ body {
     opacity: 0.92;
   }
 }
+
 .quote-source {
   font-family: "PrestigeSignature", cursive;
   margin-top: 10px;
@@ -2966,6 +2976,7 @@ body {
   letter-spacing: 0.3px;
   color: rgba(255, 255, 255, 0.4);
   font-style: italic;
+  text-align: right;
 }
 
 .wishes-load-more {
@@ -3838,6 +3849,13 @@ body {
   gap: 10px;
 }
 
+/* GANTI TOTAL: animasi lama (heartbeat + 2 cincin radiate pakai
+   ::before/::after, ditrigger via IntersectionObserver + class
+   ".pulse") diganti animasi yang jauh lebih simpel — cuma 1
+   @keyframes, murni CSS, TANPA JS sama sekali. Makin sedikit bagian
+   yang saling bergantung, makin kecil kemungkinan ada yang gagal
+   nyala. Icon ♥ membesar-mengecil pelan & berulang dari pertama kali
+   halaman dimuat, gak perlu nunggu di-scroll atau di-trigger apa pun. */
 .footer-heart {
   display: inline-flex;
   align-items: center;
@@ -3865,7 +3883,6 @@ body {
   font-style: normal;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
-
 .footer-highlight {
   color: var(--color-akad);
   opacity: 1;

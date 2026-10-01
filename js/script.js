@@ -41,16 +41,42 @@ function escapeHTML(str) {
     .replace(/'/g, "&#039;");
 }
 
-// FIX: ubah timestamp mentah (ISO string yang dikirim pas submit, atau
-// string lama hasil toLocaleString("id-ID") buat ucapan yang udah ada
-// sebelum fitur ini ada) jadi teks relatif "X menit/jam/hari yang
-// lalu". Kalau gagal diparse (data lama/format gak dikenal), balikin
-// string kosong aja — badge waktunya otomatis gak ditampilkan di
-// kartu, bukan nampilin teks aneh kayak "NaN menit yang lalu".
+// FIX: ternyata Apps Script GET selalu balikin "waktu" dalam format
+// "D/M/YYYY, HH.MM.SS" (hasil toLocaleString("id-ID") yang kesimpen
+// di Sheets, titik buat pemisah jam-menit-detik, BUKAN format ISO).
+// "new Date(str)" bawaan browser gak ngerti format ini sama sekali
+// (selalu balikin Invalid Date), makanya badge waktunya dulu gak
+// pernah muncul walau datanya sebenarnya ada. Di sini kita parse
+// manual format itu lewat regex dulu sebelum coba cara biasa (ISO
+// tetap didukung juga, buat jaga-jaga kalau sumbernya beda format).
+function parseWaktu(waktuStr) {
+  if (!waktuStr) return null;
+  const str = String(waktuStr).trim();
+
+  // Format Apps Script: "1/10/2026, 13.58.00" → day/month/year,
+  // hour.minute.second (locale id-ID, bukan ISO).
+  const m = str.match(
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4}),?\s*(\d{1,2})\.(\d{2})\.(\d{2})$/,
+  );
+  if (m) {
+    const [, day, month, year, hour, minute, second] = m.map(Number);
+    const parsed = new Date(year, month - 1, day, hour, minute, second);
+    return isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  // Fallback — coba format standar (ISO, dll).
+  const fallback = new Date(str);
+  return isNaN(fallback.getTime()) ? null : fallback;
+}
+
+// Ubah timestamp mentah jadi teks relatif "X menit/jam/hari yang
+// lalu". Kalau gagal diparse (format gak dikenal sama sekali),
+// balikin string kosong aja — badge waktunya otomatis gak
+// ditampilkan di kartu, bukan nampilin teks aneh kayak "NaN menit
+// yang lalu".
 function formatRelativeTime(waktuStr) {
-  if (!waktuStr) return "";
-  const then = new Date(waktuStr);
-  if (isNaN(then.getTime())) return "";
+  const then = parseWaktu(waktuStr);
+  if (!then) return "";
 
   const diffMs = Date.now() - then.getTime();
   if (diffMs < 0) return "Baru saja";
@@ -1008,14 +1034,14 @@ function initWishesForm() {
     submitBtn.disabled = true;
     inputEl.disabled = true;
 
-    // FIX: waktu sekarang dikirim dalam format ISO (new Date().toISOString())
-    // bukan toLocaleString("id-ID") lagi — ISO itu format yang bisa
-    // diparse balik dengan konsisten di semua browser lewat
-    // "new Date(str)", dipakai buat ngitung "X menit/jam yang lalu" di
-    // formatRelativeTime(). Satu nilai "now" yang sama dipakai buat
-    // kartu yang muncul instan (addWishToUI) & yang dikirim ke sheet,
-    // biar konsisten.
-    const now = new Date().toISOString();
+    // FIX: ke Apps Script, waktu TETAP dikirim format toLocaleString("id-ID")
+    // kayak semula ("1/10/2026, 13.58.00") — itu format yang Sheets
+    // auto-kenali sebagai kolom tanggal beneran, dan yang konsisten
+    // dibalikin Apps Script pas di-GET (dicek langsung dari response
+    // JSON-nya). Buat kartu yang muncul INSTAN di layar (gak lewat
+    // fetch backend), kita pakai Date object yang sama biar waktunya
+    // sama persis — parseWaktu() di atas ngerti dua-duanya.
+    const nowDate = new Date();
 
     // FIX: biar badge "HADIR"/"TIDAK HADIR" langsung nongol juga di
     // kartu yang muncul instan ini (bukan nunggu reload/fetch ulang),
@@ -1040,7 +1066,7 @@ function initWishesForm() {
     } catch (e) {}
 
     // Ucapan langsung nongol di Wishes tanpa nunggu fetch ulang.
-    addWishToUI(guestName, ucapan, rsvpHadir, now);
+    addWishToUI(guestName, ucapan, rsvpHadir, nowDate.toISOString());
 
     try {
       localStorage.setItem(wishStorageKey, "1");
@@ -1051,7 +1077,7 @@ function initWishesForm() {
       hadir: "-",
       jumlah: "-",
       ucapan: ucapan,
-      waktu: now,
+      waktu: nowDate.toLocaleString("id-ID"),
     };
 
     fetch(APPS_SCRIPT_URL, {
