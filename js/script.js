@@ -870,73 +870,139 @@ function initWishes() {
     return;
 
   const PER_PAGE = 5;
+  const CACHE_KEY = "wishesCache";
   let allWishes = [];
   let currentIndex = 0;
   // Peta nama tamu (lowercase) → status "Hadir"/"Tidak Hadir", dibangun
-  // ulang tiap loadWishes() dari SEMUA baris sheet (lihat di dalam
-  // loadWishes). Dipakai renderWishes() buat nyambungin status hadir
-  // ke kartu ucapan yang baris sheet-nya sendiri gak nyimpen hadir.
+  // ulang tiap kali data baru kebaca (dari cache ATAU dari fetch).
+  // Dipakai renderWishes() buat nyambungin status hadir ke kartu
+  // ucapan yang baris sheet-nya sendiri gak nyimpen hadir.
   let hadirByName = new Map();
 
-  // FIX: logic fetch dibungkus jadi fungsi sendiri (loadWishes), biar
-  // bisa dipanggil ulang dari tombol "Muat Ulang" tanpa perlu refresh
-  // seluruh halaman.
-  function loadWishes() {
-    loading.classList.remove("hidden");
-    empty.classList.add("hidden");
-    errorBox.classList.add("hidden");
-    loadMore.classList.add("hidden");
-    masonry.innerHTML = "";
-    currentIndex = 0;
-    if (countNumberEl) countNumberEl.textContent = "0";
+  // FIX: Apps Script (Google) suka "cold start" — request pertama ke
+  // deployment yang lagi "tidur" bisa makan beberapa detik, kadang
+  // bahkan sampai timeout. Sebelumnya tamu cuma liat loading spinner
+  // lama / langsung ketemu pesan error. Sekarang dibikin 2 lapis:
+  // 1) kalau ada data HASIL FETCH TERAKHIR yang kesimpen di
+  //    localStorage, itu ditampilin INSTAN duluan (gak nunggu network
+  //    sama sekali) — tamu langsung lihat ucapan-ucapan yang ada.
+  // 2) di belakang layar, tetap fetch data terbaru; kalau gagal/
+  //    timeout, otomatis dicoba ulang sekali lagi (diam-diam, gak
+  //    ganggu tamu) sebelum nyerah. Kalau masih ada data cache yang
+  //    lagi ditampilin, gagal pun gak masalah — ucapan lama tetap
+  //    kelihatan, cuma gak keupdate ucapan paling baru. Error box cuma
+  //    muncul kalau BENER-BENER gak ada data sama sekali buat
+  //    ditampilin (pertama kali buka & jaringan lagi bermasalah).
+  function readCache() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : null;
+    } catch (e) {
+      return null;
+    }
+  }
 
+  function writeCache(data) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+    } catch (e) {}
+  }
+
+  function applyData(data) {
+    hadirByName = new Map();
+    data.forEach((row) => {
+      if (!row.nama) return;
+      if (row.hadir === "Hadir" || row.hadir === "Tidak Hadir") {
+        hadirByName.set(row.nama.trim().toLowerCase(), row.hadir);
+      }
+    });
+
+    allWishes = data.filter((row) => row.ucapan && row.ucapan.trim() !== "");
+    currentIndex = 0;
+    masonry.innerHTML = "";
+
+    if (countNumberEl)
+      animateDateCounter(countNumberEl, allWishes.length, 1000);
+
+    if (allWishes.length === 0) {
+      empty.classList.remove("hidden");
+      loadMore.classList.add("hidden");
+      return;
+    }
+    empty.classList.add("hidden");
+    renderWishes();
+    updateLoadMoreBtn();
+  }
+
+  // FIX: logic fetch dibungkus jadi fungsi sendiri (fetchWishes), biar
+  // bisa dipanggil ulang dari tombol "Muat Ulang" tanpa perlu refresh
+  // seluruh halaman. "isRetry" nandain ini percobaan ke-2 (otomatis,
+  // diam-diam) — kalau gagal lagi, baru beneran nyerah.
+  function fetchWishes(isRetry) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    // Timeout dinaikin ke 15 detik (dari 10 detik) — ngasih ruang lebih
+    // buat cold-start Apps Script yang kadang emang makan waktu.
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
 
     fetch(APPS_SCRIPT_URL, { signal: controller.signal })
       .then((res) => res.json())
       .then((data) => {
         clearTimeout(timeoutId);
         loading.classList.add("hidden");
-
-        // FIX: sejak RSVP & Wishes dipisah, 1 tamu yang konfirmasi
-        // "Hadir" DAN nulis ucapan sekarang jadi 2 baris beda di
-        // sheet — baris RSVP (ada hadir, ucapan kosong) dan baris
-        // Wishes (ada ucapan, hadir "-"). Badge "HADIR" jadi gak
-        // kebaca kalau cuma liat baris ucapan-nya doang. Di sini kita
-        // bikin "peta" nama → status hadir dari SEMUA baris (termasuk
-        // yang ucapannya kosong), biar pas nampilin kartu ucapan,
-        // status hadirnya bisa "diambil nyambung" dari baris RSVP
-        // tamu yang sama (dicocokkan by nama, case-insensitive).
-        hadirByName = new Map();
-        data.forEach((row) => {
-          if (!row.nama) return;
-          if (row.hadir === "Hadir" || row.hadir === "Tidak Hadir") {
-            hadirByName.set(row.nama.trim().toLowerCase(), row.hadir);
-          }
-        });
-
-        allWishes = data.filter(
-          (row) => row.ucapan && row.ucapan.trim() !== "",
-        );
-        if (countNumberEl)
-          animateDateCounter(countNumberEl, allWishes.length, 1000);
-        if (allWishes.length === 0) {
-          empty.classList.remove("hidden");
-          return;
-        }
-        renderWishes();
-        updateLoadMoreBtn();
+        errorBox.classList.add("hidden");
+        writeCache(data);
+        applyData(data);
       })
       .catch(() => {
         clearTimeout(timeoutId);
+        if (!isRetry) {
+          // Percobaan pertama gagal — diam-diam coba sekali lagi
+          // sebentar lagi, tamu gak perlu lihat/ngelakuin apa-apa.
+          setTimeout(() => fetchWishes(true), 1500);
+          return;
+        }
+        // Udah gagal 2x. Kalau sebelumnya ada data cache yang lagi
+        // ditampilin, biarin aja tetap kelihatan — diam-diam nyerah
+        // tanpa nampilin error ke tamu. Error box cuma muncul kalau
+        // beneran gak ada apa-apa buat ditampilin.
         loading.classList.add("hidden");
-        errorBox.classList.remove("hidden");
-        if (countNumberEl) countNumberEl.textContent = "-";
+        if (allWishes.length === 0) {
+          errorBox.classList.remove("hidden");
+          if (countNumberEl) countNumberEl.textContent = "-";
+        }
       });
   }
 
-  retryBtn.addEventListener("click", loadWishes);
+  function loadWishes() {
+    errorBox.classList.add("hidden");
+
+    const cached = readCache();
+    if (cached && cached.length > 0) {
+      // Ada cache — langsung tampilin INSTAN, gak nunggu network.
+      loading.classList.add("hidden");
+      applyData(cached);
+    } else {
+      // Belum ada cache sama sekali (kunjungan pertama / localStorage
+      // kepake orang lain) — baru di sini tampilin loading spinner.
+      loading.classList.remove("hidden");
+      empty.classList.add("hidden");
+      masonry.innerHTML = "";
+      currentIndex = 0;
+      if (countNumberEl) countNumberEl.textContent = "0";
+    }
+
+    fetchWishes(false);
+  }
+
+  // Tombol "Muat Ulang" manual (dipencet tamu) selalu mulai dari awal
+  // (bukan silent retry), biar langsung kasih tau kalau masih gagal.
+  retryBtn.addEventListener("click", () => {
+    loading.classList.remove("hidden");
+    errorBox.classList.add("hidden");
+    fetchWishes(false);
+  });
 
   loadWishes();
 
