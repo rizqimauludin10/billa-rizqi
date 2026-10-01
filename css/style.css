@@ -3857,10 +3857,12 @@ body {
   font-style: normal;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
+
 .footer-highlight {
   color: var(--color-akad);
   opacity: 1;
   font-style: normal;
+  font-weight: 500;
 }
 
 .footer-name {
