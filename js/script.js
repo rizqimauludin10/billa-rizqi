@@ -164,14 +164,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const guestEl = document.getElementById("guestName");
   if (guestName && guestEl) {
     // FIX: kalau nama tamu ada kata "dan" (misal link dikirim ke 2
-    // orang sekaligus, "Budi dan Ani"), kata itu dipakai sebagai
-    // pemisah baris — "dan"-nya sendiri gak ditulis, biar tiap nama
-    // langsung pindah baris baru. escapeHTML dulu (nama dari URL,
-    // jadi harus di-escape) baru boleh pakai innerHTML dengan <br>.
-    // \b...\b (word boundary) + \s+ di kedua sisi biar yang ke-match
-    // cuma kata "dan" yang berdiri sendiri (dipisah spasi), bukan
-    // "dan" yang nempel di tengah kata lain kayak "Ramadan".
-    const formatted = escapeHTML(guestName).replace(/\s+dan\s+/gi, "<br>");
+    // orang sekaligus, "Budi dan Ani"), kata "dan"-nya TETAP ditulis
+    // (bukan dihapus) — cuma kata SETELAHNYA yang dipindah ke baris
+    // baru. escapeHTML dulu (nama dari URL, jadi harus di-escape) baru
+    // boleh pakai innerHTML dengan <br>. \s+dan\s+ (dengan spasi di
+    // kedua sisi) biar yang ke-match cuma kata "dan" yang berdiri
+    // sendiri, bukan "dan" yang nempel di tengah kata lain kayak
+    // "Ramadan". Grup "$1" nangkep teks sebelum "dan" biar gak ikut
+    // kehapus pas diganti.
+    const formatted = escapeHTML(guestName).replace(
+      /(\s*)dan\s+/gi,
+      "$1dan<br>",
+    );
     guestEl.innerHTML = formatted;
   }
 
