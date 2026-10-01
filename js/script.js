@@ -41,7 +41,40 @@ function escapeHTML(str) {
     .replace(/'/g, "&#039;");
 }
 
-function createWishCard(nama, ucapan, hadir) {
+// FIX: ubah timestamp mentah (ISO string yang dikirim pas submit, atau
+// string lama hasil toLocaleString("id-ID") buat ucapan yang udah ada
+// sebelum fitur ini ada) jadi teks relatif "X menit/jam/hari yang
+// lalu". Kalau gagal diparse (data lama/format gak dikenal), balikin
+// string kosong aja — badge waktunya otomatis gak ditampilkan di
+// kartu, bukan nampilin teks aneh kayak "NaN menit yang lalu".
+function formatRelativeTime(waktuStr) {
+  if (!waktuStr) return "";
+  const then = new Date(waktuStr);
+  if (isNaN(then.getTime())) return "";
+
+  const diffMs = Date.now() - then.getTime();
+  if (diffMs < 0) return "Baru saja";
+
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+
+  if (diffSec < 60) return "Baru saja";
+  if (diffMin < 60) return `${diffMin} menit yang lalu`;
+  if (diffHour < 24) return `${diffHour} jam yang lalu`;
+  if (diffDay < 7) return `${diffDay} hari yang lalu`;
+
+  // Lebih dari seminggu — tampilin tanggalnya aja daripada "X minggu
+  // yang lalu" yang kurang informatif buat ucapan yang udah lama.
+  return then.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function createWishCard(nama, ucapan, hadir, waktu) {
   const card = document.createElement("div");
   card.className = "wishes-card";
   // FIX: badge status kehadiran cuma ditampilkan kalau memang ada
@@ -53,6 +86,7 @@ function createWishCard(nama, ucapan, hadir) {
   const isHadir = hadir === "Hadir";
   const statusClass = isHadir ? "hadir" : "tidak";
   const statusText = isHadir ? "Hadir" : "Berhalangan";
+  const relativeTime = formatRelativeTime(waktu);
   card.innerHTML = `
     <div class="wishes-card-header">
       <div class="wishes-card-name">${escapeHTML(nama)}</div>
@@ -63,6 +97,11 @@ function createWishCard(nama, ucapan, hadir) {
       }
     </div>
     <div class="wishes-card-text">${escapeHTML(ucapan)}</div>
+    ${
+      relativeTime
+        ? `<div class="wishes-card-time">${escapeHTML(relativeTime)}</div>`
+        : ""
+    }
   `;
   return card;
 }
@@ -71,13 +110,13 @@ function createWishCard(nama, ucapan, hadir) {
 // begitu dia submit RSVP — gak nunggu fetch ulang ke Apps Script
 // (yang kadang lambat/cold-start), user langsung liat ucapannya
 // sendiri tanpa jeda sama sekali.
-function addWishToUI(nama, ucapan, hadir) {
+function addWishToUI(nama, ucapan, hadir, waktu) {
   const masonry = document.getElementById("wishesMasonry");
   const empty = document.getElementById("wishesEmpty");
   const countNumberEl = document.getElementById("wishesCountNumber");
   if (!masonry || !ucapan) return;
 
-  const card = createWishCard(nama, ucapan, hadir);
+  const card = createWishCard(nama, ucapan, hadir, waktu);
   card.classList.add("wishes-card-new");
   masonry.insertBefore(card, masonry.firstChild);
 
@@ -98,7 +137,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const guestName = urlParams.get("to");
   const guestEl = document.getElementById("guestName");
   if (guestName && guestEl) {
-    guestEl.innerText = guestName;
+    // FIX: kalau nama tamu ada kata "dan" (misal link dikirim ke 2
+    // orang sekaligus, "Budi dan Ani"), kata itu dipakai sebagai
+    // pemisah baris — "dan"-nya sendiri gak ditulis, biar tiap nama
+    // langsung pindah baris baru. escapeHTML dulu (nama dari URL,
+    // jadi harus di-escape) baru boleh pakai innerHTML dengan <br>.
+    // \b...\b (word boundary) + \s+ di kedua sisi biar yang ke-match
+    // cuma kata "dan" yang berdiri sendiri (dipisah spasi), bukan
+    // "dan" yang nempel di tengah kata lain kayak "Ramadan".
+    const formatted = escapeHTML(guestName).replace(/\s+dan\s+/gi, "<br>");
+    guestEl.innerHTML = formatted;
   }
 
   /* =============================
@@ -133,7 +181,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ===== SEMBUNYIIN TOMBOL MUSIK SEMENTARA — quoteSection & closingSection =====
+  // ===== SEMBUNYIIN TOMBOL MUSIK SEMENTARA — quoteSection, brideSection,
+  // groomSection & closingSection. Bride/Groom ditambahin biar nama
+  // orang tua (yang nempel di bawah nama) gak ketutupan tombol musik
+  // pas discroll lewat situ. =====
   const musicPlayerEl = document.getElementById("musicPlayer");
   const quoteSectionEl = document.getElementById("quoteSection");
   const brideSectionEl = document.getElementById("brideSection");
@@ -521,7 +572,7 @@ function initRSVP() {
   }
 
   function askKehadiran() {
-    addBubbleLeft("Apakah bisa hadir di hari istimewa kami?");
+    addBubbleLeft("Apakah kamu bisa hadir di hari istimewa kami?");
     addChoices(
       [
         { emoji: "🥂", text: "Insya Allah hadir!" },
@@ -572,7 +623,7 @@ function initRSVP() {
       <div class="rsvp-success-icon">🤍</div>
       <div class="rsvp-success-title">Halo, ${escapeHTML(nama || "kamu")}!</div>
       <div class="rsvp-success-desc">
-        Kamu sudah konfirmasi kehadiran sebelumnya.<br>
+        Kamu udah konfirmasi kehadiran sebelumnya.<br>
         ${
           hadir === "Hadir"
             ? "Sampai jumpa di hari istimewa kami! 🥂"
@@ -791,6 +842,11 @@ function initWishes() {
   const PER_PAGE = 5;
   let allWishes = [];
   let currentIndex = 0;
+  // Peta nama tamu (lowercase) → status "Hadir"/"Tidak Hadir", dibangun
+  // ulang tiap loadWishes() dari SEMUA baris sheet (lihat di dalam
+  // loadWishes). Dipakai renderWishes() buat nyambungin status hadir
+  // ke kartu ucapan yang baris sheet-nya sendiri gak nyimpen hadir.
+  let hadirByName = new Map();
 
   // FIX: logic fetch dibungkus jadi fungsi sendiri (loadWishes), biar
   // bisa dipanggil ulang dari tombol "Muat Ulang" tanpa perlu refresh
@@ -812,6 +868,24 @@ function initWishes() {
       .then((data) => {
         clearTimeout(timeoutId);
         loading.classList.add("hidden");
+
+        // FIX: sejak RSVP & Wishes dipisah, 1 tamu yang konfirmasi
+        // "Hadir" DAN nulis ucapan sekarang jadi 2 baris beda di
+        // sheet — baris RSVP (ada hadir, ucapan kosong) dan baris
+        // Wishes (ada ucapan, hadir "-"). Badge "HADIR" jadi gak
+        // kebaca kalau cuma liat baris ucapan-nya doang. Di sini kita
+        // bikin "peta" nama → status hadir dari SEMUA baris (termasuk
+        // yang ucapannya kosong), biar pas nampilin kartu ucapan,
+        // status hadirnya bisa "diambil nyambung" dari baris RSVP
+        // tamu yang sama (dicocokkan by nama, case-insensitive).
+        hadirByName = new Map();
+        data.forEach((row) => {
+          if (!row.nama) return;
+          if (row.hadir === "Hadir" || row.hadir === "Tidak Hadir") {
+            hadirByName.set(row.nama.trim().toLowerCase(), row.hadir);
+          }
+        });
+
         allWishes = data.filter(
           (row) => row.ucapan && row.ucapan.trim() !== "",
         );
@@ -840,7 +914,19 @@ function initWishes() {
     const batch = allWishes.slice(currentIndex, currentIndex + PER_PAGE);
     const createdCards = [];
     batch.forEach((wish, i) => {
-      const card = createWishCard(wish.nama, wish.ucapan, wish.hadir);
+      // Baris ucapan sendiri biasanya hadir-nya "-" (RSVP & Wishes
+      // kan baris terpisah) — kalau gitu, coba cari status hadir
+      // tamu ini dari peta hadirByName (hasil baca baris RSVP-nya).
+      const effectiveHadir =
+        wish.hadir === "Hadir" || wish.hadir === "Tidak Hadir"
+          ? wish.hadir
+          : hadirByName.get((wish.nama || "").trim().toLowerCase()) || "";
+      const card = createWishCard(
+        wish.nama,
+        wish.ucapan,
+        effectiveHadir,
+        wish.waktu,
+      );
       card.style.animationDelay = `${i * 0.08}s`;
       masonry.appendChild(card);
       createdCards.push(card);
@@ -922,8 +1008,39 @@ function initWishesForm() {
     submitBtn.disabled = true;
     inputEl.disabled = true;
 
+    // FIX: waktu sekarang dikirim dalam format ISO (new Date().toISOString())
+    // bukan toLocaleString("id-ID") lagi — ISO itu format yang bisa
+    // diparse balik dengan konsisten di semua browser lewat
+    // "new Date(str)", dipakai buat ngitung "X menit/jam yang lalu" di
+    // formatRelativeTime(). Satu nilai "now" yang sama dipakai buat
+    // kartu yang muncul instan (addWishToUI) & yang dikirim ke sheet,
+    // biar konsisten.
+    const now = new Date().toISOString();
+
+    // FIX: biar badge "HADIR"/"TIDAK HADIR" langsung nongol juga di
+    // kartu yang muncul instan ini (bukan nunggu reload/fetch ulang),
+    // kita intip status RSVP tamu ini dari localStorage — disimpan
+    // initRSVP() di key "rsvpSubmitted_<nama>" pas dia konfirmasi
+    // kehadiran. Kalau belum pernah RSVP (atau RSVP-nya gagal baca),
+    // badge-nya ya gak ditampilkan — itu normal.
+    let rsvpHadir = "";
+    try {
+      const rsvpRaw = localStorage.getItem(
+        "rsvpSubmitted_" + (urlGuestName || "guest"),
+      );
+      if (rsvpRaw) {
+        const rsvpSaved = JSON.parse(rsvpRaw);
+        if (
+          rsvpSaved &&
+          (rsvpSaved.hadir === "Hadir" || rsvpSaved.hadir === "Tidak Hadir")
+        ) {
+          rsvpHadir = rsvpSaved.hadir;
+        }
+      }
+    } catch (e) {}
+
     // Ucapan langsung nongol di Wishes tanpa nunggu fetch ulang.
-    addWishToUI(guestName, ucapan, "");
+    addWishToUI(guestName, ucapan, rsvpHadir, now);
 
     try {
       localStorage.setItem(wishStorageKey, "1");
@@ -934,7 +1051,7 @@ function initWishesForm() {
       hadir: "-",
       jumlah: "-",
       ucapan: ucapan,
-      waktu: new Date().toLocaleString("id-ID"),
+      waktu: now,
     };
 
     fetch(APPS_SCRIPT_URL, {
@@ -1246,7 +1363,7 @@ if (addToCalendarBtn) {
   addToCalendarBtn.addEventListener("click", () => {
     const title = encodeURIComponent("The Wedding of Billa & Rizqi");
     const details = encodeURIComponent(
-      "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di perayaan pernikahan Billa & Rizqi.\n\n- Akad Nikah: 08.00 WIB\n- Resepsi Nikah: 10.00 - 12.00 WIB",
+      "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di perayaan pernikahan Billa & Rizqi.\n\n- Akad Nikah: 08.00 WIB\n- Resepsi Nikah: 11.00 - 14.00 WIB",
     );
     const location = encodeURIComponent(
       "Stay.vie Hotel, Lantai 7 (Rooftop), Surabaya",

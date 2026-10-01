@@ -2960,6 +2960,14 @@ body {
   font-style: normal;
 }
 
+.wishes-card-time {
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
 .wishes-load-more {
   display: inline-flex;
   align-items: center;
