@@ -1346,9 +1346,9 @@ function initGallery() {
     (e) => {
       if (e.touches.length === 2) {
         // Mulai PINCH — 2 jari
-        isMultiTouch = true;
-        startDistance = getDistance(e.touches);
-        startScale = currentScale;
+        isMultiTouch = false;
+        // startDistance = getDistance(e.touches);
+        // startScale = currentScale;
       } else if (e.touches.length === 1) {
         isMultiTouch = false;
         if (currentScale > 1) {
@@ -1380,11 +1380,11 @@ function initGallery() {
     "touchmove",
     (e) => {
       if (e.touches.length === 2) {
-        isMultiTouch = true;
-        const newDistance = getDistance(e.touches);
-        const scaleChange = newDistance / startDistance;
-        currentScale = Math.min(Math.max(startScale * scaleChange, 1), 4);
-        applyImageTransform();
+        // isMultiTouch = true;
+        // const newDistance = getDistance(e.touches);
+        // const scaleChange = newDistance / startDistance;
+        // currentScale = Math.min(Math.max(startScale * scaleChange, 1), 4);
+        // applyImageTransform();
       } else if (e.touches.length === 1 && isPanning) {
         currentTranslateX = e.touches[0].clientX - panStartX;
         currentTranslateY = e.touches[0].clientY - panStartY;
