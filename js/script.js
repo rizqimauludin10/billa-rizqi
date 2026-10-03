@@ -172,11 +172,28 @@ document.addEventListener("DOMContentLoaded", function () {
     // sendiri, bukan "dan" yang nempel di tengah kata lain kayak
     // "Ramadan". Grup "$1" nangkep teks sebelum "dan" biar gak ikut
     // kehapus pas diganti.
-    const formatted = escapeHTML(guestName).replace(
-      /(\s*)dan\s+/gi,
-      "$1dan<br>",
-    );
-    guestEl.innerHTML = formatted;
+    // const formatted = escapeHTML(guestName).replace(
+    //   /(\s*)dan\s+/gi,
+    //   "$1dan<br>",
+    // );
+    // guestEl.innerHTML = formatted;
+    guestEl.textContent = guestName;
+  }
+
+  // ===== PERSONALISASI TAMBAHAN — pakai nama tamu dari URL (kalau
+  // ada) di 2 tempat lagi: Countdown & Closing. Fallback teks generik
+  // kalau tamu akses tanpa ?to= di URL, biar tetap enak dibaca. =====
+  const countdownPersonalEl = document.getElementById("countdownPersonal");
+  const closingPersonalEl = document.getElementById("closingPersonal");
+  if (countdownPersonalEl) {
+    countdownPersonalEl.textContent = guestName
+      ? `Menantikan kehadiran ${guestName} di hari bahagia kami 🤍`
+      : "Menantikan kehadiranmu di hari bahagia kami 🤍";
+  }
+  if (closingPersonalEl) {
+    closingPersonalEl.textContent = guestName
+      ? `Terima kasih, ${guestName}, telah menjadi bagian dari kisah kami 🤍`
+      : "Terima kasih telah menjadi bagian dari kisah kami 🤍";
   }
 
   /* =============================
@@ -207,6 +224,13 @@ document.addEventListener("DOMContentLoaded", function () {
             mainContent.classList.add("show-content");
           });
         });
+
+        // Progress bar & dot nav baru aktif setelah konten utama
+        // kelihatan — gak ada gunanya nongol duluan pas masih di cover.
+        const scrollProgressEl = document.getElementById("scrollProgress");
+        if (scrollProgressEl) scrollProgressEl.classList.add("visible");
+        const sectionDotsEl = document.getElementById("sectionDots");
+        if (sectionDotsEl) sectionDotsEl.classList.add("visible");
       }, 1200);
     });
   }
@@ -452,6 +476,22 @@ document.addEventListener("DOMContentLoaded", function () {
      GALLERY
   ============================= */
   initGallery();
+
+  /* =============================
+     OUR JOURNEY — tap-to-zoom (lightbox terpisah dari Gallery)
+  ============================= */
+  initJourneyLightbox();
+
+  /* =============================
+     BRIDE / GROOM — fun fact reveal
+  ============================= */
+  initFunFacts();
+
+  /* =============================
+     SCROLL PROGRESS BAR & SECTION DOTS NAV
+  ============================= */
+  initScrollProgress();
+  initSectionDots();
 
   /* =============================
      LIVE STREAMING PREVIEW
@@ -1371,6 +1411,170 @@ function initGallery() {
       if (diff > 0) nextPhoto();
       else prevPhoto();
     }
+  });
+}
+
+/* =============================
+   OUR JOURNEY LIGHTBOX FUNCTION
+   Sengaja TERPISAH dari initGallery()/#galleryLightbox di atas (yang
+   index foto-nya ngikut array .editorial-item) biar gak ada risiko
+   ganggu navigasi Gallery yang udah jalan. Journey cuma butuh
+   tap-to-zoom simpel, gak perlu next/prev.
+============================= */
+function initJourneyLightbox() {
+  const photos = document.querySelectorAll(".journey-zoomable");
+  const lightbox = document.getElementById("journeyLightbox");
+  const lbImg = document.getElementById("jlbImg");
+  const lbClose = document.getElementById("jlbClose");
+
+  if (!photos.length || !lightbox || !lbImg || !lbClose) return;
+
+  function open(src, alt) {
+    lbImg.src = src;
+    lbImg.alt = alt || "";
+    lightbox.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function close() {
+    lightbox.classList.remove("active");
+    document.body.style.overflow = "auto";
+    document.body.style.overflowX = "hidden";
+  }
+
+  photos.forEach((photo) => {
+    const img = photo.querySelector("img");
+    if (!img) return;
+    photo.addEventListener("click", () => open(img.src, img.alt));
+  });
+
+  lbClose.addEventListener("click", close);
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && lightbox.classList.contains("active")) close();
+  });
+}
+
+/* =============================
+   BRIDE / GROOM FUN FACT FUNCTION
+   Tap buat buka/tutup panel fun-fact. Isi teksnya masih PLACEHOLDER
+   di index.html — tinggal diganti teks aslinya kapan saja.
+============================= */
+function initFunFacts() {
+  const pairs = [
+    ["brideFunFactBtn", "brideFunFactPanel"],
+    ["groomFunFactBtn", "groomFunFactPanel"],
+  ];
+
+  pairs.forEach(([btnId, panelId]) => {
+    const btn = document.getElementById(btnId);
+    const panel = document.getElementById(panelId);
+    if (!btn || !panel) return;
+
+    btn.addEventListener("click", () => {
+      const isOpen = panel.classList.toggle("open");
+      btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+  });
+}
+
+/* =============================
+   SCROLL PROGRESS BAR FUNCTION
+   Lebar bar diupdate sesuai posisi scroll, di-throttle lewat
+   requestAnimationFrame biar gak bikin event scroll berat.
+============================= */
+function initScrollProgress() {
+  const bar = document.getElementById("scrollProgressBar");
+  if (!bar) return;
+
+  let ticking = false;
+
+  function update() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = `${Math.min(Math.max(percent, 0), 100)}%`;
+    ticking = false;
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    },
+    { passive: true },
+  );
+
+  update();
+}
+
+/* =============================
+   SECTION DOTS NAV FUNCTION
+   Dot aktif ngikutin section mana yang lagi kelihatan di layar
+   (IntersectionObserver), dan tiap dot bisa diklik buat scroll ke
+   section-nya (grup: Bride & Groom share 1 dot, Countdown & Event
+   share 1 dot, RSVP & Wishes share 1 dot — biar gak kebanyakan titik).
+============================= */
+function initSectionDots() {
+  const dots = document.querySelectorAll(".section-dot");
+  if (!dots.length) return;
+
+  const dotByTarget = new Map();
+  dots.forEach((dot) => dotByTarget.set(dot.dataset.target, dot));
+
+  // Peta section id → id dot yang mewakilinya (buat grup gabungan).
+  const groupMap = {
+    quoteSection: "quoteSection",
+    journeySection: "journeySection",
+    brideSection: "brideSection",
+    groomSection: "brideSection",
+    countdownSection: "countdownSection",
+    eventSection: "countdownSection",
+    venueSection: "venueSection",
+    liveSection: "venueSection",
+    gallerySection: "gallerySection",
+    rsvpSection: "rsvpSection",
+    wishesSection: "rsvpSection",
+    thanksSection: "closingSection",
+    closingSection: "closingSection",
+  };
+
+  function setActive(targetId) {
+    const dot = dotByTarget.get(targetId);
+    if (!dot) return;
+    dots.forEach((d) => d.classList.remove("active"));
+    dot.classList.add("active");
+  }
+
+  const observedSections = Object.keys(groupMap)
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  const dotsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(groupMap[entry.target.id]);
+        }
+      });
+    },
+    { threshold: 0.4 },
+  );
+
+  observedSections.forEach((el) => dotsObserver.observe(el));
+
+  dots.forEach((dot) => {
+    dot.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = document.getElementById(dot.dataset.target);
+      if (target) target.scrollIntoView({ behavior: "smooth" });
+    });
   });
 }
 

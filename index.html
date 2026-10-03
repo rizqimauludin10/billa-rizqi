@@ -117,6 +117,81 @@
     <div class="video-overlay"></div>
 
     <!-- =============================
+         SCROLL PROGRESS BAR — nunjukkin berapa persen halaman udah
+         kebaca, nongol cuma setelah undangan dibuka.
+         ============================= -->
+    <div class="scroll-progress" id="scrollProgress">
+      <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+    </div>
+
+    <!-- =============================
+         SECTION DOTS NAV — navigasi titik vertikal biar tamu tau lagi
+         di "bab" mana & bisa lompat ke bagian lain.
+         ============================= -->
+    <nav
+      class="section-dots"
+      id="sectionDots"
+      aria-label="Navigasi bagian undangan"
+    >
+      <a
+        href="#quoteSection"
+        class="section-dot"
+        data-target="quoteSection"
+        aria-label="Pembuka"
+        ><span class="section-dot-tooltip">Pembuka</span></a
+      >
+      <a
+        href="#journeySection"
+        class="section-dot"
+        data-target="journeySection"
+        aria-label="Our Journey"
+        ><span class="section-dot-tooltip">Our Journey</span></a
+      >
+      <a
+        href="#brideSection"
+        class="section-dot"
+        data-target="brideSection"
+        aria-label="Bride & Groom"
+        ><span class="section-dot-tooltip">Bride & Groom</span></a
+      >
+      <a
+        href="#countdownSection"
+        class="section-dot"
+        data-target="countdownSection"
+        aria-label="Countdown & Acara"
+        ><span class="section-dot-tooltip">Acara</span></a
+      >
+      <a
+        href="#venueSection"
+        class="section-dot"
+        data-target="venueSection"
+        aria-label="Lokasi"
+        ><span class="section-dot-tooltip">Lokasi</span></a
+      >
+      <a
+        href="#gallerySection"
+        class="section-dot"
+        data-target="gallerySection"
+        aria-label="Memories"
+        ><span class="section-dot-tooltip">Memories</span></a
+      >
+      <a
+        href="#rsvpSection"
+        class="section-dot"
+        data-target="rsvpSection"
+        aria-label="RSVP & Wishes"
+        ><span class="section-dot-tooltip">RSVP</span></a
+      >
+      <a
+        href="#closingSection"
+        class="section-dot"
+        data-target="closingSection"
+        aria-label="Penutup"
+        ><span class="section-dot-tooltip">Penutup</span></a
+      >
+    </nav>
+
+    <!-- =============================
      COVER SECTION (PAKAI FOTO)
      ============================= -->
     <section id="cover">
@@ -181,6 +256,13 @@
         </div>
       </section>
 
+      <!-- Chapter divider — jeda narasi antara Quote & Our Journey -->
+      <div class="chapter-divider" aria-hidden="true">
+        <span class="chapter-divider-line"></span>
+        <span class="chapter-divider-diamond"></span>
+        <span class="chapter-divider-line"></span>
+      </div>
+
       <!-- ================OUR JOURNEY SECTION====================== -->
       <section id="journeySection">
         <div class="container">
@@ -193,7 +275,7 @@
           <div class="story-list">
             <!-- STORY 1 — foto kiri (odd) -->
             <div class="story-item odd">
-              <div class="story-photo">
+              <div class="story-photo journey-zoomable" data-journey-index="0">
                 <img
                   src="assets/foto/journey/4.png"
                   alt="First Meet"
@@ -201,6 +283,7 @@
                   decoding="async"
                 />
                 <div class="story-year">2023</div>
+                <div class="story-zoom-hint">⤢</div>
               </div>
               <div class="story-info">
                 <div class="story-title">First Meet</div>
@@ -214,7 +297,7 @@
 
             <!-- STORY 2 — foto kanan (even) -->
             <div class="story-item even">
-              <div class="story-photo">
+              <div class="story-photo journey-zoomable" data-journey-index="1">
                 <img
                   src="assets/foto/journey/1.jpg"
                   alt="Growing Together"
@@ -222,6 +305,7 @@
                   decoding="async"
                 />
                 <div class="story-year">2024</div>
+                <div class="story-zoom-hint">⤢</div>
               </div>
               <div class="story-info">
                 <div class="story-title">Growing Together</div>
@@ -235,7 +319,7 @@
 
             <!-- STORY 3 — foto kiri (odd) -->
             <div class="story-item odd">
-              <div class="story-photo">
+              <div class="story-photo journey-zoomable" data-journey-index="2">
                 <img
                   src="assets/foto/journey/3.jpeg"
                   alt="The Proposal"
@@ -243,6 +327,7 @@
                   decoding="async"
                 />
                 <div class="story-year">2026</div>
+                <div class="story-zoom-hint">⤢</div>
               </div>
               <div class="story-info">
                 <div class="story-title">The Proposal</div>
@@ -319,6 +404,22 @@
                 @n.biyya
               </a>
             </div>
+
+            <!-- Fun Fact — tap buat buka -->
+            <!-- <div class="fun-fact-wrap">
+              <button
+                class="fun-fact-btn"
+                id="brideFunFactBtn"
+                type="button"
+                aria-expanded="false"
+              >
+                <i class="bi bi-stars"></i>
+                <span>Fun Fact tentang Billa</span>
+              </button>
+              <div class="fun-fact-panel" id="brideFunFactPanel">
+                [PLACEHOLDER — ganti dengan fakta unik/lucu tentang Billa]
+              </div>
+            </div> -->
           </div>
         </div>
       </section>
@@ -386,9 +487,32 @@
                 @rizqimauludin_
               </a>
             </div>
+
+            <!-- Fun Fact — tap buat buka -->
+            <!-- <div class="fun-fact-wrap">
+              <button
+                class="fun-fact-btn"
+                id="groomFunFactBtn"
+                type="button"
+                aria-expanded="false"
+              >
+                <i class="bi bi-stars"></i>
+                <span>Fun Fact tentang Rizqi</span>
+              </button>
+              <div class="fun-fact-panel" id="groomFunFactPanel">
+                [PLACEHOLDER — ganti dengan fakta unik/lucu tentang Rizqi]
+              </div>
+            </div> -->
           </div>
         </div>
       </section>
+
+      <!-- Chapter divider — jeda narasi antara Groom & Countdown -->
+      <div class="chapter-divider" aria-hidden="true">
+        <span class="chapter-divider-line"></span>
+        <span class="chapter-divider-diamond"></span>
+        <span class="chapter-divider-line"></span>
+      </div>
 
       <!-- =============================
           COUNTDOWN SECTION
@@ -443,6 +567,8 @@
             Through this invitation, we warmly invite you to join us in
             celebrating our wedding day."
           </p>
+
+          <!-- <p class="countdown-personal" id="countdownPersonal"></p> -->
 
           <!-- ===== SIMPAN KE KALENDER =====
                FIX: sebelumnya ini ada DI LUAR .countdown-inner (jadi
@@ -622,6 +748,13 @@
         </div>
       </section>
 
+      <!-- Chapter divider — jeda narasi antara Venue & Live Streaming -->
+      <div class="chapter-divider" aria-hidden="true">
+        <span class="chapter-divider-line"></span>
+        <span class="chapter-divider-diamond"></span>
+        <span class="chapter-divider-line"></span>
+      </div>
+
       <!-- ===== LIVE STREAMING SECTION (opsional — kalau gak jadi dipakai,
      hapus semua dari sini sampai penutup </section> di bawahnya) ===== -->
       <section id="liveSection">
@@ -796,6 +929,13 @@
         </div>
       </section>
 
+      <!-- Chapter divider — jeda narasi antara Memories & RSVP -->
+      <div class="chapter-divider" aria-hidden="true">
+        <span class="chapter-divider-line"></span>
+        <span class="chapter-divider-diamond"></span>
+        <span class="chapter-divider-line"></span>
+      </div>
+
       <!-- ===================RSVP SECTION========================== -->
       <section id="rsvpSection">
         <div class="container">
@@ -909,6 +1049,13 @@
         <div class="lb-counter" id="lbCounter"></div>
       </div>
 
+      <!-- ===== JOURNEY LIGHTBOX — terpisah dari Gallery lightbox di
+           atas, biar gak ganggu navigasi foto Gallery ===== -->
+      <div class="journey-lightbox" id="journeyLightbox">
+        <button class="jlb-close" id="jlbClose">✕</button>
+        <img class="jlb-img" id="jlbImg" src="" alt="" />
+      </div>
+
       <!-- ===== THANKS SECTION ===== -->
       <section id="thanksSection">
         <div class="thanks-slideshow">
@@ -998,6 +1145,8 @@
           </div>
 
           <div class="closing-hashtag">#BILongstoRIZ</div>
+
+          <!-- <p class="closing-personal" id="closingPersonal"></p> -->
         </div>
       </section>
 

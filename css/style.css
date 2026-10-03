@@ -301,7 +301,7 @@ body {
    ============================= */
 #mainContent {
   display: none;
-  padding: 10px 10px;
+  padding: 0;
   opacity: 0;
   transition: opacity 1.5s ease;
 }
@@ -456,7 +456,7 @@ body {
 
 #journeySection {
   min-height: 100vh;
-  padding: 80px 0;
+  padding: 80px 10px;
   position: relative;
   background: linear-gradient(
     to bottom,
@@ -3118,7 +3118,7 @@ body {
 .gallery-inner {
   position: relative;
   z-index: 1;
-  padding: 80px 0 80px;
+  padding: 80px 10px 80px;
 }
 
 .gallery-title {
@@ -3887,7 +3887,7 @@ body {
   color: var(--color-akad);
   opacity: 1;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .footer-name {
@@ -4303,4 +4303,297 @@ body {
   height: 100%;
   border: none;
   display: block;
+}
+
+/* =============================
+   SCROLL PROGRESS BAR
+   Bar fixed di paling atas, keisi sesuai posisi scroll — ngasih
+   gambaran "udah sejauh mana" ke tamu biar gak buru-buru scroll.
+   Baru kelihatan setelah undangan dibuka (class "visible" ditambahin
+   JS pas klik tombol "Buka Undangan", sama persis pola music-player).
+   ============================= */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9997;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.scroll-progress.visible {
+  opacity: 1;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-akad), var(--color-resepsi));
+  transition: width 0.1s linear;
+}
+
+/* =============================
+   SECTION DOTS NAV
+   Navigasi titik vertikal ala "Stories" — nunjukkin tamu lagi di
+   "bab" mana & bisa diklik buat lompat ke bagian lain. Fixed di sisi
+   kanan, baru kelihatan setelah undangan dibuka.
+   ============================= */
+.section-dots {
+  position: fixed;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  z-index: 9996;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.section-dots.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.section-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 0.5px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.section-dot.active {
+  background: var(--color-akad);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.5);
+  box-shadow: 0 0 8px rgba(var(--color-akad-rgb), 0.7);
+}
+
+.section-dot-tooltip {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  background: rgba(10, 8, 12, 0.85);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 0.5px solid rgba(255, 255, 255, 0.14);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.section-dot:hover .section-dot-tooltip {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .section-dots {
+    right: 8px;
+    gap: 11px;
+  }
+  .section-dot {
+    width: 6px;
+    height: 6px;
+  }
+  .section-dot-tooltip {
+    display: none;
+  }
+}
+
+/* =============================
+   CHAPTER DIVIDER
+   Ornamen kecil antar-section di titik transisi narasi — bikin jeda
+   visual ("ganti bab") biar tamu pelan-pelan, bukan numpuk semua
+   section nempel tanpa nafas.
+   ============================= */
+.chapter-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 240px;
+  margin: 0 auto;
+  padding: 36px 24px;
+}
+
+.chapter-divider-line {
+  flex: 1;
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.chapter-divider-diamond {
+  width: 6px;
+  height: 6px;
+  border: 0.5px solid rgba(var(--color-akad-rgb), 0.8);
+  background: rgba(var(--color-akad-rgb), 0.35);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* =============================
+   JOURNEY — tap-to-zoom
+   ============================= */
+.journey-zoomable {
+  cursor: pointer;
+}
+
+.story-zoom-hint {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.journey-zoomable:hover .story-zoom-hint,
+.journey-zoomable:active .story-zoom-hint {
+  opacity: 1;
+}
+
+.journey-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.journey-lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.jlb-img {
+  max-width: 92%;
+  max-height: 86%;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.jlb-close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* =============================
+   BRIDE / GROOM — FUN FACT REVEAL
+   ============================= */
+.fun-fact-wrap {
+  padding: 14px 20px 20px;
+}
+
+.fun-fact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 0.5px solid rgba(var(--color-akad-rgb), 0.4);
+  background: rgba(var(--color-akad-rgb), 0.12);
+  color: #fff;
+  font-family: "Noto Serif", serif;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fun-fact-btn:hover,
+.fun-fact-btn:active {
+  background: rgba(var(--color-akad-rgb), 0.25);
+}
+
+.fun-fact-panel {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  font-style: italic;
+  opacity: 0.85;
+  color: #fff;
+  transition:
+    max-height 0.4s ease,
+    opacity 0.4s ease,
+    margin-top 0.4s ease;
+  margin-top: 0;
+}
+
+.fun-fact-panel.open {
+  max-height: 200px;
+  opacity: 0.85;
+  margin-top: 12px;
+}
+
+#groomSection .fun-fact-wrap {
+  text-align: right;
+}
+
+#groomSection .fun-fact-btn {
+  border-color: rgba(var(--color-resepsi-rgb), 0.4);
+  background: rgba(var(--color-resepsi-rgb), 0.12);
+}
+
+#groomSection .fun-fact-btn:hover,
+#groomSection .fun-fact-btn:active {
+  background: rgba(var(--color-resepsi-rgb), 0.25);
+}
+
+/* =============================
+   PERSONALISASI TAMBAHAN — Countdown & Closing
+   ============================= */
+.countdown-personal,
+.closing-personal {
+  margin-top: 14px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  opacity: 0.75;
+  font-style: italic;
+  color: #fff;
+}
+
+.closing-personal {
+  margin-top: 18px;
 }
