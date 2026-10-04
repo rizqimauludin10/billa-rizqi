@@ -3427,6 +3427,7 @@ body {
   position: absolute;
   inset: 0;
   z-index: 0;
+  background: #0a0a0a;
 }
 
 .thanks-slide {
@@ -3827,13 +3828,54 @@ body {
   opacity: 0;
   transform: translateY(16px);
   transition:
-    opacity 1s ease 0.7s,
-    transform 1s ease 0.7s;
+    opacity 0.4s ease 0.7s,
+    transform 0.4s ease 0.7s;
+  /* Setup buat efek ketik — teks disembunyiin lewat width:0 +
+     overflow:hidden, nanti "dibuka" pelan-pelan lewat animasi width. */
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  width: 0;
+  border-right: 2px solid transparent;
 }
 
 #closingSection.show .closing-hashtag {
   opacity: 1;
   transform: translateY(0);
+  animation:
+    hashtagTyping 8s ease 0.7s infinite,
+    hashtagCaret 0.8s step-end 0.7s infinite;
+}
+
+@keyframes hashtagTyping {
+  0% {
+    width: 0;
+    animation-timing-function: steps(13, end);
+  }
+  10% {
+    width: 13ch;
+  }
+  85% {
+    width: 13ch;
+    animation-timing-function: steps(13, end);
+  }
+  95% {
+    width: 0;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes hashtagCaret {
+  0%,
+  100% {
+    border-color: var(--color-akad);
+  }
+  50% {
+    border-color: transparent;
+  }
 }
 
 /* =============================
