@@ -52,19 +52,22 @@
   box-sizing: border-box;
 }
 
+html {
+  background: #0a0a0a;
+}
+
 body {
   font-family: "Noto Serif", serif;
   color: white;
   overflow-x: hidden;
-  /* Sengaja hidden: scroll di-lock sebelum tombol "Buka Undangan"
-     diklik. Di-unlock lewat JS (document.body.style.overflowY =
-     "auto") saat cover dibuka. Jangan dihapus. */
+  background: #0a0a0a;
   overflow-y: hidden;
 }
 
 /* =============================
    BACKGROUND VIDEO
    ============================= */
+
 #bgVideo {
   position: fixed;
   top: 0;
@@ -72,7 +75,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -3;
+  z-index: 0;
   display: none;
   opacity: 0;
   transition: opacity 1.5s ease;
@@ -88,7 +91,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: -2;
+  z-index: 1;
   pointer-events: none;
 }
 
