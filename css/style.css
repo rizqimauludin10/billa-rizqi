@@ -52,10 +52,15 @@
   box-sizing: border-box;
 }
 
+html {
+  background: #0a0a0a;
+}
+
 body {
   font-family: "Noto Serif", serif;
   color: white;
   overflow-x: hidden;
+  background: #0a0a0a;
   /* Sengaja hidden: scroll di-lock sebelum tombol "Buka Undangan"
      diklik. Di-unlock lewat JS (document.body.style.overflowY =
      "auto") saat cover dibuka. Jangan dihapus. */
