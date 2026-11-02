@@ -690,7 +690,7 @@
             <iframe
               class="venue-maps-frame"
               id="venueMapsFrame"
-              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d360.0623682312787!2d109.41288730092288!3d-0.13932496713586953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMMKwMDgnMjEuOCJTIDEwOcKwMjQnNDYuOSJF!5e0!3m2!1sid!2sid!4v1793583123557!5m2!1sid!2sid"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d997.4516281083303!2d109.4124182695682!3d-0.13939515889009602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e1d515c0d07b539%3A0xb22c14784783424f!2sAsti%20Collection%20(Penjahit)!5e0!3m2!1sid!2sid!4v1793584841635!5m2!1sid!2sid"
               allowfullscreen
               loading="lazy"
               referrerpolicy="strict-origin-when-cross-origin"
@@ -712,7 +712,7 @@
               class="venue-btn"
               onclick="
                 window.open(
-                  'https://www.google.com/maps/search/?api=1&query=-0.13932496713586953,109.41288730092288',
+                  'https://www.google.com/maps/search/?api=1&query=0x2e1d515c0d07b539:0xb22c14784783424f',
                   '_blank',
                 )
               "
@@ -723,19 +723,6 @@
           </div>
         </div>
       </section>
-
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const mapsFrame = document.getElementById("venueMapsFrame");
-          const mapsLoading = document.getElementById("venueMapsLoading");
-
-          if (mapsFrame && mapsLoading) {
-            mapsFrame.addEventListener("load", function () {
-              mapsLoading.style.display = "none";
-            });
-          }
-        });
-      </script>
 
       <!-- Chapter divider — jeda narasi antara Venue & Live Streaming -->
       <div class="chapter-divider" aria-hidden="true">
