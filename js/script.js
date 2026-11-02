@@ -501,7 +501,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =============================
      COUNTDOWN TIMER
   ============================= */
-  const weddingDate = new Date("2026-10-15T08:00:00+07:00");
+  const weddingDate = new Date("2026-11-08T08:00:00+07:00");
 
   function updateCountdown() {
     const diff = weddingDate - new Date();
@@ -1663,13 +1663,13 @@ if (addToCalendarBtn) {
   addToCalendarBtn.addEventListener("click", () => {
     const title = encodeURIComponent("The Wedding of Billa & Rizqi");
     const details = encodeURIComponent(
-      "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di perayaan pernikahan Billa & Rizqi.\n\n- Akad Nikah: 08.00 WIB\n- Resepsi Nikah: 11.00 - 14.00 WIB",
+      "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di perayaan pernikahan Billa & Rizqi.\n\n- Akad Nikah: 08.00 WIB\n- Ngunduh Mantu: 12.00 - Selesai",
     );
     const location = encodeURIComponent(
-      "Stay.vie Hotel, Lantai 7 (Rooftop), Surabaya",
+      "Jl. Adisucipto, Gg. Sepakat Laut, Jalur 2",
     );
-    // 15 Oktober 2026 jam 08:00 WIB - 14:00 WIB (01:00 - 07:00 UTC)
-    const dates = "20261015T010000Z/20261015T070000Z";
+    // 8 November 2026 jam 12:30 WIB - Selesai (01:00 - 07:00 UTC)
+    const dates = "20261108T010000Z/20261108T070000Z";
 
     const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
 
